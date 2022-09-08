@@ -1,8 +1,15 @@
 import { ormCreateUser as _createUser } from '../model/user-orm.js'
+import { ormCheckUserExistence as _checkUserExistence } from '../model/user-orm.js'
 
 export async function createUser(req, res) {
     try {
         const { username, password } = req.body;
+        const userExist = await _checkUserExistence(username)
+
+        if (userExist) {
+            return res.status(400).json({message: 'Username has been taken!'});
+        }
+
         if (username && password) {
             const resp = await _createUser(username, password);
             console.log(resp);
