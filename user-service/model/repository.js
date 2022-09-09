@@ -15,6 +15,6 @@ export async function createUser(params) {
     return new UserModel(params);
 }
 
-export async function checkUserExistence(username) {
+export async function findUser(username) {
     return UserModel.findOne({ username });
 }

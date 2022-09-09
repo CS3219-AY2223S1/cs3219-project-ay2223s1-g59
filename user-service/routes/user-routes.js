@@ -3,7 +3,7 @@ import { createUser } from '../controller/user-controller.js';
 
 const router = express.Router();
 
-router.get('/', (_, res) => res.send('Hello World from user-service'))
+router.get('/', (_, res) => res.send('Hello World from user'))
 router.post('/', createUser)
 
 export { router };
