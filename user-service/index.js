@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import { router as userRouter } from './routes/user-routes.js';
-import { router as loginRouter } from './routes/login-routes.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
@@ -25,6 +24,5 @@ app.use('/api/user', router).all((_, res) => {
 */
 
 app.use('/api/user', userRouter)
-app.use('/api/login', loginRouter)
 
 app.listen(8000, () => console.log('user-service listening on port 8000'));

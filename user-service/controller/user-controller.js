@@ -1,7 +1,12 @@
-import { ormCreateUser as _createUser } from '../model/user-orm.js'
-import { ormCheckUserExistence as _checkUserExistence } from '../model/user-orm.js'
-import logger from '../common/logger.js'
+import { ormCreateUser as _createUser } from '../model/user-orm.js';
+import { ormCheckUserExistence as _checkUserExistence } from '../model/user-orm.js';
+import { ormCheckPassword as _checkPassword } from '../model/user-orm.js';
+import { ormCreateBlacklist as _createBlacklist } from '../model/blacklist-orm.js';
+import { ormCheckTokenBlacklist as _checkTokenBlacklist } from '../model/blacklist-orm.js';
+import logger from '../common/logger.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config'
 
 export async function createUser(req, res) {
     try {
@@ -34,6 +39,60 @@ export async function createUser(req, res) {
     }
 }
 
+export async function loginUser(req, res) {
+    try {
+        const { username, password } = req.body;
+        // Check for missing fields
+        if (!username || !password) {
+            return res.status(400).json({message: 'Username and/or Password are missing!'});
+        }        
+        // Check if password is correct
+        const passwordCorrect = await _checkPassword(username, password);
+        if (!passwordCorrect) {
+            return res.status(401).json({message: 'Invalid username or password!'});
+        }
+        // Generate JWT token
+        const token = generateToken(username);
+        if (!token) {
+            return res.status(400).json({message: 'Could not generate token'});
+        } else {
+            return res.status(200).send({ username, token })
+        }
+    } catch (err) {
+        return res.status(500).json({message: 'Database failure when logging in!'})
+    }
+}
+
+export async function logoutUser(req, res) {
+    try {
+        const { username } = req.body;
+        // Check for missing fields
+        if (!username) {
+            return res.status(400).json({message: 'Username is missing!'});
+        }
+        // Get token from request
+        const token = getTokenFrom(req);
+        if (!token) {
+            return res.status(401).json({message: 'Token is missing/invalid!'});
+        }
+        // Validate token
+        const tokenValid = await validateToken(username, token);
+        if (!tokenValid) {
+            return res.status(401).json({message: 'Token is missing or invalid!'});
+        }
+        // Blacklist token when user logs out
+        const resp = await _createBlacklist(token);
+        if (resp.err) {
+            return res.status(400).json({message: 'Could not blacklist token!'});
+        } else {
+            console.log(`${username} logged out successfully!`)
+            return res.status(201).json({message: `${username} logged out successfully!`});
+        }
+    } catch (err) {
+        return res.status(500).json({message: 'Database failure when logging out!'})
+    }
+}
+
 // Hash password
 const hashPassword = async (password) => {
     try {
@@ -41,5 +100,47 @@ const hashPassword = async (password) => {
         return await bcrypt.hash(password, saltRounds)
     } catch (err) {
         console.log('ERROR: Could not hash password');
+    }
+}
+
+// Generate JWT token
+const generateToken = (username) => {
+    try {
+        const userToken = {
+            username: username
+        }
+        return jwt.sign(userToken, process.env.SECRET)
+    } catch (err) {
+        console.log('ERROR: Could not generate token');
+    }
+}
+
+// Validate JWT token
+const validateToken = async (username, token) => {
+    try {
+        // Check if token is blacklisted
+        const tokenBlacklisted = await _checkTokenBlacklist(token);
+        if (tokenBlacklisted) {
+            console.log("Token is blacklisted");
+            return false;
+        }
+        // Check if token is valid
+        const decodedToken = jwt.verify(token, process.env.SECRET);
+        return (decodedToken.username === username) ? true : false;
+    } catch (err) {
+        console.log('ERROR: Could not verify token');
+    }
+}
+
+// Get JWT token from request
+const getTokenFrom = (req) => {
+    try {
+        const authorization = req.get('authorization')
+        if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+          return authorization.substring(7)
+        }
+        return null
+    } catch (err) {
+        console.log('ERROR: Could not read token');
     }
 }
