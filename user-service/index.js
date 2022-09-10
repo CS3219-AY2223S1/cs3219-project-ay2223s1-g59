@@ -1,11 +1,15 @@
 import express from 'express';
 import cors from 'cors';
+import { router as userRouter } from './routes/user-routes.js';
+import { router as loginRouter } from './routes/login-routes.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors()) // config cors so that front-end can use
 app.options('*', cors())
+
+/*
 import { createUser } from './controller/user-controller.js';
 
 const router = express.Router()
@@ -17,6 +21,10 @@ router.post('/', createUser)
 app.use('/api/user', router).all((_, res) => {
     res.setHeader('content-type', 'application/json')
     res.setHeader('Access-Control-Allow-Origin', '*')
-})
+}) 
+*/
+
+app.use('/api/user', userRouter)
+app.use('/api/login', loginRouter)
 
 app.listen(8000, () => console.log('user-service listening on port 8000'));
