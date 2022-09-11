@@ -1,6 +1,7 @@
 import { ormCreateUser as _createUser } from '../model/user-orm.js';
 import { ormCheckUserExistence as _checkUserExistence } from '../model/user-orm.js';
 import { ormCheckPassword as _checkPassword } from '../model/user-orm.js';
+import { ormUpdatePassword as _updatePassword } from '../model/user-orm.js';
 import { ormCreateBlacklist as _createBlacklist } from '../model/blacklist-orm.js';
 import { ormCheckTokenBlacklist as _checkTokenBlacklist } from '../model/blacklist-orm.js';
 import logger from '../common/logger.js';
@@ -21,7 +22,7 @@ export async function createUser(req, res) {
         if (!username || !password) {
             return res.status(400).json({message: 'Username and/or Password are missing!'});
         }
-        // Check if password is hashed
+        // Hash password
         const passwordHash = await hashPassword(password)
         if (!passwordHash) {
             return res.status(500).json({message: 'Could not hash password'});
@@ -73,7 +74,7 @@ export async function logoutUser(req, res) {
         // Get token from request
         const token = getTokenFrom(req);
         if (!token) {
-            return res.status(401).json({message: 'Token is missing/invalid!'});
+            return res.status(401).json({message: 'Token is missing or invalid!'});
         }
         // Validate token
         const tokenValid = await validateToken(username, token);
@@ -90,6 +91,49 @@ export async function logoutUser(req, res) {
         }
     } catch (err) {
         return res.status(500).json({message: 'Database failure when logging out!'})
+    }
+}
+
+export async function changePassword(req, res) {
+    try {
+        const { username, password, newPassword } = req.body;
+        // Check for missing fields
+        if (!username || !password || !newPassword) {
+            return res.status(400).json({message: 'Missing fields!'});
+        }        
+        // Check if password is correct
+        const passwordCorrect = await _checkPassword(username, password);
+        if (!passwordCorrect) {
+            return res.status(401).json({message: 'Invalid username or password!'});
+        }
+        /*
+        // Get token from request
+        const token = getTokenFrom(req);
+        if (!token) {
+            return res.status(401).json({message: 'Token is missing or invalid!'});
+        }
+        // Validate token
+        const tokenValid = await validateToken(username, token);
+        if (!tokenValid) {
+            return res.status(401).json({message: 'Token is missing or invalid!'});
+        } 
+        */
+        // Hash new password
+        const newPasswordHash = await hashPassword(newPassword)
+        if (!newPasswordHash) {
+            return res.status(500).json({message: 'Could not hash new password'});
+        }
+        // Change user password
+        const passwordUpdated = await _updatePassword(username, newPasswordHash);
+        if (!passwordUpdated) {
+            return res.status(500).json({message: 'Could not update new password'});
+        } else {
+            console.log(`Changed password successfully!`)
+            return res.status(200).json({message: `Changed password successfully!`});
+        }
+
+    } catch (err) {
+        return res.status(500).json({message: 'Database failure when changing password!'})
     }
 }
 
