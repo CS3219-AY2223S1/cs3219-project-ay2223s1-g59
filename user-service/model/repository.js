@@ -20,6 +20,12 @@ export async function findUser(username) {
     return UserModel.findOne({ username });
 }
 
+export async function updatePassword(params) {
+    const username = params.username
+    const user = await UserModel.findOne({ username });
+    return UserModel.findByIdAndUpdate(user._id, params, { new: true})
+}
+
 export async function createBlacklist(params) { 
     return new BlacklistModel(params);
 }
