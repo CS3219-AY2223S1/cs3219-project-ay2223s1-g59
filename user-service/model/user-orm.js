@@ -1,4 +1,4 @@
-import { createUser, findUser, updatePassword } from './repository.js';
+import { createUser, findUser, updatePassword, deleteUser } from './repository.js';
 import bcrypt from 'bcrypt';
 
 //need to separate orm functions from repository to decouple business logic from persistence
@@ -23,7 +23,7 @@ export async function ormCheckUserExistence(username) {
         console.log('ERROR: Could not check if user exists');
     }
 }
-
+// Check if password is correct
 export async function ormCheckPassword(username, password) {
     try {
         const user = await findUser(username);
@@ -35,14 +35,28 @@ export async function ormCheckPassword(username, password) {
         return false;
     }
 }
-
+// Change user password
 export async function ormUpdatePassword(username, passwordHash) {
     try {
-        const updatedUser = await updatePassword({username, passwordHash});
+        const user = await findUser(username);
+        const userId = user._id;
+        const updatedUser = await updatePassword({ userId, userObject: {username, passwordHash} });
         console.log(updatedUser)
         return updatedUser ? true : false;
     } catch (err) {
         console.log(err)
         console.log('ERROR: Could not update user');
+    }
+}
+
+export async function ormDeleteUser(username) {
+    try {
+        const user = await findUser(username);
+        const userId = user._id;
+        await deleteUser(userId);
+        return true
+    } catch (err) {
+        console.log(err)
+        console.log('ERROR: Could not delete user');
     }
 }
