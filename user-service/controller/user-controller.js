@@ -58,6 +58,7 @@ export async function loginUser(req, res) {
         if (!token) {
             return res.status(400).json({message: 'Could not generate token'});
         } else {
+            console.log(`${username} logged in successfully!`)
             return res.status(200).send({ username, token })
         }
     } catch (err) {
