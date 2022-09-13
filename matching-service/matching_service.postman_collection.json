@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "3c1e40fc-11cf-44a9-b9e9-619760721532",
+		"name": "Matching Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11505474"
+	},
+	"item": [
+		{
+			"name": "FindMatch User1 (hard)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"difficulty\": \"hard\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8001/find-match",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"find-match"
+					]
+				},
+				"description": "Find match for user1 with \"hard\" difficulty.  \nSee matching service behaviour for more info."
+			},
+			"response": []
+		},
+		{
+			"name": "CancelMatch User1 (hard)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"user1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8001/cancel-find-match",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cancel-find-match"
+					]
+				},
+				"description": "Cancels match request for user1 (user1 has to be still searching for a match)"
+			},
+			"response": []
+		},
+		{
+			"name": "FindMatch User3 (hard)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user3\",\r\n    \"difficulty\": \"hard\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8001/find-match",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"find-match"
+					]
+				},
+				"description": "Finds match for user2 with \"easy\" difficulty."
+			},
+			"response": []
+		},
+		{
+			"name": "FindMatch User2 (easy)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user2\",\r\n    \"difficulty\": \"easy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8001/find-match",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"find-match"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CancelMatch User2 (easy)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"user2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8001/cancel-find-match",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cancel-find-match"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
