@@ -39,10 +39,11 @@ Please see [Importing and exporting data
 The matching service uses create, read and delete operations on the MongoDB collections *matches* and *interviews* to match players with each other. You may refer to `models/` to see how the schema for both collections look like.
 
 ### Flowchart
-Here is a flowchart explaining the logic for `/find-match` route in `/routes/matchRoutes.js`.
+Here is a flowchart explaining the logic for `/find-match` route in `/routes/matchRoutes.js`. Kindly note the difference between collection and documents. More info [here](https://www.geeksforgeeks.org/mongodb-database-collection-and-document/).
+
 ![Flowchart](matching-service-flowchart.drawio.png)
 
-Kindly note the difference between collection and documents. More info [here](https://www.geeksforgeeks.org/mongodb-database-collection-and-document/).
+
 
 Once the interview document is created, the chat service (separate microservice) can use the information for the interview to establish socket.io connections. Static information can be called to the frontend with the `/interview/:id` route in `routes/matchRoutes.js`. 
 
