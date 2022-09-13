@@ -43,6 +43,7 @@ export const findMatch = async (req, res) => {
             // start a timer 30s that checks if an interview with the username was created,
             // since we would not know if our match entry has been deleted
             // https://javascript.info/settimeout-setinterval
+            // https://stackoverflow.com/questions/16599878/can-clearinterval-be-called-inside-setinterval
 
             const delay = 1 // delay in terms of seconds between each function call
             const limit = 30 // maximum number of seconds before timeout
