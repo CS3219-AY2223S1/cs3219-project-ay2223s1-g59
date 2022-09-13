@@ -2,6 +2,7 @@ import { ormCreateUser as _createUser } from '../model/user-orm.js';
 import { ormCheckUserExistence as _checkUserExistence } from '../model/user-orm.js';
 import { ormCheckPassword as _checkPassword } from '../model/user-orm.js';
 import { ormUpdatePassword as _updatePassword } from '../model/user-orm.js';
+import { ormDeleteUser as _deleteUser } from '../model/user-orm.js';
 import { ormCreateBlacklist as _createBlacklist } from '../model/blacklist-orm.js';
 import { ormCheckTokenBlacklist as _checkTokenBlacklist } from '../model/blacklist-orm.js';
 import logger from '../common/logger.js';
@@ -100,7 +101,11 @@ export async function changePassword(req, res) {
         // Check for missing fields
         if (!username || !password || !newPassword) {
             return res.status(400).json({message: 'Missing fields!'});
-        }        
+        }
+        // Check if new password and current password are the same
+        if (password === newPassword) {
+            return res.status(400).json({message: 'New password same as current password!'});
+        }
         // Check if password is correct
         const passwordCorrect = await _checkPassword(username, password);
         if (!passwordCorrect) {
@@ -131,9 +136,46 @@ export async function changePassword(req, res) {
             console.log(`Changed password successfully!`)
             return res.status(200).json({message: `Changed password successfully!`});
         }
-
     } catch (err) {
         return res.status(500).json({message: 'Database failure when changing password!'})
+    }
+}
+
+export async function deleteUser(req, res) {
+    try {
+        const { username, password } = req.body;
+        // Check for missing fields
+        if (!username || !password) {
+            return res.status(400).json({message: 'Username and/or Password are missing!'});
+        }        
+        // Check if password is correct
+        const passwordCorrect = await _checkPassword(username, password);
+        if (!passwordCorrect) {
+            return res.status(401).json({message: 'Invalid username or password!'});
+        }
+        /*
+        // Get token from request
+        const token = getTokenFrom(req);
+        if (!token) {
+            return res.status(401).json({message: 'Token is missing or invalid!'});
+        }
+        // Validate token
+        const tokenValid = await validateToken(username, token);
+        if (!tokenValid) {
+            return res.status(401).json({message: 'Token is missing or invalid!'});
+        } 
+        */
+        // Delete user
+        const userDeleted = await _deleteUser(username);
+        if (!userDeleted) {
+            return res.status(500).json({message: 'Could not delete account'});
+        } else {
+            console.log(`Deleted account successfully!`)
+            return res.status(200).json({message: `Deleted account successfully!`});
+        }
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({message: 'Database failure when deleting account!'})
     }
 }
 
