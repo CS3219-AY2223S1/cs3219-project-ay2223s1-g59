@@ -57,11 +57,8 @@ export const findMatch = async (req, res) => {
                     ]
                 })
                 
-                console.log(1)
                 // if match request was cancelled, entry would be missing from DB as it was previously removed
                 const match = await Match.findOne({username: username})
-                console.log(match)
-                console.log(2)
                 if (!match) {
                     clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
                     console.log(username + " has cancelled match request. No entry exists in match collection anymore.")
