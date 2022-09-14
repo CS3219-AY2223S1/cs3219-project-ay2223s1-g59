@@ -12,16 +12,19 @@ import 'dotenv/config'
 
 export async function createUser(req, res) {
     try {
-        const { username, password } = req.body;
-
+        const { username, password, confirmPassword } = req.body;
+        // Check for missing fields
+        if (!username || !password || !confirmPassword) {
+            return res.status(400).json({message: 'Username and/or Password are missing!'});
+        }
+        // Check if password and confirm password are same
+        if (password !== confirmPassword) {
+            return res.status(400).json({message: 'The passwords you entered do not match!'});
+        }
         // Check if user already exists
         const userExist = await _checkUserExistence(username)
         if (userExist) {
             return res.status(400).json({message: 'Username has been taken!'});
-        }
-        // Check for missing fields
-        if (!username || !password) {
-            return res.status(400).json({message: 'Username and/or Password are missing!'});
         }
         // Hash password
         const passwordHash = await hashPassword(password)

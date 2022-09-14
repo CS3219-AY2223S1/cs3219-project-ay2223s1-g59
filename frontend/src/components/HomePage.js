@@ -6,7 +6,7 @@ import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
 */
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavBar from './NavBar.js'
 import {
     Container,
@@ -43,6 +43,8 @@ const HomePage = (event) => {
         <>
             <div className="d-grid gap-5">
                 <NavBar />
+                <h1 className="text-center display-3">Get Started!</h1>
+                <h1 className="text-center">Choose a question difficulty level</h1>
                 <Container onSubmit={findMatch}>
                     <Form>
                         <div className="d-grid gap-5">
