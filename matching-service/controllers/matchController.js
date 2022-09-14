@@ -13,7 +13,7 @@ export const findMatch = async (req, res) => {
         const difficulty = req.body.difficulty
         // TODO: check for valid difficulty
 
-        
+        // otherMatch refers to another user's match request document of the same difficulty
         const otherMatch = await Match.findOne({ difficulty: difficulty })
 
         // if there's a match, and the other user is a different user (in case curr user opens 2 windows)
@@ -58,9 +58,10 @@ export const findMatch = async (req, res) => {
                     ]
                 })
                 
-                // if match request was cancelled, entry would be missing from DB as it was previously removed
+                // if match request was cancelled, the current user's match document
+                // would be missing from DB as it was previously removed
                 const match = await Match.findOne({username: username})
-                if (!match) {
+                if (!match) { // if the match document is missing
                     clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
                     console.log(username + " has cancelled match request. No entry exists in match collection anymore.")
                     res.json({
@@ -124,7 +125,7 @@ export const cancelFindMatch = async (req, res) => {
 
 export const getInterview = async (req, res) => {
     try {
-        const interview = Interview.findById(req.body.interviewId)
+        const interview = await Interview.findById(req.params.id)
         res.status(200).json(interview)
     } catch (err) {
         res.status(500).json(err.message)
@@ -134,7 +135,7 @@ export const getInterview = async (req, res) => {
 
 export const deleteInterview = async (req, res) => {
     try {
-        const interview = Interview.findByIdAndDelete(req.body.interviewId)
+        const interview = await Interview.findByIdAndDelete(req.params.id)
         if (!interview) return res.sendStatus(404)
         res.status(200).json(interview)
     } catch (err) {

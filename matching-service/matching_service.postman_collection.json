@@ -143,6 +143,44 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Interview",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8001/interview/63202d55fa7a28c06abf02ed",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"interview",
+						"63202d55fa7a28c06abf02ed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "End Interview",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8001/end-interview/63202d55fa7a28c06abf02ed",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"end-interview",
+						"63202d55fa7a28c06abf02ed"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
