@@ -57,17 +57,6 @@ export const findMatch = async (req, res) => {
                         { secondUsername: username }
                     ]
                 })
-                
-                // if match request was cancelled, the current user's match document
-                // would be missing from DB as it was previously removed
-                const match = await Match.findOne({username: username})
-                if (!match) { // if the match document is missing
-                    clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
-                    console.log(username + " has cancelled match request. No entry exists in match collection anymore.")
-                    res.json({
-                        message: 'Match request cancelled'
-                    })
-                }
 
                 // if an interview is found
                 if (interview) {
@@ -78,9 +67,21 @@ export const findMatch = async (req, res) => {
 
                     clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
                     console.log("Interview found for: " + username)
-                    res.json({
+                    return res.json({
                         message: 'INTERVIEW FOUND',
                         interviewId: interview._id,
+                    })
+                    // end function
+                }
+                
+                // if match request was cancelled, the current user's match document
+                // would be missing from DB as it was previously removed
+                const match = await Match.findOne({username: username})
+                if (!match) { // if the match document is missing
+                    clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
+                    console.log(username + " has cancelled match request. No entry exists in match collection anymore.")
+                    res.json({
+                        message: 'Match request cancelled'
                     })
                 }
 
