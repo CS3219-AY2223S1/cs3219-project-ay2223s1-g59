@@ -2,6 +2,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom
 import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
+import SearchPage from './components/SearchPage';
 //import {Box} from "@mui/material";
 import {Container} from 'react-bootstrap';
 
@@ -15,6 +16,7 @@ function App() {
                         <Route path="/signup" element={<SignupPage/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/home" element={<HomePage/>}/>
+                        <Route path="/search" element={<SearchPage />} />
                     </Routes>
                 </Router>
             </Container>
