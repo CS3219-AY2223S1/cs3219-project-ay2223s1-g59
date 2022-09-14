@@ -17,13 +17,8 @@ import AlertMessage from './AlertMessage'
 
 const SignupPage = (event) => {
     const navigate = useNavigate()
-    const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage]  = useState("");
 
-    const dismissAlert = () => {
-        setAlertMessage("");
-        setShowAlert(false);
-    }
     /*
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -35,14 +30,12 @@ const SignupPage = (event) => {
         const res = await userService.signup(formDataObj)
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
-                console.log(alertMessage)
-                setShowAlert(true)
             })
         if (res) navigate('/login');
     }
     return (
         <>
-            {showAlert ? (<AlertMessage onClose={dismissAlert} variant="danger" message={alertMessage}/>) : <div></div>}
+            {alertMessage ? (<AlertMessage onClose={() => setAlertMessage(null)} message={(alertMessage)}/>) : <div></div>}
             <Container>
                 <h1 className="text-primary mt-5 p-3 text-center">PeerPrep</h1>
                 <h2 className="text-secondary mt-2 p-3 text-center">Sign Up Now!</h2>
