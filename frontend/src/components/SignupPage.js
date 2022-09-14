@@ -1,98 +1,60 @@
 import {
-    Box,
     Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    TextField,
-    Typography
-} from "@mui/material";
-import {useState} from "react";
+    Form,
+    Container, 
+    Row, 
+    Col
+} from 'react-bootstrap';
+//import {useState} from "react";
+/*
 import axios from "axios";
 import {URL_USER_SVC} from "../configs";
 import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
-import {Link} from "react-router-dom";
+*/
+import { Link, useNavigate } from "react-router-dom";
+import userService from '../services/userService'
 
-function SignupPage() {
+const SignupPage = (event) => {
+    const navigate = useNavigate()
+    /*
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [isDialogOpen, setIsDialogOpen] = useState(false)
-    const [dialogTitle, setDialogTitle] = useState("")
-    const [dialogMsg, setDialogMsg] = useState("")
-    const [isSignupSuccess, setIsSignupSuccess] = useState(false)
-
-    const handleSignup = async () => {
-        setIsSignupSuccess(false)
-        const res = await axios.post(URL_USER_SVC, { username, password })
-            .catch((err) => {
-                if (err.response.status === STATUS_CODE_CONFLICT) {
-                    setErrorDialog('This username already exists')
-                } else {
-                    setErrorDialog('Please try again later')
-                }
-            })
-        if (res && res.status === STATUS_CODE_CREATED) {
-            setSuccessDialog('Account successfully created')
-            setIsSignupSuccess(true)
-        }
+    */
+    const handleSignup = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const formDataObj = Object.fromEntries(formData.entries());
+        await userService.signup(formDataObj);
+        navigate('/login')
     }
-
-    const closeDialog = () => setIsDialogOpen(false)
-
-    const setSuccessDialog = (msg) => {
-        setIsDialogOpen(true)
-        setDialogTitle('Success')
-        setDialogMsg(msg)
-    }
-
-    const setErrorDialog = (msg) => {
-        setIsDialogOpen(true)
-        setDialogTitle('Error')
-        setDialogMsg(msg)
-    }
-
     return (
-        <Box display={"flex"} flexDirection={"column"} width={"30%"}>
-            <Typography variant={"h3"} marginBottom={"2rem"}>Sign Up</Typography>
-            <TextField
-                label="Username"
-                variant="standard"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                sx={{marginBottom: "1rem"}}
-                autoFocus
-            />
-            <TextField
-                label="Password"
-                variant="standard"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                sx={{marginBottom: "2rem"}}
-            />
-            <Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
-                <Button variant={"outlined"} onClick={handleSignup}>Sign up</Button>
-            </Box>
-
-            <Dialog
-                open={isDialogOpen}
-                onClose={closeDialog}
-            >
-                <DialogTitle>{dialogTitle}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>{dialogMsg}</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    {isSignupSuccess
-                        ? <Button component={Link} to="/login">Log in</Button>
-                        : <Button onClick={closeDialog}>Done</Button>
-                    }
-                </DialogActions>
-            </Dialog>
-        </Box>
+        <>
+            <Container>
+                <h1 className="text-primary mt-5 p-3 text-center">PeerPrep</h1>
+                <h2 className="text-secondary mt-2 p-3 text-center">Sign Up Now!</h2>
+                <Row className="mt-4">
+                    <Col lg={5} md={6} sm={12} className="p-5 m-auto shadow-sm rounded-lg">
+                        <Form onSubmit={handleSignup}>
+                            <Form.Group className="mb-3" controlId="formBasicUsername">
+                                <Form.Label>Username</Form.Label>
+                                <Form.Control type="text" name="username" placeholder="Enter username" />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" name="password" placeholder="Enter Password" />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Confirm Password</Form.Label>
+                                <Form.Control type="password" name="password" placeholder="Enter Password Again" />
+                            </Form.Group>
+                            <Button className="mt-3" variant="primary" type="submit">Sign Up</Button>
+                        </Form>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     )
 }
+
 
 export default SignupPage;
