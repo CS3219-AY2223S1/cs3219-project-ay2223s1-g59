@@ -10,6 +10,15 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config'
 
+export async function getUser(req, res) {
+    try {
+        const user = req.user;
+        return res.status(200).send(user)
+    } catch (err) {
+        return res.status(500).json({message: 'Unable to get user'});
+    }
+}
+
 export async function createUser(req, res) {
     try {
         const { username, password, confirmPassword } = req.body;
@@ -71,20 +80,11 @@ export async function loginUser(req, res) {
 
 export async function logoutUser(req, res) {
     try {
-        const { username } = req.body;
+        const username = req.user.username;
+        const token = req.token;
         // Check for missing fields
         if (!username) {
             return res.status(400).json({message: 'Username is missing!'});
-        }
-        // Get token from request
-        const token = getTokenFrom(req);
-        if (!token) {
-            return res.status(401).json({message: 'Token is missing or invalid!'});
-        }
-        // Validate token
-        const tokenValid = await validateToken(username, token);
-        if (!tokenValid) {
-            return res.status(401).json({message: 'Token is missing or invalid!'});
         }
         // Blacklist token when user logs out
         const resp = await _createBlacklist(token);
@@ -101,32 +101,25 @@ export async function logoutUser(req, res) {
 
 export async function changePassword(req, res) {
     try {
-        const { username, password, newPassword } = req.body;
+        const { password, newPassword, confirmNewPassword } = req.body;
+        const username = req.user.username;
         // Check for missing fields
-        if (!username || !password || !newPassword) {
+        if (!password || !newPassword || !confirmNewPassword) {
             return res.status(400).json({message: 'Missing fields!'});
         }
-        // Check if new password and current password are the same
-        if (password === newPassword) {
-            return res.status(400).json({message: 'New password same as current password!'});
+        // Check if new password and confirm new password are the same
+        if (newPassword !== confirmNewPassword) {
+            return res.status(400).json({message: 'The passwords you entered do not match!'});
         }
         // Check if password is correct
         const passwordCorrect = await _checkPassword(username, password);
         if (!passwordCorrect) {
-            return res.status(401).json({message: 'Invalid username or password!'});
+            return res.status(401).json({message: 'Invalid password!'});
         }
-        /*
-        // Get token from request
-        const token = getTokenFrom(req);
-        if (!token) {
-            return res.status(401).json({message: 'Token is missing or invalid!'});
+        // Check if new password and current password are the same
+        if (password === newPassword) {
+            return res.status(400).json({message: 'New password is the same as current password!'});
         }
-        // Validate token
-        const tokenValid = await validateToken(username, token);
-        if (!tokenValid) {
-            return res.status(401).json({message: 'Token is missing or invalid!'});
-        } 
-        */
         // Hash new password
         const newPasswordHash = await hashPassword(newPassword)
         if (!newPasswordHash) {
@@ -147,28 +140,17 @@ export async function changePassword(req, res) {
 
 export async function deleteUser(req, res) {
     try {
-        const { username, password } = req.body;
+        const { password } = req.body;
+        const username = req.user.username;
         // Check for missing fields
-        if (!username || !password) {
-            return res.status(400).json({message: 'Username and/or Password are missing!'});
+        if (!password) {
+            return res.status(400).json({message: 'Password is missing!'});
         }        
         // Check if password is correct
         const passwordCorrect = await _checkPassword(username, password);
         if (!passwordCorrect) {
-            return res.status(401).json({message: 'Invalid username or password!'});
+            return res.status(401).json({message: 'Invalid password!'});
         }
-        /*
-        // Get token from request
-        const token = getTokenFrom(req);
-        if (!token) {
-            return res.status(401).json({message: 'Token is missing or invalid!'});
-        }
-        // Validate token
-        const tokenValid = await validateToken(username, token);
-        if (!tokenValid) {
-            return res.status(401).json({message: 'Token is missing or invalid!'});
-        } 
-        */
         // Delete user
         const userDeleted = await _deleteUser(username);
         if (!userDeleted) {
@@ -199,12 +181,13 @@ const generateToken = (username) => {
         const userToken = {
             username: username
         }
-        return jwt.sign(userToken, process.env.SECRET)
+        return jwt.sign(userToken, process.env.SECRET, {expiresIn: '2h'})
     } catch (err) {
         console.log('ERROR: Could not generate token');
     }
 }
 
+/*
 // Validate JWT token
 const validateToken = async (username, token) => {
     try {
@@ -234,3 +217,4 @@ const getTokenFrom = (req) => {
         console.log('ERROR: Could not read token');
     }
 }
+*/

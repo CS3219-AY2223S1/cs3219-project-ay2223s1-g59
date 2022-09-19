@@ -12,19 +12,14 @@ import {URL_USER_SVC} from "../configs";
 import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
 */
 import { Link, useNavigate } from "react-router-dom";
-import userService from '../services/userService'
-import AlertMessage from './AlertMessage'
+import userService from '../services/userService';
+import AlertMessage from './AlertMessage';
 
 
 const LoginPage = (event) => {
     const navigate = useNavigate()
-    //const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage]  = useState("");
 
-    /*
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    */
     const handleLogin = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
@@ -33,8 +28,13 @@ const LoginPage = (event) => {
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
             })
-        if (res) navigate('/home');
+        if (res) {
+            const token = res.data.token;
+            sessionStorage.setItem("jwt", token);
+            navigate('/home');
+        }
     }
+
     return (
         <>
             <AlertMessage onClose={() => setAlertMessage(null)} message={(alertMessage)}/>
@@ -42,7 +42,7 @@ const LoginPage = (event) => {
                 <h1 className="display-2 text-primary mt-5 p-3 text-center">PeerPrep</h1>
                 <h2 className="text-secondary mt-2 p-3 text-center">PeerPrep is the best platform to help you enhance your skills,<br />expand your knowledge and prepare for technical interviews.</h2>
                 <Row className="mt-5">
-                    <Col lg={5} md={6} sm={12} className="p-5 m-auto shadow-sm rounded-lg">
+                    <Col lg={5} md={6} sm={12} className="p-5 m-auto shadow-lg rounded-lg">
                         <Form onSubmit={handleLogin}>
                             <Form.Group className="mb-3" controlId="formBasicUsername">
                                 <Form.Label>Username</Form.Label>
