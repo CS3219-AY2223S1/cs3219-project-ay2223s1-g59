@@ -1,6 +1,25 @@
 import express from "express";
 import cors from "cors";
+import mongoose from "mongoose";
+import "dotenv/config";
 import questionRoutes from "./route/question-route.js";
+
+// const uri =
+//   process.env.ENV == "PROD"
+//     ? process.env.DB_CLOUD_URI
+//     : "mongodb://localhost:27017/";
+
+const uri = process.env.DB_CLOUD_URI;
+
+mongoose
+  .connect(uri)
+  .then(() => {
+    console.log("Database connection succeeded!");
+  })
+  .catch((error) => {
+    console.error("Databse connection failed!");
+    throw new Error(error);
+  });
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));

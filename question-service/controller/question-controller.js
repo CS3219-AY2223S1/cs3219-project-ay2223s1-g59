@@ -14,10 +14,10 @@ export async function getEasyQuestion(request, response) {
     const numberOfProblems = await QuestionModelSchema.count({
       difficulty: "easy",
     });
-    Math.floor(Math.random() * numberOfProblems);
+    const toSkip = Math.floor(Math.random() * numberOfProblems);
     const question = await QuestionModelSchema.findOne({
       difficulty: "easy",
-    }).skip(numberOfProblems);
+    }).skip(toSkip);
     response.status(200).json(question);
   } catch (error) {
     response.status(500).json(error);
@@ -29,10 +29,10 @@ export async function getMediumQuestion(request, response) {
     const numberOfProblems = await QuestionModelSchema.count({
       difficulty: "medium",
     });
-    Math.floor(Math.random() * numberOfProblems);
+    const toSkip = Math.floor(Math.random() * numberOfProblems);
     const question = await QuestionModelSchema.findOne({
       difficulty: "medium",
-    }).skip(numberOfProblems);
+    }).skip(toSkip);
     response.status(200).json(question);
   } catch (error) {
     response.status(500).json(error);
@@ -44,10 +44,10 @@ export async function getHardQuestion(request, response) {
     const numberOfProblems = await QuestionModelSchema.count({
       difficulty: "hard",
     });
-    Math.floor(Math.random() * numberOfProblems);
+    const toSkip = Math.floor(Math.random() * numberOfProblems);
     const question = await QuestionModelSchema.findOne({
       difficulty: "hard",
-    }).skip(numberOfProblems);
+    }).skip(toSkip);
     response.status(200).json(question);
   } catch (error) {
     response.status(500).json(error);
