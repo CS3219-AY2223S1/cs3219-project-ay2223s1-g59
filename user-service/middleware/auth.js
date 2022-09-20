@@ -8,13 +8,13 @@ export async function authenticateJwt(req, res, next) {
         const authorization = req.get('authorization');
         // Check if token exists
         if (!authorization || !authorization.toLowerCase().startsWith('bearer ')) {
-            return res.status(403).send({message: "A token is required for authentication"});
+            return res.status(403).send({message: "A token is required for authentication, please log in again!"});
         }
         const token = authorization.substring(7);
         // Check if token is blacklisted
         const tokenBlacklisted = await _checkTokenBlacklist(token);
         if (tokenBlacklisted) {
-            return res.status(401).send({message: "Token has been blacklisted"});
+            return res.status(401).send({message: "Token has been blacklisted, please log in again!"});
         }
         // Check if token is valid
         const decodedToken = jwt.verify(token, process.env.SECRET);
@@ -22,6 +22,6 @@ export async function authenticateJwt(req, res, next) {
         req.token = token;
         next();
     } catch (err) {
-        return res.status(401).send({message: "Token is invalid"});
+        return res.status(401).send({message: "Token is invalid, please log in again!"});
     }
 };

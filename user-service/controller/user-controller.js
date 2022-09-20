@@ -82,10 +82,6 @@ export async function logoutUser(req, res) {
     try {
         const username = req.user.username;
         const token = req.token;
-        // Check for missing fields
-        if (!username) {
-            return res.status(400).json({message: 'Username is missing!'});
-        }
         // Blacklist token when user logs out
         const resp = await _createBlacklist(token);
         if (resp.err) {

@@ -19,8 +19,8 @@ const login = async (userObject) => {
     return res;
 }
 
-const logout = async (userObject) => {
-    const res = await axios.post(`${baseUrl}/logout`, userObject);
+const logout = async (token) => {
+    const res = await axios.get(`${baseUrl}/logout`, { headers: {"Authorization" : `Bearer ${token}`} });
     console.log(res);
     return res;
 }

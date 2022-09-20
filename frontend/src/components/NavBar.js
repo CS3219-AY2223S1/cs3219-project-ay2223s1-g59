@@ -14,8 +14,8 @@ const NavBar = ({user}) => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="./home"></Nav.Link>
-                            <Nav.Link href="./home"></Nav.Link>
+                            <Nav.Link href="./home">Tab 1</Nav.Link>
+                            <Nav.Link href="./settings">Settings</Nav.Link>
                         </Nav>
                         <Navbar.Text className="text-light" style={{marginRight: "0.5rem"}}><span style={{fontSize:"1.5rem"}}>{user} </span><i style={{fontSize:"1.5rem"}} className="bi bi-person-circle"></i></Navbar.Text>
                         <Nav>

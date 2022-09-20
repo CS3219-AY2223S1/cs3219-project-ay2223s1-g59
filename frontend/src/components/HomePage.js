@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from './NavBar.js';
+import NavBar from './NavBar';
 import {
     Container,
     Stack, 
@@ -8,13 +8,16 @@ import {
     ToggleButton,
     Form,
 } from 'react-bootstrap';
-import userService from "../services/userService.js";
+import userService from "../services/userService";
+import AlertMessage from './AlertMessage';
 
 
-const HomePage = (event) => {
+
+const HomePage = () => {
     const[difficulty, setDifficulty] = useState("");
     const[radioValue, setRadioValue] = useState("");
     const[user, setUser] = useState("");
+    const [alertMessage, setAlertMessage]  = useState("");
     const radios = [
         { name: "Beginner", value: "beginner", variant: "outline-primary" },
         { name: "Intermediate", value: "intermediate", variant: "outline-success" },
@@ -30,7 +33,7 @@ const HomePage = (event) => {
         try {
             const token = sessionStorage.getItem("jwt");
             const res = await userService.getUser(token);
-            if (!res) navigate('login');
+            if (!res) navigate('/login');
             const username = res.data.username;
             setUser(username);
         } catch (err) {
@@ -52,6 +55,7 @@ const HomePage = (event) => {
     return (
         <>                
             <NavBar user={user}/>
+            <AlertMessage onClose={() => setAlertMessage(null)} message={(alertMessage)}/>
             <div className="d-grid gap-5">
                 <h1 className="text-center display-3 mt-5">Get Started!</h1>
                 <h1 className="text-center">Choose a question difficulty level</h1>
@@ -74,7 +78,7 @@ const HomePage = (event) => {
                                     </ToggleButton>
                                 ))}
                             </Stack>
-                            <Button type="submit" size="lg" variant="dark">Match</Button>
+                            <Button type="submit" size="lg" variant="dark" className="w-50 m-auto">Match</Button>
                         </div>
                     </Form>
                 </Container>

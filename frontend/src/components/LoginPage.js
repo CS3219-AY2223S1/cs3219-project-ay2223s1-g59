@@ -5,7 +5,7 @@ import {
     Row, 
     Col
 } from 'react-bootstrap';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 /*
 import axios from "axios";
 import {URL_USER_SVC} from "../configs";
@@ -15,11 +15,14 @@ import { Link, useNavigate } from "react-router-dom";
 import userService from '../services/userService';
 import AlertMessage from './AlertMessage';
 
-
-const LoginPage = (event) => {
+const LoginPage = () => {
     const navigate = useNavigate()
     const [alertMessage, setAlertMessage]  = useState("");
 
+    useEffect( () => {
+        handleLogout();
+    });
+    
     const handleLogin = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
@@ -32,6 +35,17 @@ const LoginPage = (event) => {
             const token = res.data.token;
             sessionStorage.setItem("jwt", token);
             navigate('/home');
+        }
+    }
+
+    const handleLogout = async () => {
+        try {
+            const token = sessionStorage.getItem("jwt");
+            if (token) {
+                await userService.logout(token)
+            }
+        } catch (err) {
+            console.log(err);
         }
     }
 

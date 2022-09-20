@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', authenticateJwt, getUser)
 router.post('/signup', createUser)
 router.post('/login', loginUser)
-router.post('/logout', authenticateJwt, logoutUser)
+router.get('/logout', authenticateJwt, logoutUser)
 router.put('/change_password', authenticateJwt, changePassword)
 router.post('/delete_account', authenticateJwt, deleteUser)
 

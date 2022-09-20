@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from './NavBar.js';
+import NavBar from './NavBar';
 import {
     Col,
     Nav,
@@ -14,7 +14,7 @@ import userService from "../services/userService.js";
 import AlertMessage from './AlertMessage';
 
 
-const SettingsPage = (event) => {
+const SettingsPage = () => {
     const[user, setUser] = useState("");
     const navigate = useNavigate()
     const [alertMessage, setAlertMessage]  = useState("");

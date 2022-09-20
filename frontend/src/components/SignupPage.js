@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import userService from '../services/userService';
 import AlertMessage from './AlertMessage';
 
-const SignupPage = (event) => {
+const SignupPage = () => {
     const navigate = useNavigate()
     const [alertMessage, setAlertMessage]  = useState("");
 
