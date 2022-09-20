@@ -1,5 +1,6 @@
 import QuestionModelSchema from "../model/question-model.js";
 
+/*
 export async function getQuestion(request, response) {
   try {
     const problems = await QuestionModelSchema.find();
@@ -8,6 +9,7 @@ export async function getQuestion(request, response) {
     response.status(500).json(error);
   }
 }
+*/
 
 export async function getEasyQuestion(request, response) {
   try {
