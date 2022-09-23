@@ -1,5 +1,14 @@
 import express from "express";
 const router = express.Router();
-import * as questionController from "../controller/question-controller";
+import {
+  getEasyQuestion,
+  getMediumQuestion,
+  getHardQuestion,
+} from "../controller/question-controller.js";
 
-route.get("/");
+//router.get("/", getQuestions);
+router.get("/easy", getEasyQuestion);
+router.get("/medium", getMediumQuestion);
+router.get("/hard", getHardQuestion);
+
+export default router;

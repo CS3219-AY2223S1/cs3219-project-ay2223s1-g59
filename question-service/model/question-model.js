@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
 let QuestionModelSchema = new Schema({
   difficulty: {
@@ -12,10 +12,6 @@ let QuestionModelSchema = new Schema({
     required: true,
   },
   description: {
-    type: String,
-    required: true,
-  },
-  example: {
     type: String,
     required: true,
   },
