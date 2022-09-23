@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    env_file: ./.env
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+    ports:
+      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+    volumes: # for data persistence
+      - mongodb_vol:/data/db
+      
+  matching-service:
+    container_name: matching-service
+    depends_on:
+      - mongodb
+    build: ./matching-service
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    # stdin_open: true
+    # tty: true
+
+volumes:
+  mongodb_vol:
