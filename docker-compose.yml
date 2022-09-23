@@ -4,13 +4,12 @@ services:
   mongodb:
     image: mongo
     restart: unless-stopped
-    env_file: ./.env
     container_name: mongodb
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
-      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
-    ports:
-      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo123
+    ports: # 27018 in case there's another local mongo running, else 27017 is fine for LOCAL PORT as well
+      - 27018:27017
     volumes: # for data persistence
       - mongodb_vol:/data/db
       
@@ -20,9 +19,12 @@ services:
       - mongodb
     build: ./matching-service
     restart: unless-stopped
-    env_file: ./.env
-    ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    # note that the port specified in the conn string is the DOCKER PORT (27017), not LOCAL PORT (27018)
+    # authSource=admin is required as explained here: https://stackoverflow.com/questions/57434521/mongodb-could-not-find-user-userdatabase
+    environment: 
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/matching-service?authSource=admin
+    ports: # 8002 in case there's local server running, else 8001 is fine for LOCAL PORT as well
+      - 8002:8001
     # stdin_open: true
     # tty: true
 
