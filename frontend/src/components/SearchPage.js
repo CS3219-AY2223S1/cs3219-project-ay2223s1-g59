@@ -92,7 +92,7 @@ const SearchPage = (event) => {
                 <Modal.Body>Are you sure you want to cancel find match?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseCancelFindMatch}>Close</Button>
-                    <Button variant="danger" onClick={handleCancelFindMatch}>Delete</Button>
+                    <Button variant="danger" onClick={handleCancelFindMatch}>Cancel find match</Button>
                 </Modal.Footer>
             </Modal>
             </div>
