@@ -26,6 +26,7 @@ const HomePage = (event) => {
         { name: "Intermediate", value: "intermediate", variant: "outline-success" },
         { name: "Expert", value: "expert", variant: "outline-danger" },
     ]
+    const username = "test"
     const navigate = useNavigate()
 
     const handleDifficultyChange = (selectedValue) => {
@@ -36,7 +37,7 @@ const HomePage = (event) => {
     const findMatch = (event) => {
         event.preventDefault();
         console.log(difficulty);
-        navigate("/search");
+        navigate("/search", { state: { difficulty: difficulty, username: username } });
     }
 
     return (
