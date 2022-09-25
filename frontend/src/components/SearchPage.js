@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import NavBar from './NavBar.js';
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import { Button, Modal } from 'react-bootstrap';
 import MatchingService from "../services/matchingService.js"
 
@@ -27,7 +27,12 @@ const SearchPage = (event) => {
                     navigate("/home")
                 } else if (res.data.message === "Match request cancelled") {
                     navigate("/home")
+                } else if (res.data.message === "INTERVIEW FOUND") {
+                    navigate("/interview", { state: { interviewId: res.data.interviewId } })
                 }
+            })
+            .catch((err) => {
+                console.log(err)
             })
     }, [])
 
