@@ -2,13 +2,34 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import NavBar from './NavBar.js';
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { Button, Modal } from 'react-bootstrap';
+import MatchingService from "../services/matchingService.js"
 
 const SearchPage = (event) => {
+    const [showCancelFindMatch, setShowCancelFindMatch] = useState(false)
+
     const location = useLocation()
     const navigate = useNavigate()
 
     const difficulty = location.state.difficulty
     const username = location.state.username
+
+    useEffect(() => {
+        const matchObject = {
+            username: username,
+            difficulty: difficulty,
+        }
+        MatchingService
+            .findMatch(matchObject)
+            .then(res => {
+                console.log(res)
+                if (res.data.message === "NO INTERVIEW FOUND") {
+                    navigate("/home")
+                } else if (res.data.message === "Match request cancelled") {
+                    navigate("/home")
+                }
+            })
+    }, [])
 
     const renderTime = ({ remainingTime }) => {
         if (remainingTime === 0) {
@@ -22,7 +43,26 @@ const SearchPage = (event) => {
             <div className="text">seconds</div>
           </div>
         )
-      }
+    }
+    
+    const handleCloseCancelFindMatch = () => setShowCancelFindMatch(false)
+    const handleShowCancelFindMatch = () => {
+        setShowCancelFindMatch(true)
+    }
+    const handleCancelFindMatch = () => {
+        const matchObject = {
+            username: username,
+        }
+        console.log(matchObject)
+        MatchingService.cancelFindMatch(matchObject)
+            .then((res) => {
+                console.log(res)
+                setShowCancelFindMatch(false)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     return (
         <>
@@ -37,6 +77,19 @@ const SearchPage = (event) => {
                 >
                 {renderTime}
                 </CountdownCircleTimer>
+            </div>
+            <div className="d-flex justify-content-center mt-5">
+                <Button variant="danger" onClick={handleShowCancelFindMatch}>Cancel find match</Button>
+                <Modal className="deleteModal" show={showCancelFindMatch} onHide={handleCloseCancelFindMatch} keyboard={false} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to cancel find match?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseCancelFindMatch}>Close</Button>
+                    <Button variant="danger" onClick={handleCancelFindMatch}>Delete</Button>
+                </Modal.Footer>
+            </Modal>
             </div>
         </>
     )

@@ -36,7 +36,6 @@ const HomePage = (event) => {
 
     const findMatch = (event) => {
         event.preventDefault();
-        console.log(difficulty);
         navigate("/search", { state: { difficulty: difficulty, username: username } });
     }
 
