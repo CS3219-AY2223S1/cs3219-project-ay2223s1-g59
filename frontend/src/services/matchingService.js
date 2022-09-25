@@ -11,4 +11,14 @@ const cancelFindMatch = async (matchObject) => {
     return res
 }
 
-export default { findMatch, cancelFindMatch }
+const getInterview = async (interviewId) => {
+    const res = await axios.get(`${baseUrl}/interview/${interviewId}`)
+    return res
+}
+
+const deleteInterview = async (interviewId) => {
+    const res = await axios.delete(`${baseUrl}/end-interview/${interviewId}`)
+    return res
+}
+
+export default { findMatch, cancelFindMatch, getInterview, deleteInterview }
