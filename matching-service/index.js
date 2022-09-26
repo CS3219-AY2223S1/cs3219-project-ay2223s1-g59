@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import { createServer } from 'http';
 import matchRoutes from './routes/matchRoutes.js';
 import mongoose from 'mongoose';
 import 'dotenv/config'
@@ -28,6 +27,7 @@ app.options('*', cors())
 
 app.use('/', matchRoutes)
 
-const httpServer = createServer(app)
-
-httpServer.listen(8001);
+const PORT = process.env.PORT || 8001;
+app.listen(PORT, () =>
+  console.log(`matching-service listening on port ${PORT}`)
+);

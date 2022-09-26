@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import Match from '../models/match.js'
 import Interview from '../models/interview.js'
+import axios from 'axios'
+import { QUESTION_SERVICE_URL } from "../common/constants.js";
 
 /**
  * Searches for a match entry with the same difficulty
@@ -11,6 +13,7 @@ export const findMatch = async (req, res) => {
     try {
         const username = req.body.username
         const difficulty = req.body.difficulty
+
         // TODO: check for valid difficulty
 
         // otherMatch refers to another user's match request document of the same difficulty
@@ -21,12 +24,12 @@ export const findMatch = async (req, res) => {
         if (otherMatch && (otherMatch.username != username)) {
             const otherUsername = otherMatch.username
             await Match.findByIdAndDelete(otherMatch._id)
-
+            const questionResponse = await axios.get(QUESTION_SERVICE_URL + difficulty)
             const interview = await Interview.create({
                 firstUsername: username,
                 secondUsername: otherUsername,
                 difficulty: difficulty,
-                question: "THIS IS A DUMMY QUESTION"
+                question: questionResponse.data
             })
             console.log("Interview found for: " + username)
             res.json({
@@ -100,7 +103,7 @@ export const findMatch = async (req, res) => {
         }
 
     } catch (err) {
-        console.log(err.message)
+        console.log(err)
         res.send(err)
     }
 }
