@@ -21,7 +21,7 @@ app.use('/', (req, res) => {
 })
 
 const httpServer = createServer(app)
-const PORT = process.env.PORT || 8002
+const PORT = process.env.PORT || 8003
 
 httpServer.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`)
