@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend/matching-service
+        working-directory: ./backend/matching-service/
     strategy:
       matrix:
         node-version: [16.x]
@@ -27,7 +27,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: './backend/matching-service/package-lock.json'
+        cache-dependency-path: '**/package-lock.json'
 
 
     - name: Start MongoDB
