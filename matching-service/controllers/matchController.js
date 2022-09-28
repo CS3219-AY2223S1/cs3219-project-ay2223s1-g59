@@ -32,7 +32,7 @@ export const findMatch = async (req, res) => {
                 question: questionResponse.data
             })
             console.log("Interview found for: " + username)
-            res.json({
+            res.status(200).json({
                 message: 'INTERVIEW FOUND',
                 interviewId: interview._id,
             })
@@ -70,7 +70,7 @@ export const findMatch = async (req, res) => {
 
                     clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
                     console.log("Interview found for: " + username)
-                    return res.json({
+                    return res.status(200).json({
                         message: 'INTERVIEW FOUND',
                         interviewId: interview._id,
                     })
@@ -92,7 +92,7 @@ export const findMatch = async (req, res) => {
                 if (timer > limit) {
                     console.log("No interview found for: " + username)
                     clearInterval(checkInterviewExistsInterval)
-                    res.json({
+                    res.status(404).json({
                         message: 'NO INTERVIEW FOUND'
                     })
                 }

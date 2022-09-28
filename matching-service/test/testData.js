@@ -8,9 +8,8 @@ export const secondUserHardDifficulty = {
     difficulty: "hard"
 }
 
-export const thirdUserEasyDifficulty = {
-    username: "user3",
-    difficulty: "easy"
+export const firstUserUsernameOnly = {
+    username: "user1",
 }
 
 export const easyInterviewFirstAndThirdUser = {
@@ -21,4 +20,14 @@ export const easyInterviewFirstAndThirdUser = {
     },
     firstUsername: "user1",
     secondUsername: "user3"
+}
+
+export const hardInterviewFifthAndSixthUser = {
+    difficulty: "easy",
+    question: {
+        title: "some title",
+        description: "some description"
+    },
+    firstUsername: "user5",
+    secondUsername: "user6"
 }
