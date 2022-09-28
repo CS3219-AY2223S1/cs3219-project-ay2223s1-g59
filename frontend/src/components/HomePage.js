@@ -22,9 +22,9 @@ const HomePage = (event) => {
     const[difficulty, setDifficulty] = useState("");
     const[radioValue, setRadioValue] = useState("");
     const radios = [
-        { name: "Beginner", value: "beginner", variant: "outline-primary" },
-        { name: "Intermediate", value: "intermediate", variant: "outline-success" },
-        { name: "Expert", value: "expert", variant: "outline-danger" },
+        { name: "Easy", value: "easy", variant: "outline-primary" },
+        { name: "Medium", value: "medium", variant: "outline-success" },
+        { name: "Hard", value: "hard", variant: "outline-danger" },
     ]
     const username = "test"
     const navigate = useNavigate()

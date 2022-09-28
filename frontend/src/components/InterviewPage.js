@@ -2,10 +2,13 @@ import { useState, useEffect } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import NavBar from './NavBar.js'
 import { Button, Modal } from 'react-bootstrap'
+import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
 
+
 const InterviewPage = (event) => {
-    const [question, setQuestion] = useState("")
+    const [questionTitle, setQuestionTitle] = useState("")
+    const [questionDescription, setQuestionDescription] = useState("")
     const [showEndInterview, setShowEndInterview] = useState(false)
 
     const location = useLocation()
@@ -17,7 +20,9 @@ const InterviewPage = (event) => {
         MatchingService
             .getInterview(interviewId)
             .then(interviewDetails => {
-                setQuestion(interviewDetails.data.question)
+                console.log(interviewDetails)
+                setQuestionTitle(interviewDetails.data.question.title)
+                setQuestionDescription(interviewDetails.data.question.description)
             })
     }, [])
 
@@ -28,7 +33,8 @@ const InterviewPage = (event) => {
     const handleEndFindMatch = () => {
         MatchingService.deleteInterview(interviewId)
             .then((res) => {
-                setQuestion("")
+                setQuestionTitle("")
+                setQuestionDescription("")
                 setShowEndInterview(false)
                 navigate("/home")
             })
@@ -40,7 +46,10 @@ const InterviewPage = (event) => {
     return (
         <>
             <NavBar />
-            <div className="d-flex justify-content-center mt-5">{question}</div>
+            <div className="d-flex justify-content-center mt-5">{questionTitle}</div>
+            <div className="container mt-5">
+                <ReactMarkdown>{questionDescription}</ReactMarkdown>
+            </div>
             <div className="d-flex justify-content-center mt-5">
                 <Button variant="danger" onClick={handleShowEndInterview}>End interview</Button>
                 <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
