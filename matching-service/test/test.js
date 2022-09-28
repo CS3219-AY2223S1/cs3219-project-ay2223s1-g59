@@ -19,7 +19,6 @@ describe('POST /find-match', () => {
         before(async () => {
             await Interview.create(easyInterviewFirstAndThirdUser)
         });
-
         it("should return interviewId since existing interview found.", (done) => {
             chai.request(app)
                 .post('/find-match')
