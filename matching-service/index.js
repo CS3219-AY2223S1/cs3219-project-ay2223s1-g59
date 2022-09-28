@@ -4,6 +4,10 @@ import matchRoutes from './routes/matchRoutes.js';
 import mongoose from 'mongoose';
 import 'dotenv/config'
 
+console.log("REPO SECRET: " + process.env.REPO_SECRET)
+console.log("ENV SECRET: " + process.env.ENV_SECRET)
+console.log("DB_LOCAL_URI: " + process.env.DB_LOCAL_URI)
+
 let uri;
 
 if (process.env.ENV == "PROD") {
