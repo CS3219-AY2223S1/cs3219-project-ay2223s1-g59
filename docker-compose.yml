@@ -8,8 +8,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=mongo123
-    ports: # 27018 in case there's another local mongo running, else 27017 is fine for LOCAL PORT as well
-      - 27018:27017
+    ports: # use 27018 LOCAL in case there's another local mongo running, else 27017 is fine for LOCAL PORT as well
+      - 27017:27017
     volumes: # for data persistence
       - mongodb_vol:/data/db
       
@@ -22,11 +22,23 @@ services:
     # note that the port specified in the conn string is the DOCKER PORT (27017), not LOCAL PORT (27018)
     # authSource=admin is required as explained here: https://stackoverflow.com/questions/57434521/mongodb-could-not-find-user-userdatabase
     environment: 
-      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/matching-service?authSource=admin
-    ports: # 8002 in case there's local server running, else 8001 is fine for LOCAL PORT as well
-      - 8002:8001
-    # stdin_open: true
-    # tty: true
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+      - QUESTION_SERVICE_DOCKER_URL=http://question-service:8002/questions/
+    ports:
+      - 8001:8001
+  
+  question-service:
+    container_name: question-service
+    depends_on:
+      - mongodb
+    build: ./question-service
+    restart: unless-stopped
+    # note that the port specified in the conn string is the DOCKER PORT (27017)
+    # authSource=admin is required as explained here: https://stackoverflow.com/questions/57434521/mongodb-could-not-find-user-userdatabase
+    environment: 
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+    ports:
+      - 8002:8002
 
 volumes:
   mongodb_vol:
