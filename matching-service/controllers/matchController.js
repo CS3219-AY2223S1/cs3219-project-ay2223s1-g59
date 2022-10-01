@@ -83,7 +83,7 @@ export const findMatch = async (req, res) => {
                 if (!match) { // if the match document is missing
                     clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
                     console.log(username + " has cancelled match request. No entry exists in match collection anymore.")
-                    res.json({
+                    return res.status(200).json({
                         message: 'Match request cancelled'
                     })
                 }
@@ -92,7 +92,7 @@ export const findMatch = async (req, res) => {
                 if (timer > limit) {
                     console.log("No interview found for: " + username)
                     clearInterval(checkInterviewExistsInterval)
-                    res.status(404).json({
+                    return res.status(404).json({
                         message: 'NO INTERVIEW FOUND'
                     })
                 }
@@ -120,20 +120,20 @@ export const cancelFindMatch = async (req, res) => {
             console.log("Error 500: Unable to delete match request in DB as no match entry found for user: " 
                 + req.body.username)
         }
-        res.status(200).json(match)
+        return res.status(200).json(match)
     } catch (err) {
-        res.json({error: err.message})
         console.log(err.message)
+        return res.status(500).json({error: err.message})
     }
 }
 
 export const getInterview = async (req, res) => {
     try {
         const interview = await Interview.findById(req.params.id)
-        res.status(200).json(interview)
+        return res.status(200).json(interview)
     } catch (err) {
-        res.status(500).json(err.message)
         console.log(err)
+        return res.status(500).json(err.message)
     }
 }
 
@@ -141,9 +141,10 @@ export const deleteInterview = async (req, res) => {
     try {
         const interview = await Interview.findByIdAndDelete(req.params.id)
         if (!interview) return res.sendStatus(404)
-        res.status(200).json(interview)
+        return res.status(200).json(interview)
     } catch (err) {
-        res.status(500).json(err.message)
         console.log(err)
+        return res.status(500).json(err.message)
+        
     }
 }
