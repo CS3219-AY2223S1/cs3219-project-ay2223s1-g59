@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
-var Schema = mongoose.Schema;
-
-let QuestionModelSchema = new Schema({
+const questionSchema = new mongoose.Schema({
   difficulty: {
     type: String,
     required: true,
@@ -15,10 +13,6 @@ let QuestionModelSchema = new Schema({
     type: String,
     required: true,
   },
-  example: {
-    type: String,
-    required: true,
-  },
 });
 
-export default mongoose.model("QuestionModel", QuestionModelSchema);
+export default mongoose.model("Question", questionSchema);

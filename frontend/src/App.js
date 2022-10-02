@@ -3,6 +3,7 @@ import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
+import InterviewPage from "./components/InterviewPage"
 //import {Box} from "@mui/material";
 import {Container} from 'react-bootstrap';
 import SettingsPage from './components/SettingsPage';
@@ -17,8 +18,9 @@ function App() {
                         <Route path="/signup" element={<SignupPage/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/home" element={<HomePage/>}/>
-                        <Route path="/search" element={<SearchPage />}/>
                         <Route path="/settings" element={<SettingsPage/>}/>
+                        <Route path="/search" element={<SearchPage />} />
+                        <Route path="/interview" element={<InterviewPage />} />
                     </Routes>
                 </Router>
             </Container>
