@@ -5,7 +5,7 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import { Button, Modal } from 'react-bootstrap';
 import MatchingService from "../services/matchingService.js"
 
-const SearchPage = (event) => {
+const SearchPage = () => {
     const [showCancelFindMatch, setShowCancelFindMatch] = useState(false)
 
     const location = useLocation()

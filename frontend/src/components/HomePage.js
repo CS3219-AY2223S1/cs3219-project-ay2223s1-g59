@@ -18,7 +18,7 @@ import {
 //import userService from '../services/userService'
 
 
-const HomePage = (event) => {
+const HomePage = () => {
     const[difficulty, setDifficulty] = useState("");
     const[radioValue, setRadioValue] = useState("");
     const radios = [

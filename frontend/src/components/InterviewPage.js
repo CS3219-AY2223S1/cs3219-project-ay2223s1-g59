@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
 
 
-const InterviewPage = (event) => {
+const InterviewPage = () => {
     const [questionTitle, setQuestionTitle] = useState("")
     const [questionDescription, setQuestionDescription] = useState("")
     const [showEndInterview, setShowEndInterview] = useState(false)
@@ -30,7 +30,7 @@ const InterviewPage = (event) => {
     const handleShowEndInterview = () => {
         setShowEndInterview(true)
     }
-    const handleEndFindMatch = () => {
+    const handleEndInterview = () => {
         MatchingService.deleteInterview(interviewId)
             .then((res) => {
                 setQuestionTitle("")
@@ -58,8 +58,8 @@ const InterviewPage = (event) => {
                 </Modal.Header>
                 <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleEndFindMatch}>Close</Button>
-                    <Button variant="danger" onClick={handleEndFindMatch}>End interview</Button>
+                    <Button variant="secondary" onClick={handleCloseEndInterview}>Resume interview</Button>
+                    <Button variant="danger" onClick={handleEndInterview}>End interview</Button>
                 </Modal.Footer>
             </Modal>
             </div>
