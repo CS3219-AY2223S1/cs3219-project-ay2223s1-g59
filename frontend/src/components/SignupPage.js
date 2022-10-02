@@ -17,11 +17,17 @@ const SignupPage = () => {
     const handleSignup = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const formDataObj = Object.fromEntries(formData.entries());
-        const res = await userService.signup(formDataObj)
+        const { username, password, confirmPassword } = Object.fromEntries(formData.entries());
+
+        if (password !== confirmPassword) {
+            setAlertMessage('The passwords you entered do not match!');
+            return;
+        }
+        
+        const res = await userService.signup({ username, password })
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
-            })
+            }) 
         if (res) navigate('/login');
     }
 

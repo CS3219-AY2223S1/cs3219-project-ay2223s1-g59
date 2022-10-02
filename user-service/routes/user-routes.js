@@ -7,13 +7,13 @@ import { changePassword } from '../controller/user-controller.js';
 import { deleteUser } from '../controller/user-controller.js';
 import { authenticateJwt } from '../middleware/auth.js'
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.get('/', authenticateJwt, getUser)
-router.post('/signup', createUser)
-router.post('/login', loginUser)
-router.get('/logout', authenticateJwt, logoutUser)
-router.put('/change_password', authenticateJwt, changePassword)
-router.post('/delete_account', authenticateJwt, deleteUser)
+userRouter.get('/', authenticateJwt, getUser);
+userRouter.post('/signup', createUser);
+userRouter.post('/login', loginUser);
+userRouter.get('/logout', authenticateJwt, logoutUser);
+userRouter.put('/change_password', authenticateJwt, changePassword);
+userRouter.post('/delete_account', authenticateJwt, deleteUser);
 
-export { router };
+export default userRouter;

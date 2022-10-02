@@ -21,14 +21,10 @@ export async function getUser(req, res) {
 
 export async function createUser(req, res) {
     try {
-        const { username, password, confirmPassword } = req.body;
+        const { username, password } = req.body;
         // Check for missing fields
-        if (!username || !password || !confirmPassword) {
+        if (!username || !password) {
             return res.status(400).json({message: 'Username and/or Password are missing!'});
-        }
-        // Check if password and confirm password are same
-        if (password !== confirmPassword) {
-            return res.status(400).json({message: 'The passwords you entered do not match!'});
         }
         // Check if user already exists
         const userExist = await _checkUserExistence(username)
@@ -41,8 +37,8 @@ export async function createUser(req, res) {
             return res.status(500).json({message: 'Could not hash password'});
         }
         // Create user
-        const resp = await _createUser(username, passwordHash);
-        if (resp.err) {
+        const userCreated = await _createUser(username, passwordHash);
+        if (userCreated.err) {
             return res.status(400).json({message: 'Could not create a new user!'});
         } else {
             console.log(`Created new user ${username} successfully!`)
@@ -83,8 +79,8 @@ export async function logoutUser(req, res) {
         const username = req.user.username;
         const token = req.token;
         // Blacklist token when user logs out
-        const resp = await _createBlacklist(token);
-        if (resp.err) {
+        const tokenBlacklisted = await _createBlacklist(token);
+        if (tokenBlacklisted.err) {
             return res.status(400).json({message: 'Could not blacklist token!'});
         } else {
             console.log(`${username} logged out successfully!`)
@@ -97,15 +93,11 @@ export async function logoutUser(req, res) {
 
 export async function changePassword(req, res) {
     try {
-        const { password, newPassword, confirmNewPassword } = req.body;
+        const { password, newPassword } = req.body;
         const username = req.user.username;
         // Check for missing fields
-        if (!password || !newPassword || !confirmNewPassword) {
+        if (!password || !newPassword) {
             return res.status(400).json({message: 'Missing fields!'});
-        }
-        // Check if new password and confirm new password are the same
-        if (newPassword !== confirmNewPassword) {
-            return res.status(400).json({message: 'The passwords you entered do not match!'});
         }
         // Check if password is correct
         const passwordCorrect = await _checkPassword(username, password);

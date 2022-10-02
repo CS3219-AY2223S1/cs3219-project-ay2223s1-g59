@@ -39,8 +39,14 @@ const SettingsPage = () => {
         event.preventDefault();
         const token = sessionStorage.getItem("jwt");
         const formData = new FormData(event.target);
-        const formDataObj = Object.fromEntries(formData.entries());
-        const res = await userService.changePassword(formDataObj, token)
+        const { password, newPassword, confirmNewPassword } = Object.fromEntries(formData.entries());
+        
+        if (newPassword !== confirmNewPassword) {
+            setAlertMessage('The passwords you entered do not match!');
+            return;
+        }
+
+        const res = await userService.changePassword({ password, newPassword }, token)
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
             })
