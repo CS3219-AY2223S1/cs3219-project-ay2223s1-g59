@@ -12,7 +12,7 @@ mongoose
     .catch((err) => console.error('Error connecting to MongoDB', err.reason))
 
 if (process.env.DB_DOCKER_URI || process.env.DB_LOCAL_URI) {
-    // seed database if mongo docker is empty. note that this is an async function, not sure if should await
+    // seed database if mongo docker is empty. note that this is an async function, not sure if await is needed
     seedQuestionDatabaseIfEmpty()
 }
 
