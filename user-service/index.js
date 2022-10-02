@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { router as userRouter } from './routes/user-routes.js';
+import userRouter from './routes/user-routes.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))
