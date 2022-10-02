@@ -3,16 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import "dotenv/config";
 import questionRoutes from "./route/question-route.js";
-
-let uri;
-
-if (process.env.ENV == "PROD") {
-    uri = process.env.DB_CLOUD_URI
-} else if (process.env.DB_DOCKER_URI) {
-    uri = process.env.DB_DOCKER_URI
-} else {
-    uri = process.env.DB_LOCAL_URI
-}
+import {uri} from "./common/constants.js"
 
 mongoose
     .connect(uri)
@@ -30,3 +21,5 @@ const PORT = process.env.PORT || 8002;
 app.listen(PORT, () =>
   console.log(`question-service listening on port ${PORT}`)
 );
+
+export default app
