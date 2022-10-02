@@ -32,7 +32,7 @@ export const findMatch = async (req, res) => {
                 question: questionResponse.data
             })
             console.log("Interview found for: " + username)
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'INTERVIEW FOUND',
                 interviewId: interview._id,
             })
