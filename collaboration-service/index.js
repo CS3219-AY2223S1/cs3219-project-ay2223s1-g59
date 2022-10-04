@@ -4,8 +4,8 @@ import { createServer } from "http";
 import mongoose from "mongoose";
 import "dotenv/config";
 import { Server, Socket } from "socket.io";
-import { v4 } from "uuid";
 import Room from "./model/room-model.js";
+import collaborationRoutes from "./routes/collaboration-routes.js";
 
 const uri =
   process.env.ENV == "PROD"
@@ -27,60 +27,63 @@ app.use(express.json());
 app.use(cors());
 app.options("*", cors());
 
-app.use("/", (req, res) => {
-  res.send("Hi");
-});
+// routes tested via postman
+app.use("/collab", collaborationRoutes);
 
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 8003;
 
-//socket-work
-//do i need cors?
-const io = new Server(httpServer, PORT);
+httpServer.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
 
-//will create room when it is not created yet.
-app.post("/collab", async (req, res) => {
-  const { user } = req.body.user;
-  const { roomId } = req.body.roomId;
-  try {
-    const room = await Room.create({ users: [user], roomId: roomId });
-    res.status(201).json(room);
-  } catch (err) {
-    res.status(500).json(err.message);
-    console.log(err);
-  }
+//socket-work. Tested using https://socketio.bloggernepal.com/4.0.1/
+const io = new Server(httpServer, {
+  cors: {
+    origin: true,
+  },
 });
 
 // When a client connects
 io.on("connection", (socket) => {
-  socket.on("CODE_CHANGED", async (code) => {
-    const { roomId } = Room.findOne({ socketId: socket.id });
-    socket.to(roomId).emit("CODE_CHANGED", code);
-  });
-  //sends to all within the same socket except itself
+  //test simple connection
+  console.log("a user connected");
 
-  //everytime a connection event occurs, expect roomId and username. Go to the correct room, update users.
+  socket.on("disconnect", () => {
+    console.log("a user disconnected");
+  });
+
+  //client joins a specified room
   socket.on("CONNECTED", async ({ roomId, username }) => {
+    console.log(`Connecting to room ${roomId}`);
+    const { users } = await Room.findOne({ roomId: roomId });
+    console.log(users);
+    let newUsers = users;
+    newUsers.push(username);
     await Room.findOneAndUpdate(
       { roomId: roomId },
       {
-        users: (users) => {
-          if (!(username in users)) {
-            users.push(username);
-          }
-        },
-        socketId: socket.id,
+        users: newUsers,
       }
     );
-    socket.join(roomId);
-    io.in(roomId).emit("ROOM:CONNECTION", users);
+    socket.join(`${roomId}`);
+    console.log(`Connected to room ${roomId}`);
   });
 
-  //for when someone disconnects
-  socket.on("disconnect", async (username) => {
-    const room = await Room.findOne({ socketId: socket.id });
+  // when the code is changed.
+  socket.on("CHANGE", async ({ roomId, code }) => {
+    console.log("Editing cocde");
+    console.log(code);
+    socket.broadcast
+      .to(`${roomId}`)
+      .emit("CHANGE", { roomId: roomId, code: code });
+  });
+
+  //client leaves a room
+  socket.on("DISCONNECTED", async ({ roomId, username }) => {
+    console.log(`Disconnecting from room ${roomId}`);
+    const room = await Room.findOne({ roomId: roomId });
     const users = room.users;
-    const roomId = room.roomId;
     const newUsers = users.filter((user) => user !== username);
     if (newUsers.length) {
       await Room.findOneAndUpdate(
@@ -92,10 +95,8 @@ io.on("connection", (socket) => {
       await Room.findOneAndDelete({ roomId: roomId });
     }
     //we don't create rooms we attach socket connections to room.
-    io.in(roomId).emit("ROOM:CONNECTION", newUsers);
+    //io.in(roomId).emit("ROOM:CONNECTION", newUsers);
+    socket.leave(`${roomId}`);
+    console.log(`Disconnected from room ${roomId}`);
   });
-});
-
-httpServer.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
 });
