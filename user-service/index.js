@@ -7,6 +7,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors()) // config cors so that front-end can use
 app.options('*', cors())
+app.use('/api/user', userRouter)
 
 /*
 import { createUser } from './controller/user-controller.js';
@@ -23,9 +24,9 @@ app.use('/api/user', router).all((_, res) => {
 }) 
 */
 
-app.use('/api/user', userRouter)
-
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () =>
   console.log(`user-service listening on port ${PORT}`)
 );
+
+export default app;
