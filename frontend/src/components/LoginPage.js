@@ -42,7 +42,7 @@ const LoginPage = () => {
         try {
             const token = sessionStorage.getItem("jwt");
             if (token) {
-                await userService.logout(token)
+                await userService.logout(token);
             }
         } catch (err) {
             console.log(err);
