@@ -31,3 +31,5 @@ const PORT = process.env.PORT || 8001;
 app.listen(PORT, () =>
   console.log(`matching-service listening on port ${PORT}`)
 );
+
+export default app

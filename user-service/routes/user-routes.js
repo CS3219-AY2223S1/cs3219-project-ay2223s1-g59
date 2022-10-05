@@ -1,17 +1,19 @@
 import express from 'express';
+import { getUser } from '../controller/user-controller.js';
 import { createUser } from '../controller/user-controller.js';
 import { loginUser } from '../controller/user-controller.js';
 import { logoutUser } from '../controller/user-controller.js';
 import { changePassword } from '../controller/user-controller.js';
 import { deleteUser } from '../controller/user-controller.js';
+import { authenticateJwt } from '../middleware/auth.js'
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.get('/', (_, res) => res.send('Hello World from user'))
-router.post('/signup', createUser)
-router.post('/login', loginUser)
-router.post('/logout', logoutUser)
-router.put('/change_password', changePassword)
-router.delete('/delete_account', deleteUser)
+userRouter.get('/', authenticateJwt, getUser);
+userRouter.post('/signup', createUser);
+userRouter.post('/login', loginUser);
+userRouter.get('/logout', authenticateJwt, logoutUser);
+userRouter.put('/change_password', authenticateJwt, changePassword);
+userRouter.post('/delete_account', authenticateJwt, deleteUser);
 
-export { router };
+export default userRouter;
