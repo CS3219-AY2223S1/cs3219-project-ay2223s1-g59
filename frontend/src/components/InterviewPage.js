@@ -31,15 +31,29 @@ const InterviewPage = () => {
         setShowEndInterview(true)
     }
     const handleEndInterview = () => {
-        MatchingService.deleteInterview(interviewId)
-            .then((res) => {
-                setQuestionTitle("")
-                setQuestionDescription("")
-                setShowEndInterview(false)
-                navigate("/home")
-            })
-            .catch((err) => {
-                console.log(err)
+        MatchingService
+            .getInterview(interviewId)
+            .then(interviewDetails => {
+                console.log(interviewDetails)
+                if (interviewDetails.data === null) {
+                    console.log("Interview terminated from other user")
+                    setQuestionTitle("")
+                    setQuestionDescription("")
+                    setShowEndInterview(false)
+                    navigate("/home")
+                } else {
+                    MatchingService
+                        .deleteInterview(interviewId)
+                        .then((res) => {
+                            setQuestionTitle("")
+                            setQuestionDescription("")
+                            setShowEndInterview(false)
+                            navigate("/home")
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                }
             })
     }
 
