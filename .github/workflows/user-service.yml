@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  DB_LOCAL_URI: mongodb://localhost:27017/cs3219
+  DB_TEST_URI: mongodb://localhost:27017/cs3219
 
 jobs:
   build:
