@@ -49,7 +49,11 @@ const HomePage = () => {
 
     const findMatch = (event) => {
         event.preventDefault();
-        navigate("/search", { state: { difficulty: difficulty, username: user } });
+        if (difficulty === "") {
+            setAlertMessage("Difficulty level not selected. Select difficulty before finding match!")
+        } else {
+            navigate("/search", { state: { difficulty: difficulty, username: user } })
+        }
     }
 
     return (
