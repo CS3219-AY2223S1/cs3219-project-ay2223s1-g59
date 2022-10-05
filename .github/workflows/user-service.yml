@@ -8,6 +8,7 @@ on:
 
 env:
   DB_TEST_URI: mongodb://localhost:27017/cs3219
+  SECRET: PLACEHOLDER
 
 jobs:
   build:
