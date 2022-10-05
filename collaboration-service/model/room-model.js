@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-//import { v4 as uuidv4 } from "uuid"; // Getting roomId via using interview/matching Id.
 
 let Schema = mongoose.Schema;
 
-let RoomModelSchema = new Schema({
+let RoomSchema = new Schema({
   roomId: {
     type: String,
     required: true,
@@ -18,4 +17,4 @@ let RoomModelSchema = new Schema({
   },
 });
 
-export default mongoose.model("Room", RoomModelSchema);
+export default mongoose.model("Room", RoomSchema);

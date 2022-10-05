@@ -60,12 +60,7 @@ io.on("connection", (socket) => {
     console.log(users);
     let newUsers = users;
     newUsers.push(username);
-    await Room.findOneAndUpdate(
-      { roomId: roomId },
-      {
-        users: newUsers,
-      }
-    );
+    await Room.findOneAndUpdate({ roomId: roomId }, { users: newUsers });
     socket.join(`${roomId}`);
     console.log(`Connected to room ${roomId}`);
   });
