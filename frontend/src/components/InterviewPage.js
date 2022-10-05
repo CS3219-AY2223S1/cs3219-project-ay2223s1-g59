@@ -55,6 +55,9 @@ const InterviewPage = () => {
                         })
                 }
             })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     return (
