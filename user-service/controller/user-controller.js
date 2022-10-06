@@ -165,11 +165,12 @@ const hashPassword = async (password) => {
 
 // Generate JWT token
 const generateToken = (username) => {
+    const secret = process.env.SECRET || "secret";
     try {
         const userToken = {
             username: username
         }
-        return jwt.sign(userToken, process.env.SECRET, {expiresIn: '2h'})
+        return jwt.sign(userToken, secret, {expiresIn: '2h'})
     } catch (err) {
         console.log('ERROR: Could not generate token');
     }
