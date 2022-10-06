@@ -63,6 +63,7 @@ const SearchPage = () => {
             .then((res) => {
                 console.log(res)
                 setShowCancelFindMatch(false)
+                navigate("/home")
             })
             .catch((err) => {
                 console.log(err)
