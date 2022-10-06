@@ -92,7 +92,7 @@ export const findMatch = async (req, res) => {
                 if (timer > limit) {
                     console.log("No interview found for: " + username)
                     clearInterval(checkInterviewExistsInterval)
-                    return res.status(404).json({
+                    return res.status(200).json({
                         message: 'NO INTERVIEW FOUND'
                     })
                 }
