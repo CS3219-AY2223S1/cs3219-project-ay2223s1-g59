@@ -45,7 +45,7 @@ describe('POST /find-match', () => {
                 .end((err, res) => {
                     
                     if (err) return done(err)
-                    res.should.have.status(404)
+                    res.should.have.status(200)
                     res.body.should.have.property('message')
                     done()
                 })
