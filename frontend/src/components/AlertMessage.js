@@ -4,8 +4,8 @@ const AlertMessage = ({onClose, message}) => {
     if (message) {
         return (
             <Alert variant="danger" onClose={onClose} dismissible>
-              <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-              <p>{message}</p>
+              <Alert.Heading className="text-center">Oh snap! You got an error!</Alert.Heading>
+              <h5 className="text-center">{message}</h5>
             </Alert>
         );
     }

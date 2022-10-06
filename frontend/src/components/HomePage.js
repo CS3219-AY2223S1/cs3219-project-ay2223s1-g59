@@ -1,13 +1,6 @@
-//import {useState} from "react";
-/*
-import axios from "axios";
-import {URL_USER_SVC} from "../configs";
-import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
-*/
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from './NavBar.js'
+import NavBar from './NavBar';
 import {
     Container,
     Stack, 
@@ -15,18 +8,39 @@ import {
     ToggleButton,
     Form,
 } from 'react-bootstrap';
-//import userService from '../services/userService'
+import userService from "../services/userService";
+import AlertMessage from './AlertMessage';
 
 
-const HomePage = (event) => {
+
+const HomePage = () => {
     const[difficulty, setDifficulty] = useState("");
     const[radioValue, setRadioValue] = useState("");
+    const[user, setUser] = useState("");
+    const [alertMessage, setAlertMessage]  = useState("");
     const radios = [
-        { name: "Beginner", value: "beginner", variant: "outline-primary" },
-        { name: "Intermediate", value: "intermediate", variant: "outline-success" },
-        { name: "Expert", value: "expert", variant: "outline-danger" },
+        { name: "Easy", value: "easy", variant: "outline-primary" },
+        { name: "Medium", value: "medium", variant: "outline-success" },
+        { name: "Hard", value: "hard", variant: "outline-danger" },
     ]
+    
     const navigate = useNavigate()
+
+    useEffect( () => {
+        authenticateJwt();
+    });
+
+    const authenticateJwt = async () => {
+        try {
+            const token = sessionStorage.getItem("jwt");
+            const res = await userService.getUser(token);
+            if (!res) navigate('/login');
+            const username = res.data.username;
+            setUser(username);
+        } catch (err) {
+            navigate('/login');
+        }
+    }
 
     const handleDifficultyChange = (selectedValue) => {
         setRadioValue(selectedValue.currentTarget.value);
@@ -35,15 +49,19 @@ const HomePage = (event) => {
 
     const findMatch = (event) => {
         event.preventDefault();
-        console.log(difficulty);
-        navigate("/search");
+        if (difficulty === "") {
+            setAlertMessage("Difficulty level not selected. Select difficulty before finding match!")
+        } else {
+            navigate("/search", { state: { difficulty: difficulty, username: user } })
+        }
     }
 
     return (
-        <>
+        <>                
+            <NavBar user={user}/>
+            <AlertMessage onClose={() => setAlertMessage(null)} message={(alertMessage)}/>
             <div className="d-grid gap-5">
-                <NavBar />
-                <h1 className="text-center display-3">Get Started!</h1>
+                <h1 className="text-center display-3 mt-5">Get Started!</h1>
                 <h1 className="text-center">Choose a question difficulty level</h1>
                 <Container onSubmit={findMatch}>
                     <Form>
@@ -64,7 +82,7 @@ const HomePage = (event) => {
                                     </ToggleButton>
                                 ))}
                             </Stack>
-                            <Button type="submit" size="lg" variant="dark">Match</Button>
+                            <Button type="submit" size="lg" variant="dark" className="w-50 m-auto">Match</Button>
                         </div>
                     </Form>
                 </Container>

@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import Match from '../models/match.js'
 import Interview from '../models/interview.js'
+import axios from 'axios'
+import { QUESTION_SERVICE_URL } from "../common/constants.js";
 
 /**
  * Searches for a match entry with the same difficulty
@@ -11,6 +13,7 @@ export const findMatch = async (req, res) => {
     try {
         const username = req.body.username
         const difficulty = req.body.difficulty
+
         // TODO: check for valid difficulty
 
         // otherMatch refers to another user's match request document of the same difficulty
@@ -21,15 +24,15 @@ export const findMatch = async (req, res) => {
         if (otherMatch && (otherMatch.username != username)) {
             const otherUsername = otherMatch.username
             await Match.findByIdAndDelete(otherMatch._id)
-
+            const questionResponse = await axios.get(QUESTION_SERVICE_URL + difficulty)
             const interview = await Interview.create({
                 firstUsername: username,
                 secondUsername: otherUsername,
                 difficulty: difficulty,
-                question: "THIS IS A DUMMY QUESTION"
+                question: questionResponse.data
             })
             console.log("Interview found for: " + username)
-            res.json({
+            return res.status(200).json({
                 message: 'INTERVIEW FOUND',
                 interviewId: interview._id,
             })
@@ -67,7 +70,7 @@ export const findMatch = async (req, res) => {
 
                     clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
                     console.log("Interview found for: " + username)
-                    return res.json({
+                    return res.status(200).json({
                         message: 'INTERVIEW FOUND',
                         interviewId: interview._id,
                     })
@@ -80,7 +83,7 @@ export const findMatch = async (req, res) => {
                 if (!match) { // if the match document is missing
                     clearInterval(checkInterviewExistsInterval) // this stops the setInterval function
                     console.log(username + " has cancelled match request. No entry exists in match collection anymore.")
-                    res.json({
+                    return res.status(200).json({
                         message: 'Match request cancelled'
                     })
                 }
@@ -89,7 +92,7 @@ export const findMatch = async (req, res) => {
                 if (timer > limit) {
                     console.log("No interview found for: " + username)
                     clearInterval(checkInterviewExistsInterval)
-                    res.json({
+                    return res.status(200).json({
                         message: 'NO INTERVIEW FOUND'
                     })
                 }
@@ -100,7 +103,7 @@ export const findMatch = async (req, res) => {
         }
 
     } catch (err) {
-        console.log(err.message)
+        console.log(err)
         res.send(err)
     }
 }
@@ -117,20 +120,20 @@ export const cancelFindMatch = async (req, res) => {
             console.log("Error 500: Unable to delete match request in DB as no match entry found for user: " 
                 + req.body.username)
         }
-        res.status(200).json(match)
+        return res.status(200).json(match)
     } catch (err) {
-        res.json({error: err.message})
         console.log(err.message)
+        return res.status(500).json({error: err.message})
     }
 }
 
 export const getInterview = async (req, res) => {
     try {
         const interview = await Interview.findById(req.params.id)
-        res.status(200).json(interview)
+        return res.status(200).json(interview)
     } catch (err) {
-        res.status(500).json(err.message)
         console.log(err)
+        return res.status(500).json(err.message)
     }
 }
 
@@ -138,9 +141,10 @@ export const deleteInterview = async (req, res) => {
     try {
         const interview = await Interview.findByIdAndDelete(req.params.id)
         if (!interview) return res.sendStatus(404)
-        res.status(200).json(interview)
+        return res.status(200).json(interview)
     } catch (err) {
-        res.status(500).json(err.message)
         console.log(err)
+        return res.status(500).json(err.message)
+        
     }
 }

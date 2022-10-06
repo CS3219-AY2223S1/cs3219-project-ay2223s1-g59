@@ -6,33 +6,31 @@ import {
     Col
 } from 'react-bootstrap';
 import {useState} from "react";
-/*
-import axios from "axios";
-import {URL_USER_SVC} from "../configs";
-import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
-*/
 import { Link, useNavigate } from "react-router-dom";
-import userService from '../services/userService'
-import AlertMessage from './AlertMessage'
+import userService from '../services/userService';
+import AlertMessage from './AlertMessage';
 
-const SignupPage = (event) => {
+const SignupPage = () => {
     const navigate = useNavigate()
     const [alertMessage, setAlertMessage]  = useState("");
 
-    /*
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    */
     const handleSignup = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const formDataObj = Object.fromEntries(formData.entries());
-        const res = await userService.signup(formDataObj)
+        const { username, password, confirmPassword } = Object.fromEntries(formData.entries());
+
+        if (password !== confirmPassword) {
+            setAlertMessage('The passwords you entered do not match!');
+            return;
+        }
+        
+        const res = await userService.signup({ username, password })
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
-            })
+            }) 
         if (res) navigate('/login');
     }
+
     return (
         <>
             <AlertMessage onClose={() => setAlertMessage(null)} message={(alertMessage)}/>
@@ -40,7 +38,7 @@ const SignupPage = (event) => {
                 <h1 className="text-primary mt-5 p-3 text-center">PeerPrep</h1>
                 <h2 className="text-secondary mt-2 p-3 text-center">Sign Up Now!</h2>
                 <Row className="mt-4">
-                    <Col lg={5} md={6} sm={12} className="p-5 m-auto shadow-sm rounded-lg">
+                    <Col lg={5} md={6} sm={12} className="p-5 m-auto shadow-lg rounded-lg">
                         <Form onSubmit={handleSignup}>
                             <Form.Group className="mb-3" controlId="formBasicUsername">
                                 <Form.Label>Username</Form.Label>

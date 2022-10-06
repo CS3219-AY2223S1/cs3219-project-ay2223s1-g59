@@ -6,7 +6,6 @@ import {
   getHardQuestion,
 } from "../controller/question-controller.js";
 
-//router.get("/", getQuestions);
 router.get("/easy", getEasyQuestion);
 router.get("/medium", getMediumQuestion);
 router.get("/hard", getHardQuestion);
