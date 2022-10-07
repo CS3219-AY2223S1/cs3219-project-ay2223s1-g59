@@ -1,18 +1,16 @@
-# Base image
-FROM node:16
+FROM node:16-alpine
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
 # Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
 COPY package*.json ./
-RUN npm install
 
-# Copy files required for the app to run
+RUN npm ci
+
+# Bundle app source
 COPY . .
 
-# Tell the port number the container should expose
-EXPOSE 8000
-
-# Run the application
-CMD [ "npm", "start"]
+CMD [ "node", "index.js" ]
