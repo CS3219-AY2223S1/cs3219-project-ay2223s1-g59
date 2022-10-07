@@ -21,7 +21,7 @@ describe('GET /easy', () => {
 })
 
 describe('GET /medium', () => {
-    it("should return an medium question", (done) => {
+    it("should return a medium question", (done) => {
         chai.request(app)
             .get('/questions/medium')
             .end((err, res) => {
@@ -36,7 +36,7 @@ describe('GET /medium', () => {
 })
 
 describe('GET /hard', () => {
-    it("should return an hard question", (done) => {
+    it("should return a hard question", (done) => {
         chai.request(app)
             .get('/questions/hard')
             .end((err, res) => {
