@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import History from "../models/history.js"
 
 export const createHistory = async (req, res) => {
