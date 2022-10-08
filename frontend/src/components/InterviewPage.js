@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
-import NavBar from './NavBar.js'
 import { Button, Modal } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
 import userService from "../services/userService.js"
@@ -97,7 +96,6 @@ const InterviewPage = () => {
 
     return (
         <>
-            <NavBar />
             <div className="d-flex justify-content-center mt-5">{questionTitle}</div>
             <div className="container mt-5">
                 <ReactMarkdown>{questionDescription}</ReactMarkdown>
