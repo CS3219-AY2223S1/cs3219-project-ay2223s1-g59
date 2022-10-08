@@ -7,6 +7,7 @@ import InterviewPage from "./components/InterviewPage"
 //import {Box} from "@mui/material";
 import {Container} from 'react-bootstrap';
 import SettingsPage from './components/SettingsPage';
+import HistoryPage from "./components/HistoryPage"
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                         <Route path="/settings" element={<SettingsPage/>}/>
                         <Route path="/search" element={<SearchPage />} />
                         <Route path="/interview" element={<InterviewPage />} />
+                        <Route path="/history" element={<HistoryPage />} />
                     </Routes>
                 </Router>
             </Container>
