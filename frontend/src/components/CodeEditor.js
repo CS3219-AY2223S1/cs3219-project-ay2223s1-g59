@@ -29,7 +29,7 @@ const CodeEditor = ({ roomId, isEnd }) => {
       <CodeMirror
         className="container"
         value={code}
-        height="200px"
+        height="50em"
         onChange={(code) => updateCode(roomId, code)}
         extensions={[javascript({ jsx: true })]}
         theme={sublime}

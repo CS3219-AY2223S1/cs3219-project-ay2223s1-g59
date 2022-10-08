@@ -10,7 +10,7 @@ const InterviewPage = () => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionDescription, setQuestionDescription] = useState("");
   const [showEndInterview, setShowEndInterview] = useState(false);
-  //socket needs to know when interview ends
+  //socket needs to know when to end connection. need to address closing of page next time too.
   const [interviewEnded, setInterviewEnd] = useState(false);
 
   const location = useLocation();
@@ -31,7 +31,7 @@ const InterviewPage = () => {
     setShowEndInterview(true);
   };
   const handleEndInterview = () => {
-    //socket needs to knoe when to end connection
+    //socket needs to know when to end connection. need to address closing of page next time too.
     setInterviewEnd(true);
 
     MatchingService.getInterview(interviewId)
