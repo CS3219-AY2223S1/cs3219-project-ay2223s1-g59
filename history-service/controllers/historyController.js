@@ -12,7 +12,6 @@ export const createHistory = async (req, res) => {
 export const getHistory = async (req, res) => {
     try {
         const username = req.params.username
-
         const histories = await History.find({ username: username })
         return res.status(200).json(histories)
     } catch (err) {

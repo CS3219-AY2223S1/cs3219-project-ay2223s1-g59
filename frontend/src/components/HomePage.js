@@ -15,8 +15,10 @@ const HomePage = () => {
     const[difficulty, setDifficulty] = useState("");
     const[radioValue, setRadioValue] = useState("");
     const[user, setUser] = useState("");
-    const [alertMessage, setAlertMessage]  = useState("");
+    const[alertMessage, setAlertMessage]  = useState("");
+
     const navigate = useNavigate();
+
     const radios = [
         { name: "Easy", value: "easy", variant: "outline-primary" },
         { name: "Medium", value: "medium", variant: "outline-success" },

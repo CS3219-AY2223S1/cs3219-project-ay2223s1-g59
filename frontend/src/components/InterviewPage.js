@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
-import NavBar from './NavBar.js'
 import { Button, Modal } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
+import HistoryService from "../services/historyService.js"
 
 
 const InterviewPage = () => {
@@ -15,14 +15,33 @@ const InterviewPage = () => {
     const navigate = useNavigate()
 
     const interviewId = location.state.interviewId
+    const username = location.state.username
 
     useEffect(() => {
         MatchingService
             .getInterview(interviewId)
             .then(interviewDetails => {
-                console.log(interviewDetails)
                 setQuestionTitle(interviewDetails.data.question.title)
                 setQuestionDescription(interviewDetails.data.question.description)
+                const matchUsername = username === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
+                const history = {
+                    username: username,
+                    matchUsername: matchUsername,
+                    difficulty: interviewDetails.data.difficulty,
+                    question: interviewDetails.data.question
+                }
+                console.log(history)
+                HistoryService
+                    .createHistory(history)
+                    .then(res => {
+                        console.log(res.data)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+            .catch((err) => {
+                console.log(err)
             })
     }, [])
 
@@ -34,7 +53,6 @@ const InterviewPage = () => {
         MatchingService
             .getInterview(interviewId)
             .then(interviewDetails => {
-                console.log(interviewDetails)
                 if (interviewDetails.data === null) {
                     console.log("Interview terminated from other user")
                     setQuestionTitle("")
@@ -62,7 +80,6 @@ const InterviewPage = () => {
 
     return (
         <>
-            <NavBar />
             <div className="d-flex justify-content-center mt-5">{questionTitle}</div>
             <div className="container mt-5">
                 <ReactMarkdown>{questionDescription}</ReactMarkdown>
