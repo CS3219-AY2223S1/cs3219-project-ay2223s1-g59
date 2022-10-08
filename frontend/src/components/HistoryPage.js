@@ -53,7 +53,7 @@ const HistoryPage = () => {
                                         {history.matchUsername}
                                     </td>
                                     <td>
-                                        <a href={history.link}>{history.question.title}</a>
+                                        <a href={history.question.link}>{history.question.title}</a>
                                     </td>
                                     <td>
                                         {history.difficulty}
