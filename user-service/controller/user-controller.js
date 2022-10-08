@@ -67,7 +67,7 @@ export async function loginUser(req, res) {
             return res.status(400).json({message: 'Could not generate token'});
         } else {
             console.log(`${username} logged in successfully!`)
-            return res.status(200).send({ username, token })
+            return res.status(200).send({message: `${username} logged in successfully!`, token})
         }
     } catch (err) {
         return res.status(500).json({message: 'Database failure when logging in!'})
@@ -84,7 +84,7 @@ export async function logoutUser(req, res) {
             return res.status(400).json({message: 'Could not blacklist token!'});
         } else {
             console.log(`${username} logged out successfully!`)
-            return res.status(201).json({message: `${username} logged out successfully!`});
+            return res.status(200).json({message: `${username} logged out successfully!`});
         }
     } catch (err) {
         return res.status(500).json({message: 'Database failure when logging out!'})
@@ -165,11 +165,12 @@ const hashPassword = async (password) => {
 
 // Generate JWT token
 const generateToken = (username) => {
+    const secret = process.env.SECRET || "secret";
     try {
         const userToken = {
             username: username
         }
-        return jwt.sign(userToken, process.env.SECRET, {expiresIn: '2h'})
+        return jwt.sign(userToken, secret, {expiresIn: '2h'})
     } catch (err) {
         console.log('ERROR: Could not generate token');
     }
