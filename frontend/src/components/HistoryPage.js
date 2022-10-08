@@ -48,7 +48,7 @@ const HistoryPage = () => {
                         </thead>
                         <tbody>
                             {histories.map(history =>
-                                <tr key={history.username}>
+                                <tr key={history._id}>
                                     <td>
                                         {history.matchUsername}
                                     </td>
