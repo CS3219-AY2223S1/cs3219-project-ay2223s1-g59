@@ -28,7 +28,7 @@ const SearchPage = () => {
                 } else if (res.data.message === "Match request cancelled") {
                     navigate("/home")
                 } else if (res.data.message === "INTERVIEW FOUND") {
-                    navigate("/interview", { state: { interviewId: res.data.interviewId } })
+                    navigate("/interview", { state: { interviewId: res.data.interviewId, username: username } })
                 }
             })
             .catch((err) => {

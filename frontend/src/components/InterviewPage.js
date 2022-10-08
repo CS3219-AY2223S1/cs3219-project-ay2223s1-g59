@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { Button, Modal } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
-import userService from "../services/userService.js"
 import MatchingService from "../services/matchingService.js"
 import HistoryService from "../services/historyService.js"
 
@@ -11,28 +10,12 @@ const InterviewPage = () => {
     const [questionTitle, setQuestionTitle] = useState("")
     const [questionDescription, setQuestionDescription] = useState("")
     const [showEndInterview, setShowEndInterview] = useState(false)
-    const [user, setUser] = useState("");
 
     const location = useLocation()
     const navigate = useNavigate()
 
     const interviewId = location.state.interviewId
-
-    useEffect( () => {
-        authenticateJwt();
-    });
-
-    const authenticateJwt = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            const res = await userService.getUser(token);
-            if (!res) navigate('/login');
-            const username = res.data.username;
-            setUser(username);
-        } catch (err) {
-            navigate('/login');
-        }
-    }
+    const username = location.state.username
 
     useEffect(() => {
         MatchingService
@@ -40,13 +23,14 @@ const InterviewPage = () => {
             .then(interviewDetails => {
                 setQuestionTitle(interviewDetails.data.question.title)
                 setQuestionDescription(interviewDetails.data.question.description)
-                const matchUsername = user === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
+                const matchUsername = username === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
                 const history = {
-                    username: user,
+                    username: username,
                     matchUsername: matchUsername,
                     difficulty: interviewDetails.data.difficulty,
                     question: interviewDetails.data.question
                 }
+                console.log(history)
                 HistoryService
                     .createHistory(history)
                     .then(res => {
