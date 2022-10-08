@@ -6,7 +6,9 @@ import 'dotenv/config'
 import mongoose from 'mongoose';
 
 let uri;
-if (process.env.NODE_ENV === 'test') {
+if (process.env.DB_DOCKER_URI) { // check docker first
+    uri = process.env.DB_DOCKER_URI
+} else if (process.env.NODE_ENV === 'test') {
     uri = process.env.DB_TEST_URI // mongodb://localhost:27017/users
 } else if (process.env.NODE_ENV == 'development') {
     uri = process.env.DB_LOCAL_URI // mongodb://localhost:27017/userTests
