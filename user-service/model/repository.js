@@ -5,14 +5,19 @@ import 'dotenv/config'
 //Set up mongoose connection
 import mongoose from 'mongoose';
 
-//let mongoDB = process.env.ENV == "PROD" ? process.env.DB_CLOUD_URI : process.env.DB_LOCAL_URI;
+let uri;
+if (process.env.NODE_ENV === 'test') {
+    uri = process.env.DB_TEST_URI // mongodb://localhost:27017/users
+} else if (process.env.NODE_ENV == 'development') {
+    uri = process.env.DB_LOCAL_URI // mongodb://localhost:27017/userTests
+} else if (process.env.NODE_ENV == 'production') {
+    uri = process.env.DB_CLOUD_URI
+}
 
-let mongoDB = process.env.NODE_ENV === 'test' ? process.env.DB_TEST_URI : process.env.DB_CLOUD_URI
-
-mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
-
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+mongoose
+    .connect(uri)
+    .then((x) => console.log(`Connected to MongoDB! Database name: "${x.connections[0].name}"`))
+    .catch((err) => console.error('Error connecting to MongoDB', err.reason))
 
 export async function createUser(params) { 
     return new User(params);

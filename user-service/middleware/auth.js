@@ -18,7 +18,7 @@ export async function authenticateJwt(req, res, next) {
             return res.status(401).send({message: "Token has been blacklisted, please log in again!"});
         }
         // Check if token is valid
-        const decodedToken = jwt.verify(token, process.env.SECRET);
+        const decodedToken = jwt.verify(token, process.env.SECRET || 'secret');
         // Check if user exists
         const userExist = await _checkUserExistence(decodedToken.username)
         if (!userExist) {
@@ -28,6 +28,7 @@ export async function authenticateJwt(req, res, next) {
         req.token = token;
         next();
     } catch (err) {
+        console.log(err)
         return res.status(401).send({message: "Token is invalid, please log in again!"});
     }
 };
