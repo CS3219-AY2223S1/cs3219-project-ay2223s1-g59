@@ -3,26 +3,62 @@ import { Link, useNavigate, useLocation } from "react-router-dom"
 import NavBar from './NavBar.js'
 import { Button, Modal } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
+import userService from "../services/userService.js"
 import MatchingService from "../services/matchingService.js"
+import HistoryService from "../services/historyService.js"
 
 
 const InterviewPage = () => {
     const [questionTitle, setQuestionTitle] = useState("")
     const [questionDescription, setQuestionDescription] = useState("")
     const [showEndInterview, setShowEndInterview] = useState(false)
+    const [user, setUser] = useState("");
 
     const location = useLocation()
     const navigate = useNavigate()
 
     const interviewId = location.state.interviewId
 
+    useEffect( () => {
+        authenticateJwt();
+    });
+
+    const authenticateJwt = async () => {
+        try {
+            const token = sessionStorage.getItem("jwt");
+            const res = await userService.getUser(token);
+            if (!res) navigate('/login');
+            const username = res.data.username;
+            setUser(username);
+        } catch (err) {
+            navigate('/login');
+        }
+    }
+
     useEffect(() => {
         MatchingService
             .getInterview(interviewId)
             .then(interviewDetails => {
-                console.log(interviewDetails)
                 setQuestionTitle(interviewDetails.data.question.title)
                 setQuestionDescription(interviewDetails.data.question.description)
+                const matchUsername = user === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
+                const history = {
+                    username: user,
+                    matchUsername: matchUsername,
+                    difficulty: interviewDetails.data.difficulty,
+                    question: interviewDetails.data.question
+                }
+                HistoryService
+                    .createHistory(history)
+                    .then(res => {
+                        console.log(res.data)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            })
+            .catch((err) => {
+                console.log(err)
             })
     }, [])
 
@@ -34,7 +70,6 @@ const InterviewPage = () => {
         MatchingService
             .getInterview(interviewId)
             .then(interviewDetails => {
-                console.log(interviewDetails)
                 if (interviewDetails.data === null) {
                     console.log("Interview terminated from other user")
                     setQuestionTitle("")
