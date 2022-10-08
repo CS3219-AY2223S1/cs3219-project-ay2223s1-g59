@@ -1,11 +1,10 @@
-import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Container } from 'react-bootstrap';
 import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
 import InterviewPage from "./components/InterviewPage"
-//import {Box} from "@mui/material";
-import {Container} from 'react-bootstrap';
 import SettingsPage from './components/SettingsPage';
 import HistoryPage from "./components/HistoryPage"
 

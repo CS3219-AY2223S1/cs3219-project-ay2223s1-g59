@@ -13,7 +13,6 @@ import {
 import userService from "../services/userService.js";
 import AlertMessage from './AlertMessage';
 
-
 const SettingsPage = () => {
     const[user, setUser] = useState("");
     const navigate = useNavigate()
