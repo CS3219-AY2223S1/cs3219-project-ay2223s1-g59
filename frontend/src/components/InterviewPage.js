@@ -4,11 +4,14 @@ import NavBar from "./NavBar.js";
 import { Button, Modal } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import MatchingService from "../services/matchingService.js";
+import CodeEditor from "./CodeEditor.js";
 
 const InterviewPage = () => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionDescription, setQuestionDescription] = useState("");
   const [showEndInterview, setShowEndInterview] = useState(false);
+  //socket needs to know when interview ends
+  const [interviewEnded, setInterviewEnd] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,6 +31,9 @@ const InterviewPage = () => {
     setShowEndInterview(true);
   };
   const handleEndInterview = () => {
+    //socket needs to knoe when to end connection
+    setInterviewEnd(true);
+
     MatchingService.getInterview(interviewId)
       .then((interviewDetails) => {
         console.log(interviewDetails);
@@ -63,7 +69,7 @@ const InterviewPage = () => {
         <ReactMarkdown>{questionDescription}</ReactMarkdown>
       </div>
       <div>
-        <CodeEditor />
+        <CodeEditor roomId={interviewId} isEnd={interviewEnded} />
       </div>
       <div className="d-flex justify-content-center mt-5">
         <Button variant="danger" onClick={handleShowEndInterview}>

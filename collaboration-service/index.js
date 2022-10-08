@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
   });
 
   // Client joins a specific room.
-  socket.on("CONNECTED", async ({ roomId, username }) => {
+  socket.on("CONNECTED", async ({ roomId }) => {
     console.log(`Connecting to room ${roomId}`);
     // const { users } = await Room.findOne({ roomId: roomId });
     // console.log(users);
@@ -69,14 +69,12 @@ io.on("connection", (socket) => {
   socket.on("CHANGE", async ({ roomId, code }) => {
     console.log("Editing cocde");
     console.log(code);
-    socket.broadcast
-      .to(`${roomId}`)
-      .emit("RECEIVE", { roomId: roomId, code: code });
+    socket.broadcast.to(`${roomId}`).emit("RECEIVE", { code: code });
     // Sends an event indicating to the other user in the room to update the code they're on.
   });
 
   // Client leaves room.
-  socket.on("DISCONNECTED", async ({ roomId, username }) => {
+  socket.on("DISCONNECTED", async ({ roomId }) => {
     console.log(`Disconnecting from room ${roomId}`);
     // const room = await Room.findOne({ roomId: roomId });
     // const users = room.users;
