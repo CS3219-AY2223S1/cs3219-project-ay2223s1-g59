@@ -16,7 +16,7 @@ describe("history-service tests", () => {
                     res.should.have.status(200)
                     res.body.should.be.a("object")
                     res.body.should.have.property("message")
-                    assert.equal(res.body.message, "interview history saved for test1")
+                    assert.equal(res.body.message, `interview history saved for ${userHistory.username}`)
                 })
         })
     })
