@@ -1,7 +1,7 @@
 import chai, { assert } from "chai"
 import chaiHttp from "chai-http"
 import app from "../index.js"
-import userHistory from "./testData.js"
+import { userHistory } from "./testData.js"
 
 chai.use(chaiHttp)
 chai.should()
