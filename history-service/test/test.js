@@ -16,15 +16,15 @@ describe("history-service tests", () => {
                     res.should.have.status(200)
                     res.body.should.be.a("object")
                     res.body.should.have.property("message")
-                    assert.equal(res.body.message, `interview history saved for ${userHistory.username}`)
+                    assert.equal(res.body.message, "interview history saved for test1")
                 })
         })
     })
 
-    describe("GET/find-history/:username", () => {
+    describe("GET/get-history/:username", () => {
         it("Get history succeessful", (done) => {
             chai.request(app)
-            .get(`/find-history/${userHistory.username}`)
+            .get(`/get-history/${userHistory.username}`)
             .end((err, res) => {
                 res.should.have.status(200)
                 res.body.should.be.a("object")
