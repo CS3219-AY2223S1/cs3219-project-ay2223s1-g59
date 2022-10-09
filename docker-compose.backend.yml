@@ -50,5 +50,18 @@ services:
     ports:
       - 8002:8002
 
+  # add collab-service before history-service here
+
+  history-service:
+    container_name: history-service
+    depends_on:
+      - mongodb
+    build: ./history-service
+    restart: unless-stopped
+    environment:
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+    ports:
+      - 8004:8004
+
 volumes:
   mongodb_vol:
