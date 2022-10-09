@@ -13,14 +13,10 @@ app.options("*", cors());
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 8003;
 
-httpServer.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
-
 // Also tested via Postman
 const io = new Server(httpServer, {
   cors: {
-    origin: true,
+    origin: "http://localhost:3000",
   },
 });
 
@@ -53,4 +49,8 @@ io.on("connection", (socket) => {
     socket.leave(`${roomId}`);
     console.log(`Disconnected from room ${roomId}`);
   });
+});
+
+httpServer.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 });

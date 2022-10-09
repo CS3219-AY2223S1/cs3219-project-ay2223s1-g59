@@ -13,6 +13,7 @@ const CodeEditor = ({ roomId, isEnd }) => {
   } else {
     socket.emit("CONNECTED", { roomId: roomId });
   }
+
   socket.on("RECEIVE", (payload) => {
     console.log("Received" + payload.code);
     setCode(payload.code);
