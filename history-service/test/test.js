@@ -9,7 +9,7 @@ chai.should()
 let username
 
 describe("history-service tests", () => {
-    describe("POST/create-history"), () => {
+    describe("POST/create-history", () => {
         it("Create history successful", (done) => {
             chai.request(app)
                 .post("/create-history")
@@ -36,10 +36,10 @@ describe("history-service tests", () => {
                     done()
                 })
         })
-    }
+    })
 
-    describe("GET/find-history/:username"), () => {
-        it("Get history succeessful"), (done) => {
+    describe("GET/find-history/:username", () => {
+        it("Get history succeessful", (done) => {
             chai.request(app)
             .get(`/find-history/${username}`)
             .end((err, res) => {
@@ -63,6 +63,6 @@ describe("history-service tests", () => {
                 assert.equal(res.body.question.link, "test")
                 done()
             })
-        }
-    }
+        })
+    })
 })
