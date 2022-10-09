@@ -8,14 +8,26 @@ Get [Docker](https://docs.docker.com/get-docker/).
 # start containers
 docker-compose up
 
-# start containers in detached mode
+# alternatively, start containers in detached mode
 docker-compose up -d
 
 # if you need to rebuild services
 docker compose build
 ```
 
-### Set up a local mongoDB container
+If you are solely working on the frontend and only want to start backend containers, you may run the alternate docker compose file.
+
+```sh
+docker-compose -f docker-compose.backend.yml up
+
+cd frontend/
+
+npm start
+```
+
+Note that data is stored on disk for persistence under `volumes` in the compose file.
+
+## Set up a local mongoDB container
 If you need to use a mongoDB instance during development, you can consider using docker.
 ```sh
 docker run -d --name container_name \
