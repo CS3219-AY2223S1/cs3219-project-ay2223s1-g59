@@ -5,18 +5,23 @@ import { Button, Modal } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import MatchingService from "../services/matchingService.js";
 import CodeEditor from "./CodeEditor.js";
+import io from "socket.io-client";
 
 const InterviewPage = () => {
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionDescription, setQuestionDescription] = useState("");
   const [showEndInterview, setShowEndInterview] = useState(false);
-  //socket needs to know when to end connection. need to address closing of page next time too.
-  const [interviewEnded, setInterviewEnd] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const interviewId = location.state.interviewId;
+
+  const socket = io("http://localhost:8003");
+  useEffect(() => {
+    socket.emit("CONNECTED", { roomId: interviewId });
+    return () => socket.emit("DISCONNECTED", { roomId: interviewId });
+  });
 
   useEffect(() => {
     MatchingService.getInterview(interviewId).then((interviewDetails) => {
@@ -32,8 +37,6 @@ const InterviewPage = () => {
   };
   const handleEndInterview = () => {
     //socket needs to know when to end connection. need to address closing of page next time too.
-    setInterviewEnd(true);
-
     MatchingService.getInterview(interviewId)
       .then((interviewDetails) => {
         console.log(interviewDetails);
@@ -69,7 +72,7 @@ const InterviewPage = () => {
         <ReactMarkdown>{questionDescription}</ReactMarkdown>
       </div>
       <div>
-        <CodeEditor roomId={interviewId} isEnd={interviewEnded} />
+        <CodeEditor socket={socket} roomId={interviewId} />
       </div>
       <div className="d-flex justify-content-center mt-5">
         <Button variant="danger" onClick={handleShowEndInterview}>

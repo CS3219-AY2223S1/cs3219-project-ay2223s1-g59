@@ -1,18 +1,10 @@
 import { useState } from "react";
-import { io } from "socket.io-client";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { sublime } from "@uiw/codemirror-theme-sublime";
 
-const socket = io("http://localhost:8003");
-
-const CodeEditor = ({ roomId, isEnd }) => {
+const CodeEditor = ({ roomId, socket }) => {
   const [code, setCode] = useState("");
-  if (isEnd) {
-    socket.emit("DISCONNECTED", { roomId: roomId });
-  } else {
-    socket.emit("CONNECTED", { roomId: roomId });
-  }
 
   socket.on("RECEIVE", (payload) => {
     console.log("Received" + payload.code);
