@@ -8,7 +8,7 @@ import {seedQuestionDatabaseIfEmpty} from "./questionSeeder.js"
 
 mongoose
     .connect(uri)
-    .then((x) => console.log(`Connected to MongoDB! Database name: "${x.connections[0].name}"`))
+    .then((x) => console.log(`Question service - connected to MongoDB! Database name: "${x.connections[0].name}"`))
     .catch((err) => console.error('Error connecting to MongoDB', err.reason))
 
 if (process.env.DB_DOCKER_URI || process.env.DB_LOCAL_URI) {
@@ -25,7 +25,7 @@ app.use("/questions", questionRoutes);
 
 const PORT = process.env.PORT || 8002;
 app.listen(PORT, () =>
-    console.log(`question-service listening on port ${PORT}`)
+    console.log(`Question service listening on port ${PORT}`)
 );
 
 export default app

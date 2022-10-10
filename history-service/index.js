@@ -16,7 +16,7 @@ if (process.env.ENV == "PROD") {
 
 mongoose
     .connect(uri)
-    .then((x) => console.log(`Connected to MongoDB! Database name: "${x.connections[0].name}"`))
+    .then((x) => console.log(`History service - connected to MongoDB! Database name: "${x.connections[0].name}"`))
     .catch((err) => console.error('Error connecting to MongoDB', err.reason))
 
 const app = express();
@@ -29,7 +29,7 @@ app.use("/", historyRoutes)
 
 const PORT = process.env.PORT || 8004;
 app.listen(PORT, () =>
-  console.log(`history-service listening on port ${PORT}`)
+  console.log(`History service listening on port ${PORT}`)
 );
 
 export default app

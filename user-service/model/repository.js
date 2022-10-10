@@ -18,7 +18,7 @@ if (process.env.DB_DOCKER_URI) { // check docker first
 
 mongoose
     .connect(uri)
-    .then((x) => console.log(`Connected to MongoDB! Database name: "${x.connections[0].name}"`))
+    .then((x) => console.log(`User service - connected to MongoDB! Database name: "${x.connections[0].name}"`))
     .catch((err) => console.error('Error connecting to MongoDB', err.reason))
 
 export async function createUser(params) { 
