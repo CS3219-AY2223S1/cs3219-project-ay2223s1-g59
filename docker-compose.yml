@@ -21,6 +21,7 @@ services:
       - USER_SERVICE_URL=http://user-service:8000/api/user
       - MATCHING_SERVICE_URL=http://matching-service:8001
       # - COLLAB_SERVICE_URL=??
+      - HISTORY_SERVICE_URL=http://history-service:8004
     ports:
       - 3000:3000
 
@@ -60,6 +61,19 @@ services:
       - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
     ports:
       - 8002:8002
+
+  # add collab-service here before history-service
+
+  history-service:
+    container_name: history-service
+    depends_on:
+      - mongodb
+    build: ./history-service
+    restart: unless-stopped
+    environment:
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+    ports:
+      - 8004:8004
 
 volumes:
   mongodb_vol:
