@@ -2,9 +2,12 @@ import chai, { assert } from "chai"
 import chaiHttp from "chai-http"
 import app from "../index.js"
 import { userHistory } from "./testData.js"
+import History from "../models/history.js"
 
 chai.use(chaiHttp)
 chai.should()
+
+let objectId;
 
 describe("history-service tests", () => {
     describe("POST/create-history", () => {
@@ -44,8 +47,12 @@ describe("history-service tests", () => {
                 assert.equal(res.body[0].question.description, "test")
                 res.body[0].should.have.nested.property("question.link")
                 assert.equal(res.body[0].question.link, "test")
+                objectId = res.body[0]._id
                 done()
             })
+        })
+        after(async () => {
+            await History.deleteOne({ _id: objectId })
         })
     })
 })
