@@ -2,7 +2,8 @@
 PeerPrep is an interview preparation platform and peer matching system where students can find peers to practice whiteboard-style interview 
 questions together. (CS3219 AY22/23)
 
-There are mainly 2 ways to get start, with docker or concurrently.
+There are mainly 2 ways to get started, with docker or concurrently.
+
 ## Docker
 Install [Docker](https://docs.docker.com/get-docker/). You may use docker for testing and/or development. 
 ```sh
@@ -29,7 +30,9 @@ npm start
 Note that data is stored on disk for persistence under `volumes` in the compose file.
 
 ## Running multiple node servers
-Alternatively, you can also use concurrently for backend development to run multiple node servers. Ensure that either a mongo server is up or the connection string points to Atlas.
+Alternatively, you can also use concurrently for backend development to run multiple node servers. This would be suitable if you're focusing on backend developement. 
+
+Ensure that either a mongo server is up or the connection string points to Atlas. See below for instructions on setting up a local mongo container.
 
 ```sh
 # install package globally
