@@ -6,7 +6,7 @@ import 'dotenv/config'
 
 let uri;
 
-if (process.env.ENV == "PROD") {
+if (process.env.NODE_ENV == "production") {
     uri = process.env.DB_CLOUD_URI
 } else if (process.env.DB_DOCKER_URI) {
     uri = process.env.DB_DOCKER_URI

@@ -34,12 +34,22 @@ Alternatively, you can also use concurrently for backend development to run mult
 
 Ensure that either a mongo server is up or the connection string points to Atlas. See below for instructions on setting up a local mongo container.
 
+First you have to create a `.env` file in the root folder. It should look like the following:
+
+```
+DB_CLOUD_URI=
+DB_LOCAL_URI=mongodb://localhost:27017/cs3219
+DB_TEST_URI=mongodb://localhost:27017/userTests
+SECRET=
+NODE_ENV=development
+```
+Then, run the following:
 ```sh
 # install package globally
 npm install -g concurrently
 
-# start microservices (to add chat service once done)
-concurrently "nodemon matching-service/index.js" "nodemon user-service/index.js" "nodemon collaboration-service/index.js" "nodemon history-service/index.js" "nodemon question-service/index.js"
+# start microservices (to add chat service and collab service once done)
+concurrently "nodemon matching-service/index.js" "nodemon user-service/index.js" "nodemon history-service/index.js" "nodemon question-service/index.js"
 ```
 
 ## Local mongoDB container
