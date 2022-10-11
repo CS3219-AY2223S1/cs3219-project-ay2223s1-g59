@@ -15,42 +15,42 @@ const PORT = process.env.PORT || 8003;
 
 // Also tested via Postman
 const io = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:3000",
-  },
+    cors: {
+        origin: "*",
+    },
 });
 
 // When a client initiate socket connection.
 io.on("connection", (socket) => {
-  console.log("A user connected");
+    console.log("A user connected");
 
-  socket.on("disconnect", () => {
-    console.log("a user disconnected");
-  });
+    socket.on("disconnect", () => {
+        console.log("a user disconnected");
+    });
 
-  // Client joins a specific room.
-  socket.on("CONNECTED", async ({ roomId }) => {
-    console.log(`Connecting to room ${roomId}`);
-    socket.join(`${roomId}`);
-    console.log(`Connected to room ${roomId}`);
-  });
+    // Client joins a specific room.
+    socket.on("JOIN", ({ roomId }) => {
+        console.log(`Joining...`);
+        socket.join(`${roomId}`);
+        console.log(`Joined room ${roomId}!`);
+    });
 
-  // Code change occurs
-  socket.on("CHANGE", async ({ roomId, code }) => {
-    console.log("Editing cocde");
-    console.log(code);
-    socket.broadcast.to(`${roomId}`).emit("RECEIVE", { code: code });
-    // Sends an event indicating to the other user in the room to update the code they're on.
-  });
+    // Code change occurs
+    socket.on("CHANGE", ({ roomId, code }) => {
+        console.log("Editing code");
+        console.log(code);
+        socket.broadcast.to(`${roomId}`).emit("RECEIVE", { code: code });
+        // Sends an event indicating to the other user in the room to update the code they're on.
+    });
 
-  // Client leaves room.
-  socket.on("DISCONNECTED", async ({ roomId }) => {
-    console.log(`Disconnecting from room ${roomId}`);
-    socket.leave(`${roomId}`);
-    console.log(`Disconnected from room ${roomId}`);
-  });
+    // Client leaves room.
+    socket.on("LEAVE", ({ roomId }) => {
+        console.log(`Leaving...`);
+        socket.leave(`${roomId}`);
+        console.log(`Left room ${roomId}!`);
+    });
 });
 
 httpServer.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+    console.log(`collab-service listening on port ${PORT}`);
 });
