@@ -6,7 +6,7 @@ import historyRoutes from "./routes/historyRoutes.js"
 
 let uri;
 
-if (process.env.NODE_ENV == "PROD") {
+if (process.env.NODE_ENV == "production") {
     uri = process.env.DB_CLOUD_URI
 } else if (process.env.DB_DOCKER_URI) {
     uri = process.env.DB_DOCKER_URI
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV == "PROD") {
 mongoose
     .connect(uri)
     .then((x) => console.log(`History service - connected to MongoDB! Database name: "${x.connections[0].name}"`))
-    .catch((err) => console.error('Error connecting to MongoDB', err.reason))
+    .catch((err) => console.error('Error connecting to MongoDB for History service', err.reason))
 
 const app = express();
 app.use(express.urlencoded({ extended: true }))

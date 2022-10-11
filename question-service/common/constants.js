@@ -7,5 +7,5 @@ if (process.env.NODE_ENV == "production") {
 } else {
     uri = process.env.DB_LOCAL_URI
 }
-
+console.log(NODE_ENV)
 export { uri }

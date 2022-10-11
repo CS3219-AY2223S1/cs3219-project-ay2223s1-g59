@@ -10,7 +10,7 @@
 You will need to create a `.env` file in the root directory of `matching-service`. The file should like this, but you may use whatever connection strings as required for MongoDB. You may refer to `index.js` on how it uses the URI to connect to MongoDB.
 ```
 DB_CLOUD_URI=mongodb+srv://*****:*****@cluster0.xxxxxxx.mongodb.net/cs3219-matching-service
-NODE_ENV=DEV
+NODE_ENV=development
 DB_LOCAL_URI=mongodb://localhost:27017/cs3219-matching-service
 ```
 
