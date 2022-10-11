@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import matchRoutes from './routes/matchRoutes.js';
 import mongoose from 'mongoose';
 import "dotenv/config"
+import matchRoutes from './routes/matchRoutes.js';
 import { uri } from './common/constants.js'
 
 mongoose

@@ -3,16 +3,8 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import 'dotenv/config'
 import historyRoutes from "./routes/historyRoutes.js"
+import { uri } from "./common/constants.js"
 
-let uri;
-
-if (process.env.NODE_ENV == "production") {
-    uri = process.env.DB_CLOUD_URI
-} else if (process.env.DB_DOCKER_URI) {
-    uri = process.env.DB_DOCKER_URI
-} else {
-    uri = process.env.DB_LOCAL_URI
-}
 
 mongoose
     .connect(uri)
