@@ -8,25 +8,34 @@ Accepts 2 socket.io connections to create a room for both users.
 * run `node index.js` in the terminal from the directory `./collaboration-service`.
 
 * find the postman collections labelled "Collaboration Socket".
-![before connect](https://user-images.githubusercontent.com/80625519/194764798-263f57c6-513a-4dc1-8023-cd2fbc1d4c29.PNG)
+![start](https://user-images.githubusercontent.com/80625519/195425445-0da497ad-4377-4607-a451-07035f2fc6c9.PNG)
 
-* Connect via the "Connect" button on the top right to both connections using the link "http://localhost:8003/". You should see a successful connection as shown below:
-![connected](https://user-images.githubusercontent.com/80625519/194764903-58e1d912-acd0-44a9-b308-30522cce6304.PNG)
+* within the new tab’s header, click the drop-down that says Raw, and select Socket.IO instead.
+![tabheader](https://user-images.githubusercontent.com/80625519/195425564-9c2c2704-822f-4d4f-ae0c-419c34ce449c.PNG)
+
+* Connect via the "Connect" button on the top right to both connections using the link "http://localhost:8003/". 
+![connect](https://user-images.githubusercontent.com/80625519/195425628-55cc7b2b-9293-4867-8ba2-d01649746bbc.PNG)
+
+* You should see a successful connection.
+![connected](https://user-images.githubusercontent.com/80625519/195425703-480f9cfb-5080-46c1-8b37-31f28a514151.PNG)
 
 * under events, ensure that the event "RECEIVE" is set to "Listen on connect". If it isn't, do set it to be so for both separate connections.
-![listen to receive](https://user-images.githubusercontent.com/80625519/194764920-ce1f878c-1f87-4e78-859e-587484eacc60.PNG)
+![receive](https://user-images.githubusercontent.com/80625519/195425750-bd2e46da-9c7a-4586-ad9c-7fe6a78d10a1.PNG)
 
-* Under saved messages, there are three messages saved. "CONNECT", "Update code", and "DISCONNECT". To join a room, click on "CONNECT" and then send. Do so for both connections.
-![connected room](https://user-images.githubusercontent.com/80625519/194764964-d4bbb793-0888-4cc9-b0ff-37b3ba9dfeb3.PNG)
+* Under saved messages, there are three messages saved. "JOIN", "Update code", and "LEAVE". To join a room, click on "JOIN" and then send. Do so for both connections.
+![join](https://user-images.githubusercontent.com/80625519/195425925-359112ae-e545-4711-b141-d18433e0b401.PNG)
+
+* Before sending any messages, ensure the type of message sent is JSON not text.
+![json](https://user-images.githubusercontent.com/80625519/195426115-e30aa1c8-0dda-40e3-a337-4edf7a43fe9b.PNG)
 
 * To send a code fragment to the other connection use the "Update code" message and type whatever you wish to send into the message field labelled code then click send.
-![send](https://user-images.githubusercontent.com/80625519/194764936-43df226b-ca6b-4314-a7e2-d183b4aa34cd.PNG)
+![change](https://user-images.githubusercontent.com/80625519/195426148-b61038a6-90e1-4f34-babb-6fb22528494d.PNG)
 
 * On the opposing connection, the message will be received as "RECEIVED" in the message log.
-![received](https://user-images.githubusercontent.com/80625519/194765392-baa8f735-4943-4455-881d-44b23aac8870.PNG)
+![code receive](https://user-images.githubusercontent.com/80625519/195426191-ae2cf709-b2ed-4b36-997d-87daf81b7517.PNG)
 
-* To disconnect from the room, send the "DISCONNECT" message.
-![disconnected room](https://user-images.githubusercontent.com/80625519/194766036-e790693c-0482-408c-b3c9-b5e5e8544afe.PNG)
+* To disconnect from the room, send the "LEAVE" message.
+![leave](https://user-images.githubusercontent.com/80625519/195426243-083bfb08-c29a-4869-96a9-7af3a61bcba2.PNG)
 
 * To finally end the connection, click "Disconnect" on the top right.
-![disconnected](https://user-images.githubusercontent.com/80625519/194766067-201188b4-ae90-47de-bb2b-cf050eaa8605.PNG)
+![disconnect](https://user-images.githubusercontent.com/80625519/195426269-d14a4fe0-946a-4f3d-9667-b80a0d01649b.PNG)
