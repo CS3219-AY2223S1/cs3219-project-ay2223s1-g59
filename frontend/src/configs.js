@@ -1,5 +1,5 @@
-const URI_USER_SVC = process.env.URI_USER_SVC || 'http://localhost:8000'
+export const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://localhost:8000/api/user'
 
-const PREFIX_USER_SVC = '/api/user'
+export const MATCHING_SERVICE_URL = process.env.MATCHING_SERVICE_URL || 'http://localhost:8001'
 
-export const URL_USER_SVC = URI_USER_SVC + PREFIX_USER_SVC
+export const HISTORY_SERVICE_URL = process.env.HISTORY_SERVICE_URL || 'http://localhost:8004'

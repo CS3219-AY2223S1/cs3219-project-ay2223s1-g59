@@ -1,14 +1,14 @@
 import axios from "axios"
-const baseUrl = 'http://localhost:8004'
+import { HISTORY_SERVICE_URL } from "../configs"
 
 const createHistory = async (historyObject) => {
-    const res = await axios.post(`${baseUrl}/create-history`, historyObject)
+    const res = await axios.post(`${HISTORY_SERVICE_URL}/create-history`, historyObject)
     console.log(res)
     return res
 }
 
 const getHistory = async (username) => {
-    const res = await axios.get(`${baseUrl}/get-history/${username}`)
+    const res = await axios.get(`${HISTORY_SERVICE_URL}/get-history/${username}`)
     return res.data
 }
 
