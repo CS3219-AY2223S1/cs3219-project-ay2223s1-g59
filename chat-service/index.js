@@ -19,7 +19,7 @@ const io = new Server(server, {
 
 const CHAT_BOT = 'ChatBot'; // Constants and Magic Numbers will be abstracted when finalising
 io.on('connection', (socket) => {
-    console.log(`User connected ${socket.id}`)
+    console.log(`User connected to socket ${socket.id}`)
   
     // Add user to a room
     socket.on('join_room', (data) => {

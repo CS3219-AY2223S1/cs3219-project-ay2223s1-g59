@@ -15,8 +15,8 @@ code {
 .card-body {
     overflow-y: scroll;
     scroll-behavior: smooth;
-    background-color: rgb(255, 233, 237);
-    height: 60vh;
+    background-color: rgb(215, 239, 255);
+    height: 50vh;
 }
 
 .chat-title {
