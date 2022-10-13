@@ -11,7 +11,7 @@ import CodeEditor from "./CodeEditor.js"
 
 
 const socket = io.connect(CHAT_SERVICE_URL); // Connect to chat server
-const collab_socket = io(COLLAB_SERVICE_URL)
+const collabSocket = io(COLLAB_SERVICE_URL)
 
 const InterviewPage = () => {
     const [questionTitle, setQuestionTitle] = useState("")
@@ -25,12 +25,8 @@ const InterviewPage = () => {
     const username = location.state.username
 
     useEffect(() => {
-        collab_socket.emit("JOIN", { roomId: interviewId })
-        return () => collab_socket.emit("LEAVE", { roomId: interviewId })
-    })
-
-    useEffect(() => {
         socket.emit('join_room', { username, room: interviewId}); // Connect user to chat room
+        collabSocket.emit("JOIN", { roomId: interviewId })
         MatchingService
             .getInterview(interviewId)
             .then(interviewDetails => {
@@ -56,6 +52,7 @@ const InterviewPage = () => {
             .catch((err) => {
                 console.log(err)
             })
+        return () => collabSocket.emit("LEAVE", { roomId: interviewId })
     }, [])
 
     const handleCloseEndInterview = () => setShowEndInterview(false)
@@ -98,7 +95,7 @@ const InterviewPage = () => {
                 <ReactMarkdown>{questionDescription}</ReactMarkdown>
             </div>
             <div>
-                <CodeEditor socket={collab_socket} roomId={interviewId} />
+                <CodeEditor socket={collabSocket} roomId={interviewId} />
             </div>
             <Chat socket={socket} username={username} room={interviewId}/>
             <div className="d-flex justify-content-center mt-5">
