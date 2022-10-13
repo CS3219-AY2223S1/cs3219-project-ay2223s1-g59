@@ -37,10 +37,10 @@ Ensure that either a mongo server is up or the connection string points to Atlas
 First you have to create a `.env` file in the root folder. It should look like the following:
 
 ```
-DB_CLOUD_URI=
+DB_CLOUD_URI=<Atlas Connection String>
 DB_LOCAL_URI=mongodb://localhost:27017/cs3219
 DB_TEST_URI=mongodb://localhost:27017/userTests
-SECRET=
+SECRET=<Secret Key for JWT>
 NODE_ENV=development
 ```
 Then, run the following:
