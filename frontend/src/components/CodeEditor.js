@@ -5,26 +5,31 @@ import { python } from "@codemirror/lang-python";
 import { sublime } from "@uiw/codemirror-theme-sublime";
 
 const CodeEditor = ({ roomId, socket }) => {
-    const [code, setCode] = useState("");
-
-    socket.on("RECEIVE", (payload) => {
-        console.log("Received" + payload.code);
-        setCode(payload.code);
+    const [code, setCode] = useState({
+        value: "print('hello world')",
+        isReceived: false,
     });
 
-    function updateCode(roomId, code) {
-        console.log("Change happening", code);
-        setCode(code);
-        socket.emit("CHANGE", { roomId: roomId, code: code });
+    socket.on("RECEIVE", (payload) => {
+        console.log(`Received code: ${payload.code}`);
+        setCode({ value: payload.code, isReceived: true });
+    });
+
+    function updateCode(roomId, value) {
+        console.log(`Code changed to: ${value}`);
+        if (code.isReceived !== true) {
+            socket.emit("CHANGE", { roomId: roomId, code: value });
+        }
+        setCode({ value: value, isReceived: false });
     }
 
     return (
         <div>
             <CodeMirror
                 className="container"
-                value={code}
+                value={code.value}
                 height="50em"
-                onChange={(code) => updateCode(roomId, code)}
+                onChange={(value) => updateCode(roomId, value)}
                 extensions={[python()]}
                 theme={sublime}
             />

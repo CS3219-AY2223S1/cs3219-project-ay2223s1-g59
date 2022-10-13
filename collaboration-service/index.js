@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
 
     // Code change occurs
     socket.on("CHANGE", ({ roomId, code }) => {
-        console.log("Editing code");
+        console.log("Code has been edited and changed to: ");
         console.log(code);
         socket.broadcast.to(`${roomId}`).emit("RECEIVE", { code: code });
         // Sends an event indicating to the other user in the room to update the code they're on.
