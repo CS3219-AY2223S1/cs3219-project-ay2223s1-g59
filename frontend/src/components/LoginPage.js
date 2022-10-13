@@ -8,7 +8,7 @@ import {
 import {useState, useEffect} from "react";
 /*
 import axios from "axios";
-import {URL_USER_SVC} from "../configs";
+import {USER_SERVICE_URL} from "../configs";
 import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
 */
 import { Link, useNavigate } from "react-router-dom";
@@ -42,7 +42,7 @@ const LoginPage = () => {
         try {
             const token = sessionStorage.getItem("jwt");
             if (token) {
-                await userService.logout(token)
+                await userService.logout(token);
             }
         } catch (err) {
             console.log(err);

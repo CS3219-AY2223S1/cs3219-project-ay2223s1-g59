@@ -1,37 +1,46 @@
-import UserModel from './user-model.js';
-import BlacklistModel from './blacklist-model.js';
+import User from './user.js';
+import Blacklist from './blacklist.js';
 import 'dotenv/config'
 
 //Set up mongoose connection
 import mongoose from 'mongoose';
 
-let mongoDB = process.env.ENV == "PROD" ? process.env.DB_CLOUD_URI : process.env.DB_LOCAL_URI;
+let uri;
+if (process.env.DB_DOCKER_URI) { // check docker first
+    uri = process.env.DB_DOCKER_URI
+} else if (process.env.NODE_ENV === 'test') {
+    uri = process.env.DB_TEST_URI // mongodb://localhost:27017/users
+} else if (process.env.NODE_ENV == 'development') {
+    uri = process.env.DB_LOCAL_URI // mongodb://localhost:27017/userTests
+} else if (process.env.NODE_ENV == 'production') {
+    uri = process.env.DB_CLOUD_URI
+}
 
-mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
-
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+mongoose
+    .connect(uri)
+    .then((x) => console.log(`Connected to MongoDB! Database name: "${x.connections[0].name}"`))
+    .catch((err) => console.error('Error connecting to MongoDB', err.reason))
 
 export async function createUser(params) { 
-    return new UserModel(params);
+    return new User(params);
 }
 
 export async function findUser(username) {
-    return UserModel.findOne({ username });
+    return User.findOne({ username });
 }
 
 export async function updatePassword({ userId, userObject }) {
-    return UserModel.findByIdAndUpdate(userId, userObject, { new: true});
+    return User.findByIdAndUpdate(userId, userObject, { new: true});
 }
 
 export async function deleteUser(userId) {
-    return UserModel.findByIdAndRemove(userId);
+    return User.findByIdAndRemove(userId);
 }
 
 export async function createBlacklist(params) { 
-    return new BlacklistModel(params);
+    return new Blacklist(params);
 }
 
 export async function findBlacklist(token) {
-    return BlacklistModel.findOne({ token });
+    return Blacklist.findOne({ token });
 }

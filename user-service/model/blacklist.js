@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 var Schema = mongoose.Schema
-let BlacklistModelSchema = new Schema({
+let blacklistSchema = new Schema({
     token: {
         type: String,
         required: true,
@@ -8,4 +8,4 @@ let BlacklistModelSchema = new Schema({
     }
 })
 
-export default mongoose.model('blacklistModel', BlacklistModelSchema)
+export default mongoose.model('Blacklist', blacklistSchema)

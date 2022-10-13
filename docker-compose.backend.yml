@@ -13,18 +13,6 @@ services:
     volumes: # for data persistence
       - mongodb_vol:/data/db
 
-  frontend:
-    container_name: frontend
-    build: ./frontend
-    restart: unless-stopped
-    environment:
-      - USER_SERVICE_URL=http://user-service:8000/api/user
-      - MATCHING_SERVICE_URL=http://matching-service:8001
-      # - COLLAB_SERVICE_URL=??
-      - HISTORY_SERVICE_URL=http://history-service:8004
-    ports:
-      - 3000:3000
-
   user-service:
     container_name: user-service
     depends_on:
@@ -62,7 +50,7 @@ services:
     ports:
       - 8002:8002
 
-  # add collab-service here before history-service
+  # add collab-service before history-service here
 
   history-service:
     container_name: history-service
