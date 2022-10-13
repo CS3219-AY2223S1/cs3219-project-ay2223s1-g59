@@ -4,10 +4,14 @@ import { Button, Modal } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
 import HistoryService from "../services/historyService.js"
-import io from 'socket.io-client';
+import io from 'socket.io-client'
 import Chat from "./Chat.js"
-import { CHAT_SERVICE_URL } from "../configs"
+import { CHAT_SERVICE_URL, COLLAB_SERVICE_URL } from "../configs"
+import CodeEditor from "./CodeEditor.js"
+
+
 const socket = io.connect(CHAT_SERVICE_URL); // Connect to chat server
+const collab_socket = io(COLLAB_SERVICE_URL)
 
 const InterviewPage = () => {
     const [questionTitle, setQuestionTitle] = useState("")
@@ -19,6 +23,11 @@ const InterviewPage = () => {
 
     const interviewId = location.state.interviewId
     const username = location.state.username
+
+    useEffect(() => {
+        collab_socket.emit("JOIN", { roomId: interviewId })
+        return () => collab_socket.emit("LEAVE", { roomId: interviewId })
+    })
 
     useEffect(() => {
         socket.emit('join_room', { username, room: interviewId}); // Connect user to chat room
@@ -87,6 +96,9 @@ const InterviewPage = () => {
             <div className="d-flex justify-content-center mt-5"><h1>{questionTitle}</h1></div>
             <div className="container mt-5">
                 <ReactMarkdown>{questionDescription}</ReactMarkdown>
+            </div>
+            <div>
+                <CodeEditor socket={collab_socket} roomId={interviewId} />
             </div>
             <Chat socket={socket} username={username} room={interviewId}/>
             <div className="d-flex justify-content-center mt-5">
