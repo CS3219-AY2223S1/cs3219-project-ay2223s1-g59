@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Link, useNavigate, useLocation } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { Button, Modal } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
@@ -9,9 +9,8 @@ import Chat from "./Chat.js"
 import { CHAT_SERVICE_URL, COLLAB_SERVICE_URL } from "../configs"
 import CodeEditor from "./CodeEditor.js"
 
-
-const socket = io.connect(CHAT_SERVICE_URL); // Connect to chat server
-const collabSocket = io(COLLAB_SERVICE_URL)
+const chatSocket = io.connect(CHAT_SERVICE_URL); // Connect to chat server
+const collabSocket = io(COLLAB_SERVICE_URL)      // Connect to collab server
 
 const InterviewPage = () => {
     const [questionTitle, setQuestionTitle] = useState("")
@@ -25,8 +24,8 @@ const InterviewPage = () => {
     const username = location.state.username
 
     useEffect(() => {
-        socket.emit('join_room', { username, room: interviewId}); // Connect user to chat room
-        collabSocket.emit("JOIN", { roomId: interviewId })
+        chatSocket.emit('join', { username, room: interviewId }) // Connect user to chat socket room
+        collabSocket.emit("JOIN", { roomId: interviewId })       // Connect user to collab socket room 
         MatchingService
             .getInterview(interviewId)
             .then(interviewDetails => {
@@ -97,7 +96,7 @@ const InterviewPage = () => {
             <div>
                 <CodeEditor socket={collabSocket} roomId={interviewId} />
             </div>
-            <Chat socket={socket} username={username} room={interviewId}/>
+            <Chat socket={chatSocket} username={username} room={interviewId} />
             <div className="d-flex justify-content-center mt-5">
                 <Button variant="danger" onClick={handleShowEndInterview}>End interview</Button>
                 <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
