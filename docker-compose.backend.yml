@@ -63,5 +63,12 @@ services:
     ports:
       - 8004:8004
 
+  chat-service:
+    container_name: chat-service
+    build: ./chat-service
+    restart: unless-stopped
+    ports:
+      - 8005:8005
+      
 volumes:
   mongodb_vol:
