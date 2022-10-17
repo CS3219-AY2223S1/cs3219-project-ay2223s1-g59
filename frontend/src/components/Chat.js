@@ -36,7 +36,7 @@ const Chat = ({ socket, username, room }) => {
 
     // Listen for new messages from socket
     useEffect(() => {
-            socket.on('receive_message', (data) => {
+            socket.on('receive', (data) => {
                 console.log(data)
                 setMessagesReceived((state) => [
                     ...state,
@@ -48,7 +48,7 @@ const Chat = ({ socket, username, room }) => {
                 ])
             })
             // Remove event listener on component unmount
-            return () => socket.off('receive_message')
+            return () => socket.off('receive')
     }, [socket])
 
     // dd/mm/yyyy, hh:mm:ss
@@ -61,7 +61,7 @@ const Chat = ({ socket, username, room }) => {
     const sendMessage = () => {
         if (message !== '') {
             const __createdtime__ = Date.now();
-            socket.emit('send_message', { username, room, message, __createdtime__ })
+            socket.emit('send', { username, room, message, __createdtime__ })
             setMessage('')
         }
     }

@@ -45,5 +45,3 @@ jobs:
     # build and test
     - run: npm run build --if-present
     - run: npm test
-
-    #

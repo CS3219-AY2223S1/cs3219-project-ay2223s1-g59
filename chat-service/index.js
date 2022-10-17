@@ -22,14 +22,14 @@ io.on('connection', (socket) => {
     console.log(`User connected to socket ${socket.id}`)
   
     // Add user to a room
-    socket.on('join_room', (data) => {
+    socket.on('join', (data) => {
         const { username, room } = data
         socket.join(room)
 
         let __createdtime__ = Date.now(); // Current timestamp
 
         // Send notification message of new user joining room
-        io.to(room).emit('receive_message', {
+        io.to(room).emit('receive', {
             message: `${username} has joined the chat room`,
             username: CHAT_BOT,
             __createdtime__,
@@ -37,14 +37,14 @@ io.on('connection', (socket) => {
     })
 
     // Send message to all users currently in the room
-    socket.on('send_message', (data) => {
-        io.to(data.room).emit('receive_message', data)
+    socket.on('send', (data) => {
+        io.to(data.room).emit('receive', data)
     })
 })
 
 const PORT = process.env.PORT || 8005;
 server.listen(PORT, () =>
-    console.log(`chat-service listening on port ${PORT}`)
+    console.log(`Chat-service listening on port ${PORT}`)
 )
 
 export default server
