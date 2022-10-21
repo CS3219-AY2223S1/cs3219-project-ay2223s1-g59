@@ -72,7 +72,6 @@ const SearchPage = () => {
 
     return (
         <>
-            <NavBar/>
             <div className="d-flex justify-content-center mt-5">
                 <CountdownCircleTimer
                     isPlaying
