@@ -78,10 +78,10 @@ const SettingsPage = () => {
                         <Col sm={3}>
                         <Nav variant="pills" className="flex-column">
                             <Nav.Item>
-                            <Nav.Link eventKey="first" className=""><h3>Change Password</h3></Nav.Link>
+                            <Nav.Link eventKey="first" className="text-center"><h3>Change Password</h3></Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                            <Nav.Link eventKey="second" className=""><h3>Delete Account</h3></Nav.Link>
+                            <Nav.Link eventKey="second" className="text-center"><h3>Delete Account</h3></Nav.Link>
                             </Nav.Item>
                         </Nav>
                         </Col>
