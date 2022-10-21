@@ -20,12 +20,7 @@ const NavBar = ({user}) => {
                         </Nav>
                         <Navbar.Text className="text-light" style={{marginRight: "0.5rem"}}><span style={{fontSize:"1.5rem"}}>{user} </span><i style={{fontSize:"1.5rem"}} className="bi bi-person-circle"></i></Navbar.Text>
                         <Nav>
-                            <NavDropdown title="Options" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="./settings">Change Password</NavDropdown.Item>
-                                <NavDropdown.Item href="./settings">Delete Account</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="./login">Logout</NavDropdown.Item>
-                            </NavDropdown>
+                            <Nav.Link href="./login">Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
