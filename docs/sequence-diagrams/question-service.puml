@@ -1,0 +1,17 @@
+@startuml
+Matching -> Question: GET questions/{difficulty}
+
+alt difficulty = easy
+
+    Question -> Matching: return easy question
+
+else difficulty = medium
+
+    Question -> Matching: return medium question
+
+else difficulty = hard
+
+    Question -> Matching: return hard question
+
+end
+@enduml
