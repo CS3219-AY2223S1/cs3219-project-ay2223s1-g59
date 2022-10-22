@@ -1,0 +1,16 @@
+@startuml
+Client -> Frontend: Register as new user
+Frontend -> User: POST /api/user/signup
+User -> Frontend: Success
+Frontend -> Client: Redirect to login
+Client -> Frontend: Login
+Frontend -> User: POST /api/user/login
+    alt successful login
+    User -> Frontend: return jwt token
+    Frontend -> Client: navigate to home page
+    else invalid login
+    User -> Frontend: invalid login
+    Frontend -> Client: return invalid message
+    end
+User -> Frontend: 
+@enduml

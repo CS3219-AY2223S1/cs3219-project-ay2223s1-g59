@@ -1,0 +1,6 @@
+@startuml
+Client -> Frontend: Access history page
+Frontend -> History: GET /history
+History -> Frontend: return all user history
+Frontend -> Client: read user history
+@enduml
