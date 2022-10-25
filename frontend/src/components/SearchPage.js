@@ -34,7 +34,22 @@ const SearchPage = () => {
             .catch((err) => {
                 console.log(err)
             })
+        return cancelFindMatch()
     }, [])
+
+    const cancelFindMatch = () => {
+        const matchObject = {
+            username: username,
+        }
+        console.log(matchObject)
+        MatchingService.cancelFindMatch(matchObject)
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     const renderTime = ({ remainingTime }) => {
         if (remainingTime === 0) {
@@ -53,21 +68,6 @@ const SearchPage = () => {
     const handleCloseCancelFindMatch = () => setShowCancelFindMatch(false)
     const handleShowCancelFindMatch = () => {
         setShowCancelFindMatch(true)
-    }
-    const handleCancelFindMatch = () => {
-        const matchObject = {
-            username: username,
-        }
-        console.log(matchObject)
-        MatchingService.cancelFindMatch(matchObject)
-            .then((res) => {
-                console.log(res)
-                setShowCancelFindMatch(false)
-                navigate("/home")
-            })
-            .catch((err) => {
-                console.log(err)
-            })
     }
 
     return (
@@ -92,7 +92,7 @@ const SearchPage = () => {
                 <Modal.Body>Are you sure you want to cancel find match?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseCancelFindMatch}>Close</Button>
-                    <Button variant="danger" onClick={handleCancelFindMatch}>Cancel find match</Button>
+                    <Button variant="danger" onClick={() => navigate("/home")}>Cancel find match</Button>
                 </Modal.Footer>
             </Modal>
             </div>
