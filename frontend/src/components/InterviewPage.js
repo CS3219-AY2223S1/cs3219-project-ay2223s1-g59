@@ -51,10 +51,13 @@ const InterviewPage = () => {
             .catch((err) => {
                 console.log(err)
             })
-        return endInterview()
+        return () => {
+            endInterview()
+        }
     }, [])
 
     const endInterview = () => {
+        console.log("ending interview")
         collabSocket.emit("LEAVE", { roomId: interviewId })
         MatchingService
             .getInterview(interviewId)
