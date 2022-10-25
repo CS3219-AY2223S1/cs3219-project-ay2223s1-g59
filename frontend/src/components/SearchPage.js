@@ -34,10 +34,13 @@ const SearchPage = () => {
             .catch((err) => {
                 console.log(err)
             })
-        return cancelFindMatch()
+        return () => {
+            cancelFindMatch()
+        }
     }, [])
 
     const cancelFindMatch = () => {
+        console.log("cancel finding match")
         const matchObject = {
             username: username,
         }
