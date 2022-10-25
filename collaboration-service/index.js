@@ -29,23 +29,19 @@ io.on("connection", (socket) => {
     });
 
     // Client joins a specific room.
-    socket.on("JOIN", ({ roomId }) => {
-        console.log(`Joining...`);
+    socket.on("join", ({ roomId }) => {
         socket.join(`${roomId}`);
         console.log(`Joined room ${roomId}!`);
     });
 
     // Code change occurs
-    socket.on("CHANGE", ({ roomId, code }) => {
-        console.log("Code has been edited and changed to: ");
-        console.log(code);
-        socket.broadcast.to(`${roomId}`).emit("RECEIVE", { code: code });
+    socket.on("change", ({ roomId, code }) => {
+        socket.broadcast.to(`${roomId}`).emit("receive", { code: code });
         // Sends an event indicating to the other user in the room to update the code they're on.
     });
 
     // Client leaves room.
-    socket.on("LEAVE", ({ roomId }) => {
-        console.log(`Leaving...`);
+    socket.on("leave", ({ roomId }) => {
         socket.leave(`${roomId}`);
         console.log(`Left room ${roomId}!`);
     });
@@ -54,3 +50,5 @@ io.on("connection", (socket) => {
 httpServer.listen(PORT, () => {
     console.log(`collab-service listening on port ${PORT}`);
 });
+
+export default httpServer

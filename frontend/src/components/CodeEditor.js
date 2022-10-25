@@ -10,7 +10,7 @@ const CodeEditor = ({ roomId, socket }) => {
         isReceived: false,
     })
 
-    socket.on("RECEIVE", (payload) => {
+    socket.on("receive", (payload) => {
         console.log(`Received code: ${payload.code}`)
         setCode({ value: payload.code, isReceived: true })
     })
@@ -18,7 +18,7 @@ const CodeEditor = ({ roomId, socket }) => {
     function updateCode(roomId, value) {
         console.log(`Code changed to: ${value}`)
         if (code.isReceived !== true) {
-            socket.emit("CHANGE", { roomId: roomId, code: value })
+            socket.emit("change", { roomId: roomId, code: value })
         }
         setCode({ value: value, isReceived: false })
     }
