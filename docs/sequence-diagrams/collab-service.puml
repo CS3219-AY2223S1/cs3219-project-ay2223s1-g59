@@ -5,9 +5,8 @@ opt on CHANGE
     Client1 -> Chat: Types 'Hello World'
     Chat -> Client2: Emits 'Hello World'
 end
-
 opt on LEAVE
     Client1 -> Chat: Leaves socket
     Chat -> Client1: Disconnects
-
+end
 @enduml
