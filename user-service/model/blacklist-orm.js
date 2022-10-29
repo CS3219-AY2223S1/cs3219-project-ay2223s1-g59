@@ -1,5 +1,6 @@
 import { createBlacklist, findBlacklist } from './repository.js'
 
+// Blacklist token 
 export async function ormCreateBlacklist(token) {
     try {
         const newBlacklist = await createBlacklist({token})
@@ -11,6 +12,7 @@ export async function ormCreateBlacklist(token) {
     }
 }
 
+// Check if token is blacklisted
 export async function ormCheckTokenBlacklist(token) {
     try {
         const tokenBlacklisted = await findBlacklist(token)

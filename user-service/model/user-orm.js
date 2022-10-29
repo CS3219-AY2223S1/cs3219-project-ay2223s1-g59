@@ -1,7 +1,6 @@
 import { createUser, findUser, updatePassword, deleteUser } from './repository.js'
 import bcrypt from 'bcrypt'
 
-//need to separate orm functions from repository to decouple business logic from persistence
 // Create new user
 export async function ormCreateUser(username, passwordHash) {
     try {
@@ -49,6 +48,7 @@ export async function ormUpdatePassword(username, passwordHash) {
     }
 }
 
+// Delete user
 export async function ormDeleteUser(username) {
     try {
         const user = await findUser(username)
