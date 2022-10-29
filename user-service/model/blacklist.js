@@ -1,5 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
+
 var Schema = mongoose.Schema
+
 let blacklistSchema = new Schema({
     token: {
         type: String,

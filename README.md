@@ -39,7 +39,7 @@ First you have to create a `.env` file in the root folder. It should look like t
 ```
 DB_CLOUD_URI=<Atlas Connection String>
 DB_LOCAL_URI=mongodb://localhost:27017/cs3219
-DB_TEST_URI=mongodb://localhost:27017/userTests
+DB_TEST_URI=mongodb://localhost:27017/tests
 SECRET=<Secret Key for JWT>
 NODE_ENV=development
 ```
