@@ -1,6 +1,6 @@
 # PeerPrep
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/43946966/198839794-dbbee8a9-db3e-493e-a74e-409e1d6829dc.png" />
+  <img src="https://user-images.githubusercontent.com/43946966/198839909-9140fda0-7544-4cac-94a1-23daca2dc1fe.png" />
 </p>
 PeerPrep is an interview preparation platform and peer matching system where students can find peers to practice whiteboard-style interview 
 questions together. (CS3219 AY22/23)
