@@ -67,8 +67,8 @@ const Chat = ({ socket, username, room }) => {
     }
 
     return (
-        <Container className="w-75 mt-5 mb-5">
-            <Card.Title className="chat-title text-center bg-dark text-light"><h1>Chat</h1></Card.Title>
+        <Container className="mt-4 mb-5">
+            <Card.Title className="chat-title text-center bg-dark text-light"><h2>Chat</h2></Card.Title>
             <Card className="card-body" ref={chatBody}>
                 {messagesReceived.map((msg, i) => {
                     // ChatBot messages

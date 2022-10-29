@@ -28,7 +28,7 @@ const CodeEditor = ({ roomId, socket }) => {
             <CodeMirror
                 className="container"
                 value={code.value}
-                height="50em"
+                height="70vh"
                 onChange={(value) => updateCode(roomId, value)}
                 extensions={[python()]}
                 theme={sublime}

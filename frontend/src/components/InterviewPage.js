@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal, Container, Row, Col } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
 import HistoryService from "../services/historyService.js"
@@ -88,29 +88,38 @@ const InterviewPage = () => {
     }
 
     return (
-        <>
-            <div className="d-flex justify-content-center mt-5"><h1>{questionTitle}</h1></div>
-            <div className="container mt-5">
-                <ReactMarkdown>{questionDescription}</ReactMarkdown>
-            </div>
-            <div>
-                <CodeEditor socket={collabSocket} roomId={interviewId} />
-            </div>
+        <div>
+            <h1 className="text-primary bg-dark p-2 text-center">PeerPrep</h1>            
+            <Container fluid className="p-4 mt-4">
+                <Row>
+                    <Col>
+                        <div className="d-flex justify-content-center"><h1>{questionTitle}</h1></div>
+                        <div className="container mt-5">
+                            <ReactMarkdown>{questionDescription}</ReactMarkdown>
+                        </div>
+                    </Col>
+                    <Col>
+                        <div>
+                            <CodeEditor socket={collabSocket} roomId={interviewId} />
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
             <Chat socket={chatSocket} username={username} room={interviewId} />
-            <div className="d-flex justify-content-center mt-5">
-                <Button variant="danger" onClick={handleShowEndInterview}>End interview</Button>
-                <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Delete</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseEndInterview}>Resume interview</Button>
-                        <Button variant="danger" onClick={handleEndInterview}>End interview</Button>
-                    </Modal.Footer>
-                </Modal>
+            <div className="d-flex justify-content-center">
+                <Button variant="danger" size="lg "onClick={handleShowEndInterview}>End interview</Button>
+                    <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
+                        <Modal.Header closeButton>
+                                <Modal.Title>Delete</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseEndInterview}>Resume interview</Button>
+                            <Button variant="danger" onClick={handleEndInterview}>End interview</Button>
+                        </Modal.Footer>
+                    </Modal>
             </div>
-        </>
+        </div>
     )
 }
 
