@@ -1,4 +1,7 @@
 # PeerPrep
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/43946966/198839794-dbbee8a9-db3e-493e-a74e-409e1d6829dc.png" />
+</p>
 PeerPrep is an interview preparation platform and peer matching system where students can find peers to practice whiteboard-style interview 
 questions together. (CS3219 AY22/23)
 
@@ -49,7 +52,7 @@ Then, run the following:
 npm install -g concurrently
 
 # start microservices (to add chat service and collab service once done)
-concurrently "nodemon matching-service/index.js" "nodemon user-service/index.js" "nodemon history-service/index.js" "nodemon question-service/index.js"
+concurrently "nodemon matching-service/index.js" "nodemon user-service/index.js" "nodemon history-service/index.js" "nodemon question-service/index.js" "nodemon chat-service/index.js" "nodemon collaboration-service/index.js"
 ```
 
 ## Local mongoDB container
