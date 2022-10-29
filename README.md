@@ -53,6 +53,10 @@ npm install -g concurrently
 
 # start microservices (to add chat service and collab service once done)
 concurrently "nodemon matching-service/index.js" "nodemon user-service/index.js" "nodemon history-service/index.js" "nodemon question-service/index.js" "nodemon chat-service/index.js" "nodemon collaboration-service/index.js"
+
+# start frontend in a separate terminal
+cd frontend/
+npm start
 ```
 
 ## Local mongoDB container
