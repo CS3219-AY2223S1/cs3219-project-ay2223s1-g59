@@ -110,7 +110,7 @@ const InterviewPage = () => {
                 <Button variant="danger" size="lg "onClick={handleShowEndInterview}>End interview</Button>
                 <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
                     <Modal.Header closeButton>
-                            <Modal.Title>Delete</Modal.Title>
+                        <Modal.Title>Delete</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
                     <Modal.Footer>
