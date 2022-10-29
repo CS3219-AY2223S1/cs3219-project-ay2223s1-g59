@@ -6,11 +6,6 @@ import {
     Col
 } from 'react-bootstrap';
 import {useState, useEffect} from "react";
-/*
-import axios from "axios";
-import {USER_SERVICE_URL} from "../configs";
-import {STATUS_CODE_CONFLICT, STATUS_CODE_CREATED} from "../constants";
-*/
 import { Link, useNavigate } from "react-router-dom";
 import userService from '../services/userService';
 import AlertMessage from './AlertMessage';
