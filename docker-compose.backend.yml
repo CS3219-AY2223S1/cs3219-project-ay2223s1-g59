@@ -50,7 +50,12 @@ services:
     ports:
       - 8002:8002
 
-  # add collab-service before history-service here
+  collaboration-service:
+    container_name: collaboration-service
+    build: ./collaboration-service
+    restart: unless-stopped
+    ports:
+      - 8003:8003
 
   history-service:
     container_name: history-service
@@ -69,13 +74,6 @@ services:
     restart: unless-stopped
     ports:
       - 8005:8005
-
-  collaboration-service:
-    container_name: collaboration-service
-    build: ./collaboration-service
-    restart: unless-stopped
-    ports:
-      - 8003:8003
-      
+    
 volumes:
   mongodb_vol:

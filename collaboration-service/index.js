@@ -29,21 +29,21 @@ io.on("connection", (socket) => {
     });
 
     // Client joins a specific room.
-    socket.on("join", ({ roomId }) => {
-        socket.join(`${roomId}`);
-        console.log(`Joined room ${roomId}!`);
+    socket.on("join", ({ room }) => {
+        socket.join(`${room}`);
+        console.log(`Joined room ${room}!`);
     });
 
     // Code change occurs
-    socket.on("change", ({ roomId, code }) => {
-        socket.broadcast.to(`${roomId}`).emit("receive", { code: code });
+    socket.on("change", ({ room, code }) => {
+        socket.broadcast.to(`${room}`).emit("receive", { code: code });
         // Sends an event indicating to the other user in the room to update the code they're on.
     });
 
     // Client leaves room.
-    socket.on("leave", ({ roomId }) => {
-        socket.leave(`${roomId}`);
-        console.log(`Left room ${roomId}!`);
+    socket.on("leave", ({ room }) => {
+        socket.leave(`${room}`);
+        console.log(`Left room ${room}!`);
     });
 });
 

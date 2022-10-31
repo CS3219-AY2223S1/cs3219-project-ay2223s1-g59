@@ -4,7 +4,7 @@ import CodeMirror from "@uiw/react-codemirror"
 import { python } from "@codemirror/lang-python"
 import { sublime } from "@uiw/codemirror-theme-sublime"
 
-const CodeEditor = ({ roomId, socket }) => {
+const CodeEditor = ({ room, socket }) => {
     const [code, setCode] = useState({
         value: "print('hello world')",
         isReceived: false,
@@ -15,10 +15,10 @@ const CodeEditor = ({ roomId, socket }) => {
         setCode({ value: payload.code, isReceived: true })
     })
 
-    function updateCode(roomId, value) {
+    function updateCode(room, value) {
         console.log(`Code changed to: ${value}`)
         if (code.isReceived !== true) {
-            socket.emit("change", { roomId: roomId, code: value })
+            socket.emit("change", { room: room, code: value })
         }
         setCode({ value: value, isReceived: false })
     }
@@ -29,7 +29,7 @@ const CodeEditor = ({ roomId, socket }) => {
                 className="container"
                 value={code.value}
                 height="50em"
-                onChange={(value) => updateCode(roomId, value)}
+                onChange={(value) => updateCode(room, value)}
                 extensions={[python()]}
                 theme={sublime}
             />
