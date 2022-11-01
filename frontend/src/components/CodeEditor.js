@@ -1,8 +1,8 @@
-import { useState } from "react"
-import CodeMirror from "@uiw/react-codemirror"
+import { useState } from 'react'
+import CodeMirror from '@uiw/react-codemirror'
 //import { javascript } from "@codemirror/lang-javascript";
-import { python } from "@codemirror/lang-python"
-import { sublime } from "@uiw/codemirror-theme-sublime"
+import { python } from '@codemirror/lang-python'
+import { sublime } from '@uiw/codemirror-theme-sublime'
 
 const CodeEditor = ({ room, socket }) => {
     const [code, setCode] = useState({
@@ -10,7 +10,7 @@ const CodeEditor = ({ room, socket }) => {
         isReceived: false,
     })
 
-    socket.on("receive", (payload) => {
+    socket.on('receive', (payload) => {
         console.log(`Received code: ${payload.code}`)
         setCode({ value: payload.code, isReceived: true })
     })
@@ -18,7 +18,7 @@ const CodeEditor = ({ room, socket }) => {
     function updateCode(room, value) {
         console.log(`Code changed to: ${value}`)
         if (code.isReceived !== true) {
-            socket.emit("change", { room: room, code: value })
+            socket.emit('change', { room: room, code: value })
         }
         setCode({ value: value, isReceived: false })
     }
@@ -26,9 +26,9 @@ const CodeEditor = ({ room, socket }) => {
     return (
         <div>
             <CodeMirror
-                className="container"
+                className='container'
                 value={code.value}
-                height="50em"
+                height='50em'
                 onChange={(value) => updateCode(room, value)}
                 extensions={[python()]}
                 theme={sublime}
