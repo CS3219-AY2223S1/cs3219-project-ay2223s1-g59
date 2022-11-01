@@ -6,7 +6,9 @@ import { Button, Modal } from 'react-bootstrap';
 import MatchingService from "../services/matchingService.js"
 
 const SearchPage = () => {
+    const [showReturnToInterview, setShowReturnToInterview] = useState(false)
     const [showCancelFindMatch, setShowCancelFindMatch] = useState(false)
+    const [timerKey, setTimerKey] = useState(0)
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -14,7 +16,47 @@ const SearchPage = () => {
     const difficulty = location.state.difficulty
     const username = location.state.username
 
+    const handleCloseReturnToInterview = () => setShowCancelFindMatch(false)
+    const handleShowReturnToInterview = () => {
+        setShowReturnToInterview(true)
+    }
+    const handleReturnToInterview = () => {
+        MatchingService.getInterviewByUsername(username)
+            .then(res => {
+                navigate("/interview", { state: { interviewId: res.data.interviewId, username: username } })
+            })
+    }
+    const handleDeleteInterview = () => {
+        MatchingService.getInterviewByUsername(username)
+            .then(res => {
+                const interviewId = res.data.interviewId
+                MatchingService.deleteInterview(interviewId)
+                    .then(res => {
+                        console.log("existing interview deleted. starting match now")
+                        setTimerKey(prevKey => prevKey + 1)
+                        findMatch()
+                    })
+            })
+    }
+
     useEffect(() => {
+        MatchingService
+            .getInterviewByUsername(username)
+            .then(res => {
+                if (res.data.message === "NO INTERVIEW FOUND") {
+                    console.log("searching for interview")
+                    setTimerKey(prevKey => prevKey + 1)
+                    findMatch()
+                } else {
+                    handleShowReturnToInterview()
+                }
+            })
+        return () => {
+            cancelFindMatch()
+        }
+    }, [])
+
+    const findMatch = () => {
         const matchObject = {
             username: username,
             difficulty: difficulty,
@@ -34,10 +76,7 @@ const SearchPage = () => {
             .catch((err) => {
                 console.log(err)
             })
-        return () => {
-            cancelFindMatch()
-        }
-    }, [])
+    }
 
     const cancelFindMatch = () => {
         console.log("cancel finding match")
@@ -75,8 +114,19 @@ const SearchPage = () => {
 
     return (
         <>
+            <Modal className="returnToInterviewModal" show={showReturnToInterview} onHide={handleCloseReturnToInterview} keyboard={false} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Return to existing</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Do you want to return to existing interview? If not, matching will begin and the existing interview will be deleted.</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleReturnToInterview}>Return to interview</Button>
+                    <Button variant="danger" onClick={handleDeleteInterview}>Delete interview & find match</Button>
+                </Modal.Footer>
+            </Modal>
             <div className="d-flex justify-content-center mt-5">
                 <CountdownCircleTimer
+                    key={timerKey}
                     isPlaying
                     duration={30}
                     colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
@@ -89,15 +139,15 @@ const SearchPage = () => {
             <div className="d-flex justify-content-center mt-5">
                 <Button variant="danger" onClick={handleShowCancelFindMatch}>Cancel find match</Button>
                 <Modal className="deleteModal" show={showCancelFindMatch} onHide={handleCloseCancelFindMatch} keyboard={false} animation={false}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Delete</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to cancel find match?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseCancelFindMatch}>Close</Button>
-                    <Button variant="danger" onClick={() => navigate("/home")}>Cancel find match</Button>
-                </Modal.Footer>
-            </Modal>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Delete</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Are you sure you want to cancel find match?</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseCancelFindMatch}>Close</Button>
+                        <Button variant="danger" onClick={() => navigate("/home")}>Cancel find match</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </>
     )
