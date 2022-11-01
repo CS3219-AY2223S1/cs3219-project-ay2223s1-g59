@@ -67,14 +67,13 @@ const Chat = ({ socket, username, room }) => {
     }
 
     return (
-        <Container className="mt-4 mb-5">
-            <Card.Title className="chat-title text-center bg-dark text-light"><h2>Chat</h2></Card.Title>
+        <Container className="mt-3">
             <Card className="card-body" ref={chatBody}>
                 {messagesReceived.map((msg, i) => {
                     // ChatBot messages
                     if (msg.username === "ChatBot") {
                         return (
-                            <Card className="w-25 m-3 p-2 bg-light align-self-center text-center">
+                            <Card className="w-50 m-2 p-2 bg-light align-self-center text-center">
                                 <div key={i}>
                                     <p className="mb-1">{msg.message}</p>
                                 </div>
@@ -83,9 +82,9 @@ const Chat = ({ socket, username, room }) => {
                     }
                     return msg.username === username ? (
                         // User messages
-                        <Card className="w-75 m-3 p-2 bg-dark text-light align-self-end">
+                        <Card className="w-75 m-2 p-2 bg-dark text-light align-self-end">
                             <div key={i}>
-                                <div className="d-flex justify-content-between mb-3">
+                                <div className="d-flex justify-content-between mb-1">
                                     <span className="fw-bold">{msg.username}</span>
                                     <span>{formatDateFromTimestamp(msg.__createdtime__)}</span>
                                 </div>
@@ -94,9 +93,9 @@ const Chat = ({ socket, username, room }) => {
                         </Card>
                     ) : (
                         // Receiving messages
-                        <Card className="w-75 m-3 p-2 border-primary bg-light">
+                        <Card className="w-75 m-2 p-2 border-primary bg-light">
                             <div key={i}>
-                                <div className="d-flex justify-content-between mb-3">
+                                <div className="d-flex justify-content-between mb-1">
                                     <span className="fw-bold">{msg.username}</span>
                                     <span>{formatDateFromTimestamp(msg.__createdtime__)}</span>
                                 </div>

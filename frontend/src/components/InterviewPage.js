@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { Button, Modal, Container, Row, Col } from 'react-bootstrap'
+import { Button, Modal, Container, Row, Col, Navbar } from 'react-bootstrap'
 import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
 import HistoryService from "../services/historyService.js"
@@ -89,12 +89,31 @@ const InterviewPage = () => {
 
     return (
         <div>
-            <h1 className="text-primary bg-dark p-2 text-center">PeerPrep</h1>            
-            <Container fluid className="p-4 mt-4">
+            <Navbar className="bg-dark">
+                <Container>
+                    <Navbar.Brand className="text-primary"><h2>PeerPrep</h2></Navbar.Brand>
+                    <Navbar.Text>
+                        <div className="d-flex justify-content-center">
+                            <Button variant="danger" size="md" onClick={handleShowEndInterview}>End interview</Button>
+                            <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Delete</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleCloseEndInterview}>Resume interview</Button>
+                                    <Button variant="danger" onClick={handleEndInterview}>End interview</Button>
+                                </Modal.Footer>
+                            </Modal>
+                        </div>
+                    </Navbar.Text>
+                </Container>
+            </Navbar>
+            <Container fluid className="p-4">
                 <Row>
-                    <Col>
+                    <Col className="question-body">
                         <div className="d-flex justify-content-center"><h1>{questionTitle}</h1></div>
-                        <div className="container mt-5">
+                        <div className="container mt-4">
                             <ReactMarkdown>{questionDescription}</ReactMarkdown>
                         </div>
                     </Col>
@@ -102,23 +121,10 @@ const InterviewPage = () => {
                         <div>
                             <CodeEditor socket={collabSocket} roomId={interviewId} />
                         </div>
+                        <Chat socket={chatSocket} username={username} room={interviewId} />
                     </Col>
                 </Row>
             </Container>
-            <Chat socket={chatSocket} username={username} room={interviewId} />
-            <div className="d-flex justify-content-center">
-                <Button variant="danger" size="lg "onClick={handleShowEndInterview}>End interview</Button>
-                <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Delete</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseEndInterview}>Resume interview</Button>
-                        <Button variant="danger" onClick={handleEndInterview}>End interview</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
         </div>
     )
 }

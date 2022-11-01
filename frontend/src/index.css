@@ -12,9 +12,20 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.question-body {
+    height: 85vh;
+    max-height: 85vh;
+    width: 45vw;
+    max-width: 45vw;
+    overflow: scroll;
+}
+
 .card-body {
     overflow-y: scroll;
     scroll-behavior: smooth;
     background-color: rgb(215, 239, 255);
-    height: 50vh;
+    height: 28vh;
+    max-height: 28vh;
+    width: 50vw;
+    max-width: 50vw;
 }

@@ -1,6 +1,5 @@
 import { useState } from "react"
 import CodeMirror from "@uiw/react-codemirror"
-//import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python"
 import { sublime } from "@uiw/codemirror-theme-sublime"
 
@@ -28,7 +27,10 @@ const CodeEditor = ({ roomId, socket }) => {
             <CodeMirror
                 className="container"
                 value={code.value}
-                height="70vh"
+                height="50vh"
+                maxHeight="50vh"
+                width="50vw"
+                maxWidth="50vw"
                 onChange={(value) => updateCode(roomId, value)}
                 extensions={[python()]}
                 theme={sublime}
@@ -36,4 +38,5 @@ const CodeEditor = ({ roomId, socket }) => {
         </div>
     )
 }
+
 export default CodeEditor
