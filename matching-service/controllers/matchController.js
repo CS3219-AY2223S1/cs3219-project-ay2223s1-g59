@@ -127,7 +127,7 @@ export const cancelFindMatch = async (req, res) => {
     }
 }
 
-export const getInterview = async (req, res) => {
+export const getInterviewById = async (req, res) => {
     try {
         const interview = await Interview.findById(req.params.id)
         return res.status(200).json(interview)
@@ -146,5 +146,26 @@ export const deleteInterview = async (req, res) => {
         console.log(err)
         return res.status(500).json(err.message)
         
+    }
+}
+
+export const getInterviewByUsername = async (req, res) => {
+    try {
+        const interview = await Interview.findOne({
+            $or: [
+                { firstUsername: username },
+                { secondUsername: username }
+            ]
+        })
+        if (interview) {
+            return res.staus(200).json(interview)
+        } else {
+            return res.status(200).json({
+                message: 'NO INTERVIEW FOUND'
+            })
+        }
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json(err.message)
     }
 }
