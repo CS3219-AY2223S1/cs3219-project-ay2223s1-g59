@@ -27,7 +27,7 @@ const InterviewPage = () => {
         chatSocket.emit('join', { username, room: interviewId }) // Connect user to chat socket room
         collabSocket.emit("JOIN", { roomId: interviewId })       // Connect user to collab socket room 
         MatchingService
-            .getInterview(interviewId)
+            .getInterviewById(interviewId)
             .then(interviewDetails => {
                 setQuestionTitle(interviewDetails.data.question.title)
                 setQuestionDescription(interviewDetails.data.question.description)
@@ -60,7 +60,7 @@ const InterviewPage = () => {
     }
     const handleEndInterview = () => {
         MatchingService
-            .getInterview(interviewId)
+            .getInterviewById(interviewId)
             .then(interviewDetails => {
                 if (interviewDetails.data === null) {
                     console.log("Interview terminated from other user")
