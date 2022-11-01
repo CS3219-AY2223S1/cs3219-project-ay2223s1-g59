@@ -49,7 +49,7 @@ const LoginPage = () => {
             <AlertMessage onClose={() => setAlertMessage(null)} message={(alertMessage)}/>
             <Container>
                 <h1 className="display-2 text-primary mt-5 p-3 text-center">PeerPrep</h1>
-                <h2 className="text-secondary mt-2 p-3 text-center">PeerPrep is the best platform to help you enhance your skills,<br />expand your knowledge and prepare for technical interviews.</h2>
+                <h2 className="text-secondary mt-2 p-3 text-center">PeerPrep is the best platform to help match you with fellow peers,<br />enhance your skills and prepare for technical interviews together.</h2>
                 <Row className="mt-5">
                     <Col lg={5} md={6} sm={12} className="p-5 m-auto shadow-lg rounded-lg">
                         <Form onSubmit={handleLogin}>
