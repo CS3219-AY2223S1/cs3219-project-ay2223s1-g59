@@ -7,4 +7,4 @@ export const codeChange = {
     "code": "print('Hello World')"
 }
 
-export const localUrl = "http://localhost:8003";
+export const localUrl = "http://localhost:8003"
