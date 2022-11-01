@@ -12,11 +12,11 @@ import {
 chai.use(chaiHttp)
 chai.should()
 
-describe('POST /api/user/signup', () => {
+describe('POST /signup', () => {
     describe("Checks if new user is created successfully", () => {
         it("should return creation success message", (done) => {
             chai.request(app)
-                .post('/api/user/signup')
+                .post('/signup')
                 .send(user)
                 .end((err, res) => {
                     if (err) return done(err)
@@ -33,11 +33,11 @@ describe('POST /api/user/signup', () => {
     })
 })
 
-describe('POST /api/user/login', () => {
+describe('POST /login', () => {
     describe("Checks if user logged in successfully", () => {
         before((done) => {
             chai.request(app)
-                .post('/api/user/signup')
+                .post('/signup')
                 .send(user)
                 .end((err) => {
                     if (err) return done(err)
@@ -46,7 +46,7 @@ describe('POST /api/user/login', () => {
         })
         it("should return login success message and JWT token", (done) => {
             chai.request(app)
-                .post('/api/user/login')
+                .post('/login')
                 .send(user)
                 .end((err, res) => {
                     if (err) return done(err)
@@ -64,12 +64,12 @@ describe('POST /api/user/login', () => {
     })
 })
 
-describe('GET /api/user/logout', () => {
+describe('GET /logout', () => {
     describe("Checks if user logged out successfully", () => {
         let token;
         before((done) => {
             chai.request(app)
-                .post('/api/user/signup')
+                .post('/signup')
                 .send(user)
                 .end((err) => {
                     if (err) return done(err)
@@ -78,7 +78,7 @@ describe('GET /api/user/logout', () => {
         })
         before((done) => {
             chai.request(app)
-                .post('/api/user/login')
+                .post('/login')
                 .send(user)
                 .end((err, res) => {
                     if (err) return done(err)
@@ -88,7 +88,7 @@ describe('GET /api/user/logout', () => {
         })
         it("should return logout success message", (done) => {
             chai.request(app)
-                .get('/api/user/logout')
+                .get('/logout')
                 .set("Authorization", "Bearer " + token)
                 .send()
                 .end((err, res) => {
@@ -106,12 +106,12 @@ describe('GET /api/user/logout', () => {
     })
 })
 
-describe('PUT /api/user/change_password', () => {
+describe('PUT /change_password', () => {
     describe("Checks if user changed password successfully", () => {
         let token;
         before((done) => {
             chai.request(app)
-                .post('/api/user/signup')
+                .post('/signup')
                 .send(user)
                 .end((err) => {
                     if (err) return done(err)
@@ -120,7 +120,7 @@ describe('PUT /api/user/change_password', () => {
         })
         before((done) => {
             chai.request(app)
-                .post('/api/user/login')
+                .post('/login')
                 .send(user)
                 .end((err, res) => {
                     if (err) return done(err)
@@ -130,7 +130,7 @@ describe('PUT /api/user/change_password', () => {
         })
         it("should return change password success message", (done) => {
             chai.request(app)
-                .put('/api/user/change_password')
+                .put('/change_password')
                 .set("Authorization", "Bearer " + token)
                 .send(userChangePassword)
                 .end((err, res) => {
@@ -148,12 +148,12 @@ describe('PUT /api/user/change_password', () => {
     })
 })
 
-describe('POST /api/user/delete_account', () => {
+describe('POST /delete_account', () => {
     describe("Checks if user deleted account successfully", () => {
         let token;
         before((done) => {
             chai.request(app)
-                .post('/api/user/signup')
+                .post('/signup')
                 .send(user)
                 .end((err) => {
                     if (err) return done(err)
@@ -162,7 +162,7 @@ describe('POST /api/user/delete_account', () => {
         })
         before((done) => {
             chai.request(app)
-                .post('/api/user/login')
+                .post('/login')
                 .send(user)
                 .end((err, res) => {
                     if (err) return done(err)
@@ -172,7 +172,7 @@ describe('POST /api/user/delete_account', () => {
         })
         it("should return deletion success message", (done) => {
             chai.request(app)
-                .post('/api/user/delete_account')
+                .post('/delete_account')
                 .set("Authorization", "Bearer " + token)
                 .send(userDeleteAccount)
                 .end((err, res) => {
@@ -190,12 +190,12 @@ describe('POST /api/user/delete_account', () => {
     })
 })
 
-describe('GET /api/user/', () => {
+describe('GET /', () => {
     describe("Checks if get username function is successful", () => {
         let token;
         before((done) => {
             chai.request(app)
-                .post('/api/user/signup')
+                .post('/signup')
                 .send(user)
                 .end((err) => {
                     if (err) return done(err)
@@ -204,7 +204,7 @@ describe('GET /api/user/', () => {
         })
         before((done) => {
             chai.request(app)
-                .post('/api/user/login')
+                .post('/login')
                 .send(user)
                 .end((err, res) => {
                     if (err) return done(err)
@@ -214,7 +214,7 @@ describe('GET /api/user/', () => {
         })
         it("should return get username success message", (done) => {
             chai.request(app)
-                .get('/api/user/')
+                .get('/')
                 .set("Authorization", "Bearer " + token)
                 .end((err, res) => {
                     if (err) return done(err)
