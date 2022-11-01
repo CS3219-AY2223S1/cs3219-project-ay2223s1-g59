@@ -151,6 +151,7 @@ export const deleteInterview = async (req, res) => {
 
 export const getInterviewByUsername = async (req, res) => {
     try {
+        const username = req.params.username
         const interview = await Interview.findOne({
             $or: [
                 { firstUsername: username },
