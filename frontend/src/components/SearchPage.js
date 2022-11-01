@@ -23,6 +23,7 @@ const SearchPage = () => {
     const handleReturnToInterview = () => {
         MatchingService.getInterviewByUsername(username)
             .then(res => {
+                console.log("returning to existing interview")
                 navigate("/interview", { state: { interviewId: res.data.interviewId, username: username } })
             })
     }
