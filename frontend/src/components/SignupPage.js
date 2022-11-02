@@ -27,8 +27,21 @@ const SignupPage = () => {
         const res = await userService.signup({ username, password })
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
-            }) 
-        if (res) navigate('/login');
+            })
+        
+        if (res) handleLogin({username, password})
+    }
+
+    const handleLogin = async (user) => {
+        const res = await userService.login(user)
+            .catch((err) => {
+                setAlertMessage(err.response.data.message);
+            })
+        if (res) {
+            const token = res.data.token;
+            sessionStorage.setItem("jwt", token);
+            navigate('/home');
+        }
     }
 
     return (
