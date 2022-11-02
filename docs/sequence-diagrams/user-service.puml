@@ -1,10 +1,10 @@
 @startuml
 Client -> Frontend: Register as new user
-Frontend -> User: POST /api/user/signup
+Frontend -> User: POST /signup
 User -> Frontend: Success
 Frontend -> Client: Redirect to login
 Client -> Frontend: Login
-Frontend -> User: POST /api/user/login
+Frontend -> User: POST /login
     alt successful login
     User -> Frontend: return jwt token
     Frontend -> Client: navigate to home page
