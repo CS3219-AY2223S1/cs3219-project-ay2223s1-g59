@@ -31,7 +31,7 @@ const CodeEditor = ({ room, socket }) => {
                 maxHeight="50vh"
                 width="50vw"
                 maxWidth="50vw"
-                onChange={(value) => updateCode(roomId, value)}
+                onChange={(value) => updateCode(room, value)}
                 extensions={[python()]}
                 theme={sublime}
             />
