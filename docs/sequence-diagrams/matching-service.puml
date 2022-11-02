@@ -1,0 +1,18 @@
+@startuml
+Client -> Frontend: Find Match
+Frontend -> Match: POST /find-match
+loop 30 seconds
+    Match -> Match: Find user with same difficulty
+    opt matching user found
+        Match -> Question: GET /question/{difficulty}
+        Question -> Match: return question
+        Match -> Match: Create interview and save to DB
+        Match -> Frontend: return interview ID
+        Frontend -> Client: show interview page
+    end
+end
+opt timeout
+        Match -> Frontend: No interview found
+        Frontend -> Client: return to home page
+end
+@enduml

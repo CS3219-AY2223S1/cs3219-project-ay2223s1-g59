@@ -25,7 +25,7 @@ const InterviewPage = () => {
 
     useEffect(() => {
         chatSocket.emit('join', { username, room: interviewId }) // Connect user to chat socket room
-        collabSocket.emit("JOIN", { roomId: interviewId })       // Connect user to collab socket room 
+        collabSocket.emit("join", { room: interviewId })       // Connect user to collab socket room 
         MatchingService
             .getInterviewById(interviewId)
             .then(interviewDetails => {
@@ -58,7 +58,7 @@ const InterviewPage = () => {
 
     const endInterview = () => {
         console.log("ending interview")
-        collabSocket.emit("LEAVE", { roomId: interviewId })
+        collabSocket.emit("leave", { room: interviewId })
         MatchingService
             .getInterviewById(interviewId)
             .then(interviewDetails => {
@@ -96,9 +96,7 @@ const InterviewPage = () => {
             <div className="container mt-5">
                 <ReactMarkdown>{questionDescription}</ReactMarkdown>
             </div>
-            <div>
-                <CodeEditor socket={collabSocket} roomId={interviewId} />
-            </div>
+            <CodeEditor socket={collabSocket} room={interviewId} />
             <Chat socket={chatSocket} username={username} room={interviewId} />
             <div className="d-flex justify-content-center mt-5">
                 <Button variant="danger" onClick={handleShowEndInterview}>End interview</Button>
