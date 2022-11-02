@@ -16,7 +16,7 @@ const SearchPage = () => {
     const difficulty = location.state.difficulty
     const username = location.state.username
 
-    const handleCloseReturnToInterview = () => setShowCancelFindMatch(false)
+    const handleCloseReturnToInterview = () => setShowReturnToInterview(false)
     const handleShowReturnToInterview = () => {
         setShowReturnToInterview(true)
     }
@@ -24,16 +24,17 @@ const SearchPage = () => {
         MatchingService.getInterviewByUsername(username)
             .then(res => {
                 console.log("returning to existing interview")
-                navigate("/interview", { state: { interviewId: res.data.interviewId, username: username } })
+                navigate("/interview", { state: { interviewId: res.data._id, username: username } })
             })
     }
     const handleDeleteInterview = () => {
         MatchingService.getInterviewByUsername(username)
             .then(res => {
-                const interviewId = res.data.interviewId
+                const interviewId = res.data._id
                 MatchingService.deleteInterview(interviewId)
                     .then(res => {
                         console.log("existing interview deleted. starting match now")
+                        handleCloseReturnToInterview()
                         setTimerKey(prevKey => prevKey + 1)
                         findMatch()
                     })
