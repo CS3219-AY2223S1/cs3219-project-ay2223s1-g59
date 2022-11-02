@@ -1,0 +1,12 @@
+@startuml
+Client1 -> Chat: Connect to socket 1, joins room1
+Client2 -> Chat: Connect to socket 2, joins room1
+opt on send
+    Client1 -> Chat: Sends message "Hi"
+    Chat -> Client2: Emits message "Hi"
+end
+opt on send
+    Client2 -> Chat: Sends message "Hello"
+    Chat -> Client1: Emits message "Hello"
+end
+@enduml
