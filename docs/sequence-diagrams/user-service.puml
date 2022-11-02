@@ -12,5 +12,4 @@ Frontend -> User: POST /login
     User -> Frontend: invalid login
     Frontend -> Client: return invalid message
     end
-User -> Frontend: 
 @enduml
