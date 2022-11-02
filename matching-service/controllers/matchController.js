@@ -159,7 +159,7 @@ export const getInterviewByUsername = async (req, res) => {
             ]
         })
         if (interview) {
-            return res.staus(200).json(interview)
+            return res.status(200).json(interview)
         } else {
             return res.status(200).json({
                 message: 'NO INTERVIEW FOUND'
