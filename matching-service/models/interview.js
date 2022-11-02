@@ -5,7 +5,7 @@ const interviewSchema = mongoose.Schema({
     question: { type: Object, required: true },
     firstUsername: { type: String , required: true },
     secondUsername: { type: String, required: true },
-    createdAt: { type: Date, expires: 3600, defaul: Date.now }
+    createdAt: { type: Date, expires: 3600, default: Date.now }
 }, {
     collection: 'interviews'
 })
