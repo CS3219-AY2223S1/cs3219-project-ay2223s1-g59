@@ -25,9 +25,9 @@ const InterviewPage = () => {
 
     useEffect(() => {
         chatSocket.emit('join', { username, room: interviewId }) // Connect user to chat socket room
-        collabSocket.emit("JOIN", { roomId: interviewId })       // Connect user to collab socket room 
+        collabSocket.emit("join", { room: interviewId })       // Connect user to collab socket room 
         MatchingService
-            .getInterview(interviewId)
+            .getInterviewById(interviewId)
             .then(interviewDetails => {
                 setQuestionTitle(interviewDetails.data.question.title)
                 setQuestionDescription(interviewDetails.data.question.description)
@@ -51,23 +51,22 @@ const InterviewPage = () => {
             .catch((err) => {
                 console.log(err)
             })
-        return () => collabSocket.emit("LEAVE", { roomId: interviewId })
+        return () => {
+            endInterview()
+        }
     }, [])
 
-    const handleCloseEndInterview = () => setShowEndInterview(false)
-    const handleShowEndInterview = () => {
-        setShowEndInterview(true)
-    }
-    const handleEndInterview = () => {
+    const endInterview = () => {
+        console.log("ending interview")
+        collabSocket.emit("leave", { room: interviewId })
         MatchingService
-            .getInterview(interviewId)
+            .getInterviewById(interviewId)
             .then(interviewDetails => {
                 if (interviewDetails.data === null) {
                     console.log("Interview terminated from other user")
                     setQuestionTitle("")
                     setQuestionDescription("")
                     setShowEndInterview(false)
-                    navigate("/home")
                 } else {
                     MatchingService
                         .deleteInterview(interviewId)
@@ -75,7 +74,6 @@ const InterviewPage = () => {
                             setQuestionTitle("")
                             setQuestionDescription("")
                             setShowEndInterview(false)
-                            navigate("/home")
                         })
                         .catch((err) => {
                             console.log(err)
@@ -87,6 +85,11 @@ const InterviewPage = () => {
             })
     }
 
+    const handleCloseEndInterview = () => setShowEndInterview(false)
+    const handleShowEndInterview = () => {
+        setShowEndInterview(true)
+    }
+
     return (
         <div>
             <Navbar className="bg-dark">
@@ -94,7 +97,7 @@ const InterviewPage = () => {
                     <Navbar.Brand className="text-primary"><h2>PeerPrep</h2></Navbar.Brand>
                     <Navbar.Text>
                         <div className="d-flex justify-content-center">
-                            <Button variant="danger" size="md" onClick={handleShowEndInterview}>End interview</Button>
+                            <Button variant="danger" onClick={handleShowEndInterview}>End interview</Button>
                             <Modal className="deleteModal" show={showEndInterview} onHide={handleCloseEndInterview} keyboard={false} animation={false}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Delete</Modal.Title>
@@ -102,7 +105,7 @@ const InterviewPage = () => {
                                 <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary" onClick={handleCloseEndInterview}>Resume interview</Button>
-                                    <Button variant="danger" onClick={handleEndInterview}>End interview</Button>
+                                    <Button variant="danger" onClick={() => navigate("/home")}>End interview</Button>
                                 </Modal.Footer>
                             </Modal>
                         </div>
@@ -118,9 +121,7 @@ const InterviewPage = () => {
                         </div>
                     </Col>
                     <Col>
-                        <div>
-                            <CodeEditor socket={collabSocket} roomId={interviewId} />
-                        </div>
+                        <CodeEditor socket={collabSocket} room={interviewId} />
                         <Chat socket={chatSocket} username={username} room={interviewId} />
                     </Col>
                 </Row>

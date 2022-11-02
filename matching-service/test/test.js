@@ -78,7 +78,7 @@ describe("DELETE /cancel-find-match", () => {
     })
 })
 
-describe("GET /interview/:id", () => {
+describe("GET /interview-id/:id", () => {
     let interviewId;
     before(async () => {
         const interview = await Interview.create(hardInterviewFifthAndSixthUser)
@@ -87,7 +87,7 @@ describe("GET /interview/:id", () => {
 
     it("should return the interview info, including id", (done) => {
         chai.request(app)
-            .get(`/interview/${interviewId}`)
+            .get(`/interview-id/${interviewId}`)
             .end((err, res) => {
                 if (err) return done(err)
                 res.should.have.status(200)

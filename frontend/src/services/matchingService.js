@@ -11,8 +11,8 @@ const cancelFindMatch = async (matchObject) => {
     return res
 }
 
-const getInterview = async (interviewId) => {
-    const res = await axios.get(`${MATCHING_SERVICE_URL}/interview/${interviewId}`)
+const getInterviewById = async (interviewId) => {
+    const res = await axios.get(`${MATCHING_SERVICE_URL}/interview-id/${interviewId}`)
     return res
 }
 
@@ -21,4 +21,9 @@ const deleteInterview = async (interviewId) => {
     return res
 }
 
-export default { findMatch, cancelFindMatch, getInterview, deleteInterview }
+const getInterviewByUsername = async (username) => {
+    const res = await axios.get(`${MATCHING_SERVICE_URL}/interview-username/${username}`)
+    return res
+}
+
+export default { findMatch, cancelFindMatch, getInterviewById, deleteInterview, getInterviewByUsername }
