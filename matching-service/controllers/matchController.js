@@ -151,6 +151,7 @@ export const deleteInterview = async (req, res) => {
 
 export const getInterviewByUsername = async (req, res) => {
     try {
+        const username = req.params.username
         const interview = await Interview.findOne({
             $or: [
                 { firstUsername: username },
@@ -158,7 +159,7 @@ export const getInterviewByUsername = async (req, res) => {
             ]
         })
         if (interview) {
-            return res.staus(200).json(interview)
+            return res.status(200).json(interview)
         } else {
             return res.status(200).json({
                 message: 'NO INTERVIEW FOUND'

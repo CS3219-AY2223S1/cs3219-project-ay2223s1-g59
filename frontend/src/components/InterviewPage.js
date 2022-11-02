@@ -51,14 +51,14 @@ const InterviewPage = () => {
             .catch((err) => {
                 console.log(err)
             })
-        return () => collabSocket.emit("leave", { room: interviewId })
+        return () => {
+            endInterview()
+        }
     }, [])
 
-    const handleCloseEndInterview = () => setShowEndInterview(false)
-    const handleShowEndInterview = () => {
-        setShowEndInterview(true)
-    }
-    const handleEndInterview = () => {
+    const endInterview = () => {
+        console.log("ending interview")
+        collabSocket.emit("leave", { room: interviewId })
         MatchingService
             .getInterviewById(interviewId)
             .then(interviewDetails => {
@@ -67,7 +67,6 @@ const InterviewPage = () => {
                     setQuestionTitle("")
                     setQuestionDescription("")
                     setShowEndInterview(false)
-                    navigate("/home")
                 } else {
                     MatchingService
                         .deleteInterview(interviewId)
@@ -75,7 +74,6 @@ const InterviewPage = () => {
                             setQuestionTitle("")
                             setQuestionDescription("")
                             setShowEndInterview(false)
-                            navigate("/home")
                         })
                         .catch((err) => {
                             console.log(err)
@@ -85,6 +83,11 @@ const InterviewPage = () => {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    const handleCloseEndInterview = () => setShowEndInterview(false)
+    const handleShowEndInterview = () => {
+        setShowEndInterview(true)
     }
 
     return (
@@ -104,7 +107,7 @@ const InterviewPage = () => {
                     <Modal.Body>Are you sure you want to end the interview?</Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseEndInterview}>Resume interview</Button>
-                        <Button variant="danger" onClick={handleEndInterview}>End interview</Button>
+                        <Button variant="danger" onClick={() => navigate("/home")}>End interview</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
