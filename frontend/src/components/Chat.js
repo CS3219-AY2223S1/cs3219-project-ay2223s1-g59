@@ -73,8 +73,8 @@ const Chat = ({ socket, username, room }) => {
                     // ChatBot messages
                     if (msg.username === "ChatBot") {
                         return (
-                            <Card className="w-50 m-2 p-2 bg-light align-self-center text-center">
-                                <div key={i}>
+                            <Card className="w-50 m-2 p-2 bg-light align-self-center text-center" key={i}>
+                                <div>
                                     <p className="mb-1">{msg.message}</p>
                                 </div>
                             </Card>
@@ -82,8 +82,8 @@ const Chat = ({ socket, username, room }) => {
                     }
                     return msg.username === username ? (
                         // User messages
-                        <Card className="w-75 m-2 p-2 bg-dark text-light align-self-end">
-                            <div key={i}>
+                        <Card className="w-75 m-2 p-2 bg-dark text-light align-self-end" key={i}>
+                            <div>
                                 <div className="d-flex justify-content-between mb-1">
                                     <span className="fw-bold">{msg.username}</span>
                                     <span>{formatDateFromTimestamp(msg.__createdtime__)}</span>
@@ -93,8 +93,8 @@ const Chat = ({ socket, username, room }) => {
                         </Card>
                     ) : (
                         // Receiving messages
-                        <Card className="w-75 m-2 p-2 border-primary bg-light">
-                            <div key={i}>
+                        <Card className="w-75 m-2 p-2 border-primary bg-light" key={i}>
+                            <div>
                                 <div className="d-flex justify-content-between mb-1">
                                     <span className="fw-bold">{msg.username}</span>
                                     <span>{formatDateFromTimestamp(msg.__createdtime__)}</span>
