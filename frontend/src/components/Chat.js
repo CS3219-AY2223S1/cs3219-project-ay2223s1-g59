@@ -106,7 +106,7 @@ const Chat = ({ socket, username, room }) => {
                 })}
             </Card>
             <InputGroup className="mt-1">
-                <Form.Control className="p-3" placeholder='Message...' onChange={(e) => setMessage(e.target.value)} value={message} ref={chatInput}/>
+                <Form.Control className="p-3" placeholder='Message...' onChange={(e) => setMessage(e.target.value)} value={message} ref={chatInput} />
                 <Button className="p-3" onClick={sendMessage}>Send Message</Button>
             </InputGroup>
         </Container>

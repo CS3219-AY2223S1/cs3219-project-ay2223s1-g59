@@ -1,67 +1,59 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import NavBar from './NavBar';
-import {
-    Col,
-    Nav,
-    Row,
-    Tab, 
-    Container,
-    Form,
-    Button,
-} from 'react-bootstrap';
-import userService from "../services/userService.js";
-import AlertMessage from './AlertMessage';
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import NavBar from './NavBar'
+import { Col, Nav, Row, Tab, Container, Form, Button } from 'react-bootstrap'
+import userService from "../services/userService.js"
+import AlertMessage from './AlertMessage'
 
 const SettingsPage = () => {
-    const[user, setUser] = useState("");
+    const[user, setUser] = useState("")
     const navigate = useNavigate()
-    const [alertMessage, setAlertMessage]  = useState("");
+    const [alertMessage, setAlertMessage]  = useState("")
 
     useEffect( () => {
-        authenticateJwt();
-    });
+        authenticateJwt()
+    })
 
     const authenticateJwt = async () => {
         try {
-            const token = sessionStorage.getItem("jwt");
-            const res = await userService.getUser(token);
-            if (!res) navigate('login');
-            const username = res.data.username;
-            setUser(username);
+            const token = sessionStorage.getItem("jwt")
+            const res = await userService.getUser(token)
+            if (!res) navigate('login')
+            const username = res.data.username
+            setUser(username)
         } catch (err) {
-            navigate('/login');
+            navigate('/login')
         }
     }
 
     const handleChangePassword = async (event) => {
-        event.preventDefault();
-        const token = sessionStorage.getItem("jwt");
-        const formData = new FormData(event.target);
-        const { password, newPassword, confirmNewPassword } = Object.fromEntries(formData.entries());
+        event.preventDefault()
+        const token = sessionStorage.getItem("jwt")
+        const formData = new FormData(event.target)
+        const { password, newPassword, confirmNewPassword } = Object.fromEntries(formData.entries())
         
         if (newPassword !== confirmNewPassword) {
-            setAlertMessage('The passwords you entered do not match!');
-            return;
+            setAlertMessage('The passwords you entered do not match!')
+            return
         }
 
         const res = await userService.changePassword({ password, newPassword }, token)
             .catch((err) => {
-                setAlertMessage(err.response.data.message);
+                setAlertMessage(err.response.data.message)
             })
-        if (res) navigate('/login');
+        if (res) navigate('/login')
     }
 
     const handleDeleteAccount = async (event) => {
-        event.preventDefault();
-        const token = sessionStorage.getItem("jwt");
-        const formData = new FormData(event.target);
-        const formDataObj = Object.fromEntries(formData.entries());
+        event.preventDefault()
+        const token = sessionStorage.getItem("jwt")
+        const formData = new FormData(event.target)
+        const formDataObj = Object.fromEntries(formData.entries())
         const res = await userService.deleteAccount(formDataObj, token)
             .catch((err) => {
-                setAlertMessage(err.response.data.message);
+                setAlertMessage(err.response.data.message)
             })
-        if (res) navigate('/login');
+        if (res) navigate('/login')
     }
 
     return (
@@ -131,4 +123,4 @@ const SettingsPage = () => {
 }
 
 
-export default SettingsPage;
+export default SettingsPage

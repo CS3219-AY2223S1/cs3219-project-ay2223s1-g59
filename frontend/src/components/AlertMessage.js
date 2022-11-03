@@ -1,6 +1,6 @@
-import Alert from 'react-bootstrap/Alert';
+import Alert from 'react-bootstrap/Alert'
 
-const AlertMessage = ({onClose, message}) => {
+const AlertMessage = ({ onClose, message }) => {
     if (message) {
         return (
             <Alert variant="danger" onClose={onClose} dismissible>
@@ -11,4 +11,4 @@ const AlertMessage = ({onClose, message}) => {
     }
 }
 
-export default AlertMessage;
+export default AlertMessage

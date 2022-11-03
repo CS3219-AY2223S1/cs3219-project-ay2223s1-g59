@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import NavBar from './NavBar.js';
+import { useState, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap'
 import MatchingService from "../services/matchingService.js"
 
 const SearchPage = () => {
@@ -156,4 +155,4 @@ const SearchPage = () => {
 }
 
 
-export default SearchPage;
+export default SearchPage
