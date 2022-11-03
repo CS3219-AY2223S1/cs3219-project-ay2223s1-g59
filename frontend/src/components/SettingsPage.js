@@ -10,21 +10,21 @@ const SettingsPage = () => {
     const navigate = useNavigate()
     const [alertMessage, setAlertMessage]  = useState("")
 
-    useEffect( () => {
-        authenticateJwt()
-    })
-
-    const authenticateJwt = async () => {
-        try {
+    useEffect(() => {
+        const authenticateJwt = async () => {
             const token = sessionStorage.getItem("jwt")
             const res = await userService.getUser(token)
-            if (!res) navigate('login')
+            if (!res) navigate('/login')
             const username = res.data.username
             setUser(username)
-        } catch (err) {
-            navigate('/login')
         }
-    }
+
+        authenticateJwt()
+            .catch((error) => {
+                console.log(error)
+                navigate('/login')
+            })
+    })
 
     const handleChangePassword = async (event) => {
         event.preventDefault()

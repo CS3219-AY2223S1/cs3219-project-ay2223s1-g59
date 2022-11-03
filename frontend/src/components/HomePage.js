@@ -1,23 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import NavBar from './NavBar';
-import {
-    Container,
-    Stack, 
-    Button,
-    ToggleButton,
-    Form,
-} from 'react-bootstrap';
-import userService from "../services/userService";
-import AlertMessage from './AlertMessage';
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import NavBar from './NavBar'
+import { Container, Stack, Button, ToggleButton, Form } from 'react-bootstrap'
+import userService from "../services/userService"
+import AlertMessage from './AlertMessage'
 
 const HomePage = () => {
-    const[difficulty, setDifficulty] = useState("");
-    const[radioValue, setRadioValue] = useState("");
-    const[user, setUser] = useState("");
-    const[alertMessage, setAlertMessage]  = useState("");
+    const[difficulty, setDifficulty] = useState("")
+    const[radioValue, setRadioValue] = useState("")
+    const[user, setUser] = useState("")
+    const[alertMessage, setAlertMessage]  = useState("")
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const radios = [
         { name: "Easy", value: "easy", variant: "outline-primary" },
@@ -26,28 +20,28 @@ const HomePage = () => {
     ]
 
     useEffect(() => {
-        authenticateJwt();
-    });
-
-    const authenticateJwt = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            const res = await userService.getUser(token);
-            if (!res) navigate('/login');
-            const username = res.data.username;
-            setUser(username);
-        } catch (err) {
-            navigate('/login');
+        const authenticateJwt = async () => {
+            const token = sessionStorage.getItem("jwt")
+            const res = await userService.getUser(token)
+            if (!res) navigate('/login')
+            const username = res.data.username
+            setUser(username)
         }
-    }
+
+        authenticateJwt()
+            .catch((error) => {
+                console.log(error)
+                navigate('/login')
+            })
+    })
 
     const handleDifficultyChange = (selectedValue) => {
-        setRadioValue(selectedValue.currentTarget.value);
-        setDifficulty(selectedValue.currentTarget.value);
+        setRadioValue(selectedValue.currentTarget.value)
+        setDifficulty(selectedValue.currentTarget.value)
     }
 
     const findMatch = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         if (difficulty === "") {
             setAlertMessage("Difficulty level not selected. Select difficulty before finding match!")
         } else {
@@ -91,4 +85,4 @@ const HomePage = () => {
 }
 
 
-export default HomePage;
+export default HomePage

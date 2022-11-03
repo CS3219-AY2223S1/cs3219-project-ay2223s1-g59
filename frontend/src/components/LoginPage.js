@@ -9,7 +9,17 @@ const LoginPage = () => {
     const [alertMessage, setAlertMessage]  = useState("")
 
     useEffect( () => {
+        const handleLogout = async () => {
+            const token = sessionStorage.getItem("jwt")
+            if (token) {
+                await userService.logout(token)
+            }
+        }
+        
         handleLogout()
+            .catch((error) => {
+                console.log(error)
+            })
     })
     
     const handleLogin = async (event) => {
@@ -24,17 +34,6 @@ const LoginPage = () => {
             const token = res.data.token;
             sessionStorage.setItem("jwt", token)
             navigate('/home')
-        }
-    }
-
-    const handleLogout = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt")
-            if (token) {
-                await userService.logout(token)
-            }
-        } catch (err) {
-            console.log(err)
         }
     }
 

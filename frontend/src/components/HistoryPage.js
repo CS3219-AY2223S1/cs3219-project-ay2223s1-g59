@@ -6,31 +6,29 @@ import userService from "../services/userService.js"
 import HistoryService from "../services/historyService.js"
 
 const HistoryPage = () => {
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState("")
     const [histories, setHistories] = useState([])
 
     const navigate = useNavigate()
 
     useEffect( () => {
-        initializePage();
-    }, [])
-
-    const initializePage = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            const res = await userService.getUser(token);
-            if (!res) navigate('/login');
-            const username = res.data.username;
-            HistoryService
-                .getHistory(username)
-                .then(histories => {
-                    setHistories(histories)
-                })
+        const initializePage = async () => {
+            const token = sessionStorage.getItem("jwt")
+            const res = await userService.getUser(token)
+            if (!res) navigate('/login')
+            const username = res.data.username
+            const histories = await HistoryService.getHistory(username)
+            setHistories(histories) 
             setUser(username)
-        } catch (err) {
-            navigate('/login');
         }
-    }
+
+        initializePage()
+            .catch((error) => {
+                console.log(error)
+                navigate('/login')
+            })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <>

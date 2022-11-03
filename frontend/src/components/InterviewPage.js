@@ -24,71 +24,56 @@ const InterviewPage = () => {
     const username = location.state.username
 
     useEffect(() => {
-        chatSocket.emit('join', { username, room: interviewId }) // Connect user to chat socket room
-        collabSocket.emit("join", { room: interviewId })       // Connect user to collab socket room 
-        MatchingService
-            .getInterviewById(interviewId)
-            .then(interviewDetails => {
-                setQuestionTitle(interviewDetails.data.question.title)
-                setQuestionDescription(interviewDetails.data.question.description)
-                const matchUsername = username === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
-                const history = {
-                    username: username,
-                    matchUsername: matchUsername,
-                    difficulty: interviewDetails.data.difficulty,
-                    question: interviewDetails.data.question
-                }
-                console.log(history)
-                HistoryService
-                    .createHistory(history)
-                    .then(res => {
-                        console.log(res.data)
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-        return () => {
-            endInterview()
+        const initializePage = async () => {
+            chatSocket.emit('join', { username, room: interviewId }) // Connect user to chat socket room
+            collabSocket.emit("join", { room: interviewId })       // Connect user to collab socket room
+            const interviewDetails = await MatchingService.getInterviewById(interviewId)
+            setQuestionTitle(interviewDetails.data.question.title)
+            setQuestionDescription(interviewDetails.data.question.description)
+            const matchUsername = username === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
+            const history = {
+                username: username,
+                matchUsername: matchUsername,
+                difficulty: interviewDetails.data.difficulty,
+                question: interviewDetails.data.question
+            }
+            console.log(history)
+            const res = await HistoryService.createHistory(history)
+            if (res) console.log(res.data)
         }
-    }, [])
 
-    const endInterview = () => {
-        console.log("ending interview")
-        collabSocket.emit("leave", { room: interviewId })
-        MatchingService
-            .getInterviewById(interviewId)
-            .then(interviewDetails => {
+        const endInterview = async () => {
+            try {
+                console.log("ending interview")
+                collabSocket.emit("leave", { room: interviewId })
+                const interviewDetails = await MatchingService.getInterviewById(interviewId)
                 if (interviewDetails.data === null) {
                     console.log("Interview terminated from other user")
                     setQuestionTitle("")
                     setQuestionDescription("")
                     setShowEndInterview(false)
                 } else {
-                    MatchingService
-                        .deleteInterview(interviewId)
-                        .then((res) => {
-                            setQuestionTitle("")
-                            setQuestionDescription("")
-                            setShowEndInterview(false)
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        })
+                    await MatchingService.deleteInterview(interviewId)
+                    setQuestionTitle("")
+                    setQuestionDescription("")
+                    setShowEndInterview(false)
                 }
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
+        initializePage()
+            .catch(console.error)
+
+        return () => {
+            endInterview()
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const handleCloseEndInterview = () => setShowEndInterview(false)
-    const handleShowEndInterview = () => {
-        setShowEndInterview(true)
-    }
+    const handleShowEndInterview = () => setShowEndInterview(true)
 
     return (
         <div>
