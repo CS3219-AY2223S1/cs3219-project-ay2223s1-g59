@@ -37,7 +37,6 @@ const InterviewPage = () => {
                 difficulty: interviewDetails.data.difficulty,
                 question: interviewDetails.data.question
             }
-            console.log(history)
             const res = await HistoryService.createHistory(history)
             if (res) console.log("history created")
         }
