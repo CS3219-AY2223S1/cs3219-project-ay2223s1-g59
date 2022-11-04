@@ -1,27 +1,21 @@
-import {
-    Button,
-    Form,
-    Container, 
-    Row, 
-    Col
-} from 'react-bootstrap';
-import {useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
-import userService from '../services/userService';
-import AlertMessage from './AlertMessage';
+import { Button, Form, Container, Row, Col } from 'react-bootstrap'
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import userService from '../services/userService'
+import AlertMessage from './AlertMessage'
 
 const SignupPage = () => {
     const navigate = useNavigate()
-    const [alertMessage, setAlertMessage]  = useState("");
+    const [alertMessage, setAlertMessage]  = useState("")
 
     const handleSignup = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const { username, password, confirmPassword } = Object.fromEntries(formData.entries());
+        event.preventDefault()
+        const formData = new FormData(event.target)
+        const { username, password, confirmPassword } = Object.fromEntries(formData.entries())
 
         if (password !== confirmPassword) {
-            setAlertMessage('The passwords you entered do not match!');
-            return;
+            setAlertMessage('The passwords you entered do not match!')
+            return
         }
         
         const res = await userService.signup({ username, password })
@@ -38,9 +32,9 @@ const SignupPage = () => {
                 setAlertMessage(err.response.data.message);
             })
         if (res) {
-            const token = res.data.token;
-            sessionStorage.setItem("jwt", token);
-            navigate('/home');
+            const token = res.data.token
+            sessionStorage.setItem("jwt", token)
+            navigate('/home')
         }
     }
 
@@ -76,4 +70,4 @@ const SignupPage = () => {
 }
 
 
-export default SignupPage;
+export default SignupPage

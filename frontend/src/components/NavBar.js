@@ -1,11 +1,6 @@
-import {
-    Container, 
-    Nav,
-    Navbar, 
-    NavDropdown
-} from 'react-bootstrap';
+import { Container, Nav, Navbar } from 'react-bootstrap'
 
-const NavBar = ({user}) => {
+const NavBar = ({ user }) => {
     return (
         <>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -28,4 +23,4 @@ const NavBar = ({user}) => {
         </>
     )
 }    
-export default NavBar;
+export default NavBar

@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import NavBar from './NavBar.js';
+import { useState, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap'
 import MatchingService from "../services/matchingService.js"
 
 const SearchPage = () => {
@@ -16,83 +15,86 @@ const SearchPage = () => {
     const difficulty = location.state.difficulty
     const username = location.state.username
 
-    const handleCloseReturnToInterview = () => setShowReturnToInterview(false)
-    const handleShowReturnToInterview = () => {
-        setShowReturnToInterview(true)
-    }
-    const handleReturnToInterview = () => {
-        MatchingService.getInterviewByUsername(username)
-            .then(res => {
-                console.log("returning to existing interview")
-                navigate("/interview", { state: { interviewId: res.data._id, username: username } })
-            })
-    }
-    const handleDeleteInterview = () => {
-        MatchingService.getInterviewByUsername(username)
-            .then(res => {
-                const interviewId = res.data._id
-                MatchingService.deleteInterview(interviewId)
-                    .then(res => {
-                        console.log("existing interview deleted. starting match now")
-                        handleCloseReturnToInterview()
-                        setTimerKey(prevKey => prevKey + 1)
-                        findMatch()
-                    })
-            })
-    }
-
     useEffect(() => {
-        MatchingService
-            .getInterviewByUsername(username)
-            .then(res => {
-                if (res.data.message === "NO INTERVIEW FOUND") {
-                    console.log("searching for interview")
-                    setTimerKey(prevKey => prevKey + 1)
-                    findMatch()
-                } else {
-                    handleShowReturnToInterview()
+        const cancelFindMatch = async () => {
+            try {
+                console.log("cancel finding match")
+                const matchObject = {
+                    username: username,
                 }
-            })
+                console.log(matchObject)
+                const res = await MatchingService.cancelFindMatch(matchObject)
+                console.log(res)
+            } catch (error) {
+                console.log(error)
+            }        
+        }
+
+        const initializePage = async () => {
+            const res = await MatchingService.getInterviewByUsername(username)
+            if (res.data.message === "NO INTERVIEW FOUND") {
+                console.log("searching for interview")
+                setTimerKey(prevKey => prevKey + 1)
+                findMatch()
+            } else {
+                handleShowReturnToInterview()
+            }
+        }
+        
+        initializePage()
+            .catch(console.error) 
+            
         return () => {
             cancelFindMatch()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    
+    const handleCloseReturnToInterview = () => setShowReturnToInterview(false)
+    const handleShowReturnToInterview = () => setShowReturnToInterview(true)
 
-    const findMatch = () => {
-        const matchObject = {
-            username: username,
-            difficulty: difficulty,
+    const handleReturnToInterview = async () => {
+        try {
+            const res = await MatchingService.getInterviewByUsername(username)
+            console.log("returning to existing interview")
+            navigate("/interview", { state: { interviewId: res.data._id, username: username } }) 
+        } catch (error) {
+            console.log(error)
         }
-        MatchingService
-            .findMatch(matchObject)
-            .then(res => {
-                console.log(res)
-                if (res.data.message === "NO INTERVIEW FOUND") {
-                    navigate("/home")
-                } else if (res.data.message === "Match request cancelled") {
-                    navigate("/home")
-                } else if (res.data.message === "INTERVIEW FOUND") {
-                    navigate("/interview", { state: { interviewId: res.data.interviewId, username: username } })
-                }
-            })
-            .catch((err) => {
-                console.log(err)
-            })
     }
 
-    const cancelFindMatch = () => {
-        console.log("cancel finding match")
-        const matchObject = {
-            username: username,
+    const handleDeleteInterview = async () => {
+        try {
+        const res = await MatchingService.getInterviewByUsername(username)
+        const interviewId = res.data._id
+        await MatchingService.deleteInterview(interviewId)
+        console.log("existing interview deleted. starting match now")
+        handleCloseReturnToInterview()
+        setTimerKey(prevKey => prevKey + 1)
+        await findMatch()
+        } catch (error) {
+            console.log(error)
         }
-        console.log(matchObject)
-        MatchingService.cancelFindMatch(matchObject)
-            .then((res) => {
-                console.log(res)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+    }
+
+    const findMatch = async () => {
+        try {
+            const matchObject = {
+                username: username,
+                difficulty: difficulty,
+            }
+            const res = await MatchingService.findMatch(matchObject)
+            console.log(res)
+            if (res.data.message === "NO INTERVIEW FOUND") {
+                navigate("/home")
+            } else if (res.data.message === "Match request cancelled") {
+                navigate("/home")
+            } else if (res.data.message === "INTERVIEW FOUND") {
+                navigate("/interview", { state: { interviewId: res.data.interviewId, username: username } })
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const renderTime = ({ remainingTime }) => {
@@ -110,9 +112,7 @@ const SearchPage = () => {
     }
     
     const handleCloseCancelFindMatch = () => setShowCancelFindMatch(false)
-    const handleShowCancelFindMatch = () => {
-        setShowCancelFindMatch(true)
-    }
+    const handleShowCancelFindMatch = () => setShowCancelFindMatch(true)
 
     return (
         <>
@@ -156,4 +156,4 @@ const SearchPage = () => {
 }
 
 
-export default SearchPage;
+export default SearchPage

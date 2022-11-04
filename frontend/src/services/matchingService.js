@@ -26,4 +26,5 @@ const getInterviewByUsername = async (username) => {
     return res
 }
 
+// eslint-disable-next-line
 export default { findMatch, cancelFindMatch, getInterviewById, deleteInterview, getInterviewByUsername }

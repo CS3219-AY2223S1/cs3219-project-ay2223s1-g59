@@ -12,4 +12,5 @@ const getHistory = async (username) => {
     return res.data
 }
 
+// eslint-disable-next-line
 export default { createHistory, getHistory }

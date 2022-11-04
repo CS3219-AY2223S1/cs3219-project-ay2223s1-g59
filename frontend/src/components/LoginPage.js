@@ -1,46 +1,39 @@
-import {
-    Button,
-    Form,
-    Container, 
-    Row, 
-    Col
-} from 'react-bootstrap';
-import {useState, useEffect} from "react";
-import { Link, useNavigate } from "react-router-dom";
-import userService from '../services/userService';
-import AlertMessage from './AlertMessage';
+import { Button, Form, Container, Row, Col } from 'react-bootstrap'
+import { useState, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import userService from '../services/userService'
+import AlertMessage from './AlertMessage'
 
 const LoginPage = () => {
     const navigate = useNavigate()
-    const [alertMessage, setAlertMessage]  = useState("");
+    const [alertMessage, setAlertMessage]  = useState("")
 
     useEffect( () => {
-        handleLogout();
-    });
+        const handleLogout = async () => {
+            const token = sessionStorage.getItem("jwt")
+            if (token) {
+                await userService.logout(token)
+            }
+        }
+        
+        handleLogout()
+            .catch((error) => {
+                console.log(error)
+            })
+    })
     
     const handleLogin = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const formDataObj = Object.fromEntries(formData.entries());
+        event.preventDefault()
+        const formData = new FormData(event.target)
+        const formDataObj = Object.fromEntries(formData.entries())
         const res = await userService.login(formDataObj)
             .catch((err) => {
-                setAlertMessage(err.response.data.message);
+                setAlertMessage(err.response.data.message)
             })
         if (res) {
             const token = res.data.token;
-            sessionStorage.setItem("jwt", token);
-            navigate('/home');
-        }
-    }
-
-    const handleLogout = async () => {
-        try {
-            const token = sessionStorage.getItem("jwt");
-            if (token) {
-                await userService.logout(token);
-            }
-        } catch (err) {
-            console.log(err);
+            sessionStorage.setItem("jwt", token)
+            navigate('/home')
         }
     }
 
@@ -75,4 +68,4 @@ const LoginPage = () => {
 }
 
 
-export default LoginPage;
+export default LoginPage
