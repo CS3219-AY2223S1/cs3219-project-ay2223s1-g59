@@ -37,7 +37,6 @@ const Chat = ({ socket, username, room }) => {
     // Listen for new messages from socket
     useEffect(() => {
             socket.on('receive', (data) => {
-                console.log(data)
                 setMessagesReceived((state) => [
                     ...state,
                     {
