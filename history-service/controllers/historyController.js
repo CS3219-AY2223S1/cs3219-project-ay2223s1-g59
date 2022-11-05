@@ -23,3 +23,12 @@ export const getHistory = async (req, res) => {
         return res.status(500).json(err)
     }
 }
+
+export const deleteAllHistory = async (req, res) => {
+    try {
+        const response = History.deleteMany({})
+        return res.status(200).json(response)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
