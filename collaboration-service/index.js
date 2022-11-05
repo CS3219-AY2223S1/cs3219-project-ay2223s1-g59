@@ -30,9 +30,6 @@ io.on("connection", (socket) => {
 
     // Client joins a specific room.
     socket.on("join", ({ room }) => {
-        // if (io.sockets.adapter.rooms.get(room).size === 1) {
-        //     socket.broadcast.to(`${room}`).emit("update")
-        // }
         socket.join(`${room}`);
         console.log(`Joined room ${room}!`)
     })
