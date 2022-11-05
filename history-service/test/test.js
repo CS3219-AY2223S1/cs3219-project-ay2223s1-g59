@@ -13,6 +13,7 @@ describe("history-service tests", () => {
                 .post("/create-history")
                 .send(userHistory)
                 .end((err, res) => {
+                    console.log(res)
                     res.should.have.status(200)
                     res.body.should.be.a("object")
                     res.body.should.have.property("message")
