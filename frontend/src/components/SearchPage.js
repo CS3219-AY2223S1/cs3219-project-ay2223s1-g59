@@ -22,9 +22,7 @@ const SearchPage = () => {
                 const matchObject = {
                     username: username,
                 }
-                console.log(matchObject)
                 const res = await MatchingService.cancelFindMatch(matchObject)
-                console.log(res)
             } catch (error) {
                 console.log(error)
             }        
@@ -84,7 +82,6 @@ const SearchPage = () => {
                 difficulty: difficulty,
             }
             const res = await MatchingService.findMatch(matchObject)
-            console.log(res)
             if (res.data.message === "NO INTERVIEW FOUND") {
                 navigate("/home")
             } else if (res.data.message === "Match request cancelled") {

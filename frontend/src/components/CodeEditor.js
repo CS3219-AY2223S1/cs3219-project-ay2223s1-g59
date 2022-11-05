@@ -10,12 +10,10 @@ const CodeEditor = ({ room, socket }) => {
     })
 
     socket.on("receive", (payload) => {
-        console.log(`Received code: ${payload.code}`)
         setCode({ value: payload.code, isReceived: true })
     })
-
+    
     function updateCode(room, value) {
-        console.log(`Code changed to: ${value}`)
         if (code.isReceived !== true) {
             socket.emit("change", { room: room, code: value })
         }

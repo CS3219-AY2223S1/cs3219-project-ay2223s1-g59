@@ -40,7 +40,6 @@ export async function ormUpdatePassword(username, passwordHash) {
         const user = await findUser(username)
         const userId = user._id
         const updatedUser = await updatePassword({ userId, userObject: {username, passwordHash} })
-        console.log(updatedUser)
         return updatedUser ? true : false
     } catch (err) {
         console.log(err)
