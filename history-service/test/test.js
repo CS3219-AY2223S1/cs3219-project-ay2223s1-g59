@@ -51,9 +51,6 @@ describe("history-service tests", () => {
                 done()
             })
         })
-        after(async () => {
-            await History.deleteOne({ _id: objectId })
-        })
     })
 
     describe("DELETE/delete-all-history/", () => {
