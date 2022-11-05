@@ -55,4 +55,19 @@ describe("history-service tests", () => {
             await History.deleteOne({ _id: objectId })
         })
     })
+
+    describe("DELETE/delete-all-history/", () => {
+        it("Delete all history successful", (done) => {
+            chai.request(app)
+            .delete(`/delete-all-history/`)
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a("object")
+                res.body.should.have.property("acknowledged")
+                assert.equal(res.body.acknowledged, true)
+                res.body.should.have.property("deletedCount")
+                assert.equal(res.body.deletedCount, 1)
+            })
+        })
+    })
 })
