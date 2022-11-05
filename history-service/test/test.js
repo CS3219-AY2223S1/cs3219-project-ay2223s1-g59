@@ -67,6 +67,7 @@ describe("history-service tests", () => {
                 assert.equal(res.body.acknowledged, true)
                 res.body.should.have.property("deletedCount")
                 assert.equal(res.body.deletedCount, 1)
+                done()
             })
         })
     })
