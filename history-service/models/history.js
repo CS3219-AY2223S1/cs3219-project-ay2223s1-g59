@@ -18,7 +18,7 @@ const historySchema = new mongoose.Schema({
         required: true,
     },
     interviewId: {
-        type: Object,
+        type: String,
         required: true,
     }
 })
