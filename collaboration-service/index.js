@@ -3,6 +3,14 @@ import cors from "cors"
 import { createServer } from "http"
 import "dotenv/config"
 import { Server } from "socket.io"
+import { createClient } from 'redis';
+
+const EXPIRY_TIME = 300;
+const client = createClient({
+    url: 'redis://redis:6379'
+});
+client.on('error', (err) => console.log('Redis Client Error', err));
+await client.connect();
 
 const app = express()
 app.use(express.urlencoded({ extended: true }))
@@ -29,13 +37,20 @@ io.on("connection", (socket) => {
     })
 
     // Client joins a specific room.
-    socket.on("join", ({ room }) => {
-        socket.join(`${room}`);
+    socket.on("join", async ({ room }) => {
+        await socket.join(`${room}`)
+        const cache = await client.get(`${room}`)
+        if (cache) {
+            console.log("used cache")
+            console.log(cache)
+            io.in(`${room}`).emit("receive", { code: cache })
+        }
         console.log(`Joined room ${room}!`)
     })
 
     // Code change occurs
     socket.on("change", ({ room, code }) => {
+        client.setEx(`${room}`, EXPIRY_TIME, code)
         socket.broadcast.to(`${room}`).emit("receive", { code: code })
         // Sends an event indicating to the other user in the room to update the code they're on.
     })

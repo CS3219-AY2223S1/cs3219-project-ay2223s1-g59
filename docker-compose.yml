@@ -13,6 +13,11 @@ services:
     volumes: # for data persistence
       - mongodb_vol:/data/db
 
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+
   frontend:
     container_name: frontend
     build: ./frontend
@@ -89,3 +94,5 @@ services:
 
 volumes:
   mongodb_vol:
+  redis_data:
+    driver: local

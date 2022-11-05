@@ -13,6 +13,11 @@ services:
     volumes: # for data persistence
       - mongodb_vol:/data/db
 
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+
   user-service:
     container_name: user-service
     depends_on:
@@ -77,3 +82,5 @@ services:
     
 volumes:
   mongodb_vol:
+  redis_data:
+    driver: local
