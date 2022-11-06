@@ -4,10 +4,11 @@ import { createServer } from "http"
 import "dotenv/config"
 import { Server } from "socket.io"
 import { createClient } from 'redis';
+import { uri } from "./common/constants.js"
 
 const EXPIRY_TIME = 300;
 const client = createClient({
-    url: 'redis://redis:6379'
+    url: uri
 });
 client.on('error', (err) => console.log('Redis Client Error', err));
 await client.connect();
@@ -42,7 +43,6 @@ io.on("connection", (socket) => {
         const cache = await client.get(`${room}`)
         if (cache) {
             console.log("used cache")
-            console.log(cache)
             io.in(`${room}`).emit("receive", { code: cache })
         }
         console.log(`Joined room ${room}!`)

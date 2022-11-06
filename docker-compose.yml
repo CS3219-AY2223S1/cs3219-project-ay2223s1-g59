@@ -71,6 +71,8 @@ services:
     container_name: collaboration-service
     build: ./collaboration-service
     restart: unless-stopped
+    environment:
+      - REDIS_DOCKER_URI=redis://redis:6379
     ports:
       - 8003:8003
 
