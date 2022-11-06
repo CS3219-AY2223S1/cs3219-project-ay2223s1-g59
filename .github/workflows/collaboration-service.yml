@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  REDIS_LOCAL_URI: http://localhost:6379
+  REDIS_LOCAL_URI:
 
 jobs:
   build:

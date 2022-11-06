@@ -6,10 +6,12 @@ import { Server } from "socket.io"
 import { createClient } from 'redis';
 import { uri } from "./common/constants.js"
 
-const EXPIRY_TIME = 300;
+const EXPIRY_TIME = 1800;
+
 const client = createClient({
     url: uri
 });
+
 client.on('error', (err) => console.log('Redis Client Error', err));
 await client.connect();
 
