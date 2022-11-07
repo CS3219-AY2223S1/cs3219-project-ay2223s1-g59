@@ -17,7 +17,6 @@ const io = new Server(server, {
     },
 })
 
-const CHAT_BOT = 'ChatBot'; // Constants and Magic Numbers will be abstracted when finalising
 io.on('connection', (socket) => {
     console.log(`User connected to socket ${socket.id}`)
   
@@ -30,8 +29,8 @@ io.on('connection', (socket) => {
 
         // Send notification message of new user joining room
         io.to(room).emit('receive', {
-            message: `${username} has joined the chat room`,
-            username: CHAT_BOT,
+            message: `${username} has joined the interview`,
+            username: 'ChatBot',
             __createdtime__,
         })
     })
@@ -39,6 +38,19 @@ io.on('connection', (socket) => {
     // Send message to all users currently in the room
     socket.on('send', (data) => {
         io.to(data.room).emit('receive', data)
+    })
+
+    // Send notification message of user leaving room
+    socket.on('leave', (data) => {
+        const { username, room } = data
+
+        let __createdtime__ = Date.now(); // Current timestamp
+
+        io.to(room).emit('receive', {
+            message: `${username} has left the interview`,
+            username: 'ChatBot',
+            __createdtime__,
+        })
     })
 })
 

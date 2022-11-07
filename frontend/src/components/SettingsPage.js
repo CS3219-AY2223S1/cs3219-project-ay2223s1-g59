@@ -61,10 +61,7 @@ const SettingsPage = () => {
             <NavBar user={user}/>
             <AlertMessage onClose={() => setAlertMessage(null)} message={(alertMessage)}/>
             <h1 className="display-1 text-center mt-5">User Settings</h1>
-            <Container className="mt-5">
-                <Container className="mb-5">
-                    <span style={{fontSize:"4rem"}}>{user} </span><i style={{fontSize:"4em"}} className="bi bi-person-circle"></i>
-                </Container>
+            <Container className="mt-5 p-5 shadow">
                 <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                     <Row>
                         <Col sm={3}>
