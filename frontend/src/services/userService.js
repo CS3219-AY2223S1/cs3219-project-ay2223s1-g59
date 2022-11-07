@@ -22,12 +22,12 @@ const logout = async (token) => {
 }
 
 const changePassword = async (passwordObject, token) => {
-    const res = await axios.put(`${USER_SERVICE_URL}/change_password`, passwordObject, { headers: {"Authorization" : `Bearer ${token}`} })
+    const res = await axios.put(`${USER_SERVICE_URL}/change-password`, passwordObject, { headers: {"Authorization" : `Bearer ${token}`} })
     return res
 }
 
 const deleteAccount = async (passwordObject, token) => {
-    const res = await axios.post(`${USER_SERVICE_URL}/delete_account`, passwordObject, { headers: {"Authorization" : `Bearer ${token}`} })
+    const res = await axios.post(`${USER_SERVICE_URL}/delete-account`, passwordObject, { headers: {"Authorization" : `Bearer ${token}`} })
     return res
 }
 

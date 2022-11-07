@@ -22,7 +22,7 @@ const SearchPage = () => {
                 const matchObject = {
                     username: username,
                 }
-                const res = await MatchingService.cancelFindMatch(matchObject)
+                await MatchingService.cancelFindMatch(matchObject)
             } catch (error) {
                 console.log(error)
             }        
