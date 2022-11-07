@@ -106,7 +106,7 @@ const InterviewPage = () => {
                             <ReactMarkdown>{questionDescription}</ReactMarkdown>
                         </div>
                     </Col>
-                    <Col>
+                    <Col className="p-0">
                         <CodeEditor socket={collabSocket} room={interviewId} />
                         <Chat socket={chatSocket} username={username} room={interviewId} />
                     </Col>

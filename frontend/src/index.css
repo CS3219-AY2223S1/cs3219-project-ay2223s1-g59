@@ -15,8 +15,8 @@ code {
 .question-body {
     height: 85vh;
     max-height: 85vh;
-    width: 45vw;
-    max-width: 45vw;
+    width: 50vw;
+    max-width: 50vw;
     overflow: scroll;
 }
 
