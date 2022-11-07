@@ -9,12 +9,6 @@ chai.should()
 
 describe("Code change", () => {
     it("client2 should receive the change in code", done => {
-        const finish = err => {
-            done(err)
-            client1.removeListener('receive', finish)
-            client2.removeListener('receive', finish)
-          }
-
         const client1 = io.connect(socketUrl)
         const client2 = io.connect(socketUrl)
         client1.emit("join", roomId)
