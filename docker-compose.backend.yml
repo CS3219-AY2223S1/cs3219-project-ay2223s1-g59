@@ -84,5 +84,3 @@ services:
     
 volumes:
   mongodb_vol:
-  redis_data:
-    driver: local
