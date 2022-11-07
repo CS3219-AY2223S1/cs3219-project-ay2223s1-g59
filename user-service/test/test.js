@@ -106,7 +106,7 @@ describe('GET /logout', () => {
     })
 })
 
-describe('PUT /change_password', () => {
+describe('PUT /change-password', () => {
     describe("Checks if user changed password successfully", () => {
         let token;
         before((done) => {
@@ -130,7 +130,7 @@ describe('PUT /change_password', () => {
         })
         it("should return change password success message", (done) => {
             chai.request(app)
-                .put('/change_password')
+                .put('/change-password')
                 .set("Authorization", "Bearer " + token)
                 .send(userChangePassword)
                 .end((err, res) => {
@@ -148,7 +148,7 @@ describe('PUT /change_password', () => {
     })
 })
 
-describe('POST /delete_account', () => {
+describe('POST /delete-account', () => {
     describe("Checks if user deleted account successfully", () => {
         let token;
         before((done) => {
@@ -172,7 +172,7 @@ describe('POST /delete_account', () => {
         })
         it("should return deletion success message", (done) => {
             chai.request(app)
-                .post('/delete_account')
+                .post('/delete-account')
                 .set("Authorization", "Bearer " + token)
                 .send(userDeleteAccount)
                 .end((err, res) => {
