@@ -10,10 +10,15 @@ const EXPIRY_TIME = 1800;
 
 const client = createClient({
     url: uri
-});
-client.on("connect", () => {console.log("Connected to redis.");});
-client.on('error', (err) => console.log('Redis Client Error', err));
-await client.connect();
+})
+
+client.on("connect", () => {
+    console.log("Connected to redis.")
+})
+
+client.on('error', (err) => console.log('Redis Client Error', err))
+
+await client.connect()
 
 const app = express()
 app.use(express.urlencoded({ extended: true }))
