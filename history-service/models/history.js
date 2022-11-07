@@ -16,6 +16,10 @@ const historySchema = new mongoose.Schema({
     question: {
         type: Object,
         required: true,
+    },
+    interviewId: {
+        type: String,
+        required: true,
     }
 })
 

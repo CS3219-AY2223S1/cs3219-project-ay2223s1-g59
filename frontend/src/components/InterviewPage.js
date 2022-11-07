@@ -35,7 +35,8 @@ const InterviewPage = () => {
                 username: username,
                 matchUsername: matchUsername,
                 difficulty: interviewDetails.data.difficulty,
-                question: interviewDetails.data.question
+                question: interviewDetails.data.question,
+                interviewId: interviewId
             }
             const res = await HistoryService.createHistory(history)
             if (res) console.log("history created")

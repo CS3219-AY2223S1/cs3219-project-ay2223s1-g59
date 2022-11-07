@@ -2,12 +2,9 @@ import chai, { assert } from "chai"
 import chaiHttp from "chai-http"
 import app from "../index.js"
 import { userHistory } from "./testData.js"
-import History from "../models/history.js"
 
 chai.use(chaiHttp)
 chai.should()
-
-let objectId;
 
 describe("history-service tests", () => {
     describe("POST/create-history", () => {
@@ -16,6 +13,7 @@ describe("history-service tests", () => {
                 .post("/create-history")
                 .send(userHistory)
                 .end((err, res) => {
+                    console.log(res)
                     res.should.have.status(200)
                     res.body.should.be.a("object")
                     res.body.should.have.property("message")
@@ -47,12 +45,26 @@ describe("history-service tests", () => {
                 assert.equal(res.body[0].question.description, "test")
                 res.body[0].should.have.nested.property("question.link")
                 assert.equal(res.body[0].question.link, "test")
-                objectId = res.body[0]._id
+                res.body[0].should.have.property("interviewId")
+                assert.equal(res.body[0].interviewId, "test")
                 done()
             })
         })
-        after(async () => {
-            await History.deleteOne({ _id: objectId })
+    })
+
+    describe("DELETE/delete-all-history/", () => {
+        it("Delete all history successful", (done) => {
+            chai.request(app)
+            .delete(`/delete-all-history/`)
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a("object")
+                res.body.should.have.property("acknowledged")
+                assert.equal(res.body.acknowledged, true)
+                res.body.should.have.property("deletedCount")
+                assert.equal(res.body.deletedCount, 1)
+                done()
+            })
         })
     })
 })

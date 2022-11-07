@@ -7,5 +7,6 @@ export const userHistory = {
         title: "test",
         description: "test",
         link: "test"
-    }
+    },
+    interviewId: "test"
 }
