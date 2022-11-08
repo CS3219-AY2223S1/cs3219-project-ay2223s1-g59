@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import NavBar from './NavBar'
 import { Table } from 'react-bootstrap'
-import userService from "../services/userService.js"
+import UserService from "../services/userService.js"
 import HistoryService from "../services/historyService.js"
 
 const HistoryPage = () => {
@@ -14,7 +14,7 @@ const HistoryPage = () => {
     useEffect( () => {
         const initializePage = async () => {
             const token = sessionStorage.getItem("jwt")
-            const res = await userService.getUser(token)
+            const res = await UserService.getUser(token)
             if (!res) navigate('/login')
             const username = res.data.username
             const histories = await HistoryService.getHistory(username)
@@ -35,7 +35,7 @@ const HistoryPage = () => {
             <NavBar user={user}/>
             <div className="d-grid gap-5">
                 <h1 className="text-center display-3 mt-5">History</h1>
-                <div className="container shadow-lg">
+                <div className="container shadow-lg p-3">
                     <Table striped bordered hover size="lg">
                         <thead>
                             <tr>

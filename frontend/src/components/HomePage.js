@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import NavBar from './NavBar'
 import { Container, Stack, Button, ToggleButton, Form } from 'react-bootstrap'
-import userService from "../services/userService"
+import UserService from "../services/userService"
 import AlertMessage from './AlertMessage'
 
 const HomePage = () => {
@@ -22,7 +22,7 @@ const HomePage = () => {
     useEffect(() => {
         const authenticateJwt = async () => {
             const token = sessionStorage.getItem("jwt")
-            const res = await userService.getUser(token)
+            const res = await UserService.getUser(token)
             if (!res) navigate('/login')
             const username = res.data.username
             setUser(username)

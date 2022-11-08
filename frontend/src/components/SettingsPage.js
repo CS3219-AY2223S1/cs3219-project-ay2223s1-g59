@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import NavBar from './NavBar'
-import { Col, Nav, Row, Tab, Container, Form, Button } from 'react-bootstrap'
-import userService from "../services/userService.js"
-import AlertMessage from './AlertMessage'
+import { Col, Nav, Row, Tab, Container, Form, Button } from "react-bootstrap"
+import UserService from "../services/userService.js"
+import historyService from "../services/historyService"
+import MatchingService from "../services/matchingService"
+import AlertMessage from "./AlertMessage"
 
 const SettingsPage = () => {
     const[user, setUser] = useState("")
@@ -13,7 +15,7 @@ const SettingsPage = () => {
     useEffect(() => {
         const authenticateJwt = async () => {
             const token = sessionStorage.getItem("jwt")
-            const res = await userService.getUser(token)
+            const res = await UserService.getUser(token)
             if (!res) navigate('/login')
             const username = res.data.username
             setUser(username)
@@ -37,7 +39,7 @@ const SettingsPage = () => {
             return
         }
 
-        const res = await userService.changePassword({ password, newPassword }, token)
+        const res = await UserService.changePassword({ password, newPassword }, token)
             .catch((err) => {
                 setAlertMessage(err.response.data.message)
             })
@@ -49,7 +51,14 @@ const SettingsPage = () => {
         const token = sessionStorage.getItem("jwt")
         const formData = new FormData(event.target)
         const formDataObj = Object.fromEntries(formData.entries())
-        const res = await userService.deleteAccount(formDataObj, token)
+        await historyService.deleteHistory(user)
+        console.log(user)
+        const interview = await MatchingService.getInterviewByUsername(user)
+        const interviewId = interview.data._id
+        if (interviewId) {
+            await MatchingService.deleteInterview(interviewId)
+        }
+        const res = await UserService.deleteAccount(formDataObj, token)
             .catch((err) => {
                 setAlertMessage(err.response.data.message)
             })

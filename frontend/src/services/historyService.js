@@ -11,5 +11,10 @@ const getHistory = async (username) => {
     return res.data
 }
 
+const deleteHistory = async (username) => {
+    const res = await axios.delete(`${HISTORY_SERVICE_URL}/delete-history/${username}`)
+    return res.data
+}
+
 // eslint-disable-next-line
-export default { createHistory, getHistory }
+export default { createHistory, getHistory, deleteHistory }
