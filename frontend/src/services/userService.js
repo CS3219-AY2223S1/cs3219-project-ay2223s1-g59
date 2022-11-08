@@ -2,7 +2,7 @@ import axios from 'axios'
 import { USER_SERVICE_URL } from '../configs'
 
 const getUser = async (token) => {
-    const res = await axios.get(`${USER_SERVICE_URL}/`, { headers: {"Authorization" : `Bearer ${token}`} })
+    const res = await axios.get(`${USER_SERVICE_URL}/user`, { headers: {"Authorization" : `Bearer ${token}`} })
     return res
 }
 
