@@ -91,7 +91,7 @@ const InterviewPage = () => {
                     <Navbar.Brand className="text-primary"><h2>PeerPrep</h2></Navbar.Brand>
                     <Navbar.Text className="text-white"><h4>{username}</h4></Navbar.Text>
                     <Navbar.Text className="text-white"><h4>{matchedUsername}</h4></Navbar.Text>
-                    <Navbar.Text className={questionColour[questionDifficulty]}><h5>Difficulty: {questionDifficulty}</h5></Navbar.Text>
+                    <Navbar.Text className={questionColour[questionDifficulty]}><h4>{questionDifficulty}</h4></Navbar.Text>
                     <Navbar.Text>
                         <div className="d-flex justify-content-center">
                             <Button variant="danger" onClick={handleShowEndInterview}>End interview</Button>
