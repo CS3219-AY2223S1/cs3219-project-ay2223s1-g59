@@ -13,6 +13,13 @@ services:
     volumes: # for data persistence
       - mongodb_vol:/data/db
 
+  redis:
+    image: redis
+    restart: unless-stopped
+    container_name: redis
+    ports:
+      - '6379:6379'
+
   frontend:
     container_name: frontend
     build: ./frontend
@@ -66,6 +73,8 @@ services:
     container_name: collaboration-service
     build: ./collaboration-service
     restart: unless-stopped
+    environment:
+      - REDIS_DOCKER_URI=redis://redis:6379
     ports:
       - 8003:8003
 

@@ -1,9 +1,9 @@
 export const roomId = {
-    "roomId": "123456789"
+    "room": "123456789"
 }
 
 export const codeChange = {
-    "roomId": "123456789",
+    "room": "123456789",
     "code": "print('Hello World')"
 }
 
