@@ -15,6 +15,8 @@ const collabSocket = io(COLLAB_SERVICE_URL)      // Connect to collab server
 const InterviewPage = () => {
     const [questionTitle, setQuestionTitle] = useState("")
     const [questionDescription, setQuestionDescription] = useState("")
+    const [questionDifficulty, setQuestionDifficulty] = useState("")
+    const [matchedUsername, setMatchedUsername] = useState("")
     const [showEndInterview, setShowEndInterview] = useState(false)
 
     const location = useLocation()
@@ -22,15 +24,22 @@ const InterviewPage = () => {
 
     const interviewId = location.state.interviewId
     const username = location.state.username
+    const questionColour = { 
+        EASY: "text-primary",
+        MEDIUM: "text-success",
+        HARD: "text-danger"
+    }
 
     useEffect(() => {
         const initializePage = async () => {
             chatSocket.emit("join", { username, room: interviewId }) // Connect user to chat socket room
             collabSocket.emit("join", { room: interviewId })       // Connect user to collab socket room
             const interviewDetails = await MatchingService.getInterviewById(interviewId)
+            const matchUsername = username === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
             setQuestionTitle(interviewDetails.data.question.title)
             setQuestionDescription(interviewDetails.data.question.description)
-            const matchUsername = username === interviewDetails.data.firstUsername ? interviewDetails.data.secondUsername : interviewDetails.data.firstUsername
+            setQuestionDifficulty(interviewDetails.data.difficulty.toUpperCase())
+            setMatchedUsername(matchUsername)
             const history = {
                 username: username,
                 matchUsername: matchUsername,
@@ -81,6 +90,9 @@ const InterviewPage = () => {
             <Navbar className="bg-dark">
                 <Container>
                     <Navbar.Brand className="text-primary"><h2>PeerPrep</h2></Navbar.Brand>
+                    <Navbar.Text className="text-white"><h4>{username}</h4></Navbar.Text>
+                    <Navbar.Text className="text-white"><h4>{matchedUsername}</h4></Navbar.Text>
+                    <Navbar.Text className={questionColour[questionDifficulty]}><h4>{questionDifficulty}</h4></Navbar.Text>
                     <Navbar.Text>
                         <div className="d-flex justify-content-center">
                             <Button variant="danger" onClick={handleShowEndInterview}>End interview</Button>

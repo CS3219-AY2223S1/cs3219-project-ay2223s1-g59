@@ -8,7 +8,7 @@ userRouter.get('/', authenticateJwt, userController.getUser)
 userRouter.post('/signup', userController.createUser)
 userRouter.post('/login', userController.loginUser)
 userRouter.get('/logout', authenticateJwt, userController.logoutUser)
-userRouter.put('/change_password', authenticateJwt, userController.changePassword)
-userRouter.post('/delete_account', authenticateJwt, userController.deleteUser)
+userRouter.put('/change-password', authenticateJwt, userController.changePassword)
+userRouter.post('/delete-account', authenticateJwt, userController.deleteUser)
 
 export default userRouter

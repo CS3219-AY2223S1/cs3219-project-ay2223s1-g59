@@ -39,7 +39,7 @@ export async function createUser(req, res) {
         // Create user
         const userCreated = await _createUser(username, passwordHash)
         if (userCreated.err) {
-            return res.status(400).json({message: 'Could not create a new user!'})
+            return res.status(500).json({message: 'Could not create a new user!'})
         } else {
             console.log(`Created new user ${username} successfully!`)
             return res.status(201).json({message: `Created new user ${username} successfully!`})
@@ -64,7 +64,7 @@ export async function loginUser(req, res) {
         // Generate JWT token
         const token = generateToken(username)
         if (!token) {
-            return res.status(400).json({message: 'Could not generate token'})
+            return res.status(500).json({message: 'Could not generate token'})
         } else {
             console.log(`${username} logged in successfully!`)
             return res.status(200).send({message: `${username} logged in successfully!`, token})
@@ -81,7 +81,7 @@ export async function logoutUser(req, res) {
         // Blacklist token when user logs out
         const tokenBlacklisted = await _createBlacklist(token)
         if (tokenBlacklisted.err) {
-            return res.status(400).json({message: 'Could not blacklist token!'})
+            return res.status(500).json({message: 'Could not blacklist token!'})
         } else {
             console.log(`${username} logged out successfully!`)
             return res.status(200).json({message: `${username} logged out successfully!`})
