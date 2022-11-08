@@ -35,7 +35,7 @@ const HistoryPage = () => {
             <NavBar user={user}/>
             <div className="d-grid gap-5">
                 <h1 className="text-center display-3 mt-5">History</h1>
-                <div className="container">
+                <div className="container shadow-lg">
                     <Table striped bordered hover size="lg">
                         <thead>
                             <tr>

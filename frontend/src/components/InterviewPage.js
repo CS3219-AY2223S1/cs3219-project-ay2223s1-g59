@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { Button, Modal, Container, Row, Col, Navbar } from 'react-bootstrap'
+import { Button, Modal, Container, Row, Col, Navbar } from "react-bootstrap"
 import ReactMarkdown from "react-markdown"
 import MatchingService from "../services/matchingService.js"
 import HistoryService from "../services/historyService.js"
-import io from 'socket.io-client'
+import io from "socket.io-client"
 import Chat from "./Chat.js"
 import { CHAT_SERVICE_URL, COLLAB_SERVICE_URL } from "../configs"
 import CodeEditor from "./CodeEditor.js"
@@ -25,7 +25,7 @@ const InterviewPage = () => {
 
     useEffect(() => {
         const initializePage = async () => {
-            chatSocket.emit('join', { username, room: interviewId }) // Connect user to chat socket room
+            chatSocket.emit("join", { username, room: interviewId }) // Connect user to chat socket room
             collabSocket.emit("join", { room: interviewId })       // Connect user to collab socket room
             const interviewDetails = await MatchingService.getInterviewById(interviewId)
             setQuestionTitle(interviewDetails.data.question.title)
@@ -45,6 +45,7 @@ const InterviewPage = () => {
         const endInterview = async () => {
             try {
                 console.log("ending interview")
+                chatSocket.emit("leave", { username, room: interviewId })
                 collabSocket.emit("leave", { room: interviewId })
                 const interviewDetails = await MatchingService.getInterviewById(interviewId)
                 if (interviewDetails.data === null) {
@@ -99,13 +100,13 @@ const InterviewPage = () => {
             </Navbar>
             <Container fluid className="p-4">
                 <Row>
-                    <Col className="question-body">
-                        <div className="d-flex justify-content-center"><h1>{questionTitle}</h1></div>
+                    <Col className="question-body shadow-lg">
+                        <div className="d-flex justify-content-center mt-3"><h1>{questionTitle}</h1></div>
                         <div className="container mt-4">
                             <ReactMarkdown>{questionDescription}</ReactMarkdown>
                         </div>
                     </Col>
-                    <Col>
+                    <Col className="p-0">
                         <CodeEditor socket={collabSocket} room={interviewId} />
                         <Chat socket={chatSocket} username={username} room={interviewId} />
                     </Col>
