@@ -24,9 +24,10 @@ export const getHistory = async (req, res) => {
     }
 }
 
-export const deleteAllHistory = async (req, res) => {
+export const deleteHistory = async (req, res) => {
     try {
-        const response = await History.deleteMany({})
+        const username = req.params.username
+        const response = await History.deleteMany({ username: username })
         return res.status(200).json(response)
     } catch (err) {
         res.status(500).json(err)

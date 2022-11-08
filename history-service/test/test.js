@@ -13,7 +13,6 @@ describe("history-service tests", () => {
                 .post("/create-history")
                 .send(userHistory)
                 .end((err, res) => {
-                    console.log(res)
                     res.should.have.status(200)
                     res.body.should.be.a("object")
                     res.body.should.have.property("message")
@@ -52,10 +51,10 @@ describe("history-service tests", () => {
         })
     })
 
-    describe("DELETE/delete-all-history/", () => {
-        it("Delete all history successful", (done) => {
+    describe("DELETE/delete-history/:username", () => {
+        it("Delete history successful", (done) => {
             chai.request(app)
-            .delete(`/delete-all-history/`)
+            .delete(`/delete-history/test1`)
             .end((err, res) => {
                 res.should.have.status(200)
                 res.body.should.be.a("object")
