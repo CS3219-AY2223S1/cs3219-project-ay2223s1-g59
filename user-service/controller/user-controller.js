@@ -15,7 +15,7 @@ export async function getUser(req, res) {
         const user = req.user;
         return res.status(200).send(user)
     } catch (err) {
-        return res.status(500).json({message: 'Unable to get user'})
+        return res.status(500).json({message: 'Unable to get user!'})
     }
 }
 
@@ -34,7 +34,7 @@ export async function createUser(req, res) {
         // Hash password
         const passwordHash = await hashPassword(password)
         if (!passwordHash) {
-            return res.status(500).json({message: 'Could not hash password'})
+            return res.status(500).json({message: 'Could not hash password!'})
         }
         // Create user
         const userCreated = await _createUser(username, passwordHash)
@@ -64,7 +64,7 @@ export async function loginUser(req, res) {
         // Generate JWT token
         const token = generateToken(username)
         if (!token) {
-            return res.status(500).json({message: 'Could not generate token'})
+            return res.status(500).json({message: 'Could not generate token!'})
         } else {
             console.log(`${username} logged in successfully!`)
             return res.status(200).send({message: `${username} logged in successfully!`, token})
@@ -111,12 +111,12 @@ export async function changePassword(req, res) {
         // Hash new password
         const newPasswordHash = await hashPassword(newPassword)
         if (!newPasswordHash) {
-            return res.status(500).json({message: 'Could not hash new password'})
+            return res.status(500).json({message: 'Could not hash new password!'})
         }
         // Change user password
         const passwordUpdated = await _updatePassword(username, newPasswordHash)
         if (!passwordUpdated) {
-            return res.status(500).json({message: 'Could not update new password'})
+            return res.status(500).json({message: 'Could not update new password!'})
         } else {
             console.log(`Changed password successfully!`)
             return res.status(200).json({message: `Changed password successfully!`})
@@ -142,7 +142,7 @@ export async function deleteUser(req, res) {
         // Delete user
         const userDeleted = await _deleteUser(username)
         if (!userDeleted) {
-            return res.status(500).json({message: 'Could not delete account'})
+            return res.status(500).json({message: 'Could not delete account!'})
         } else {
             console.log(`Deleted account successfully!`)
             return res.status(200).json({message: `Deleted account successfully!`})
@@ -158,7 +158,7 @@ const hashPassword = async (password) => {
     try {
         return await bcrypt.hash(password, constants.HASHING_SALT_ROUNDS)
     } catch (err) {
-        console.log('ERROR: Could not hash password')
+        console.log('ERROR: Could not hash password!')
     }
 }
 
@@ -171,6 +171,6 @@ const generateToken = (username) => {
         }
         return jwt.sign(userToken, secret, {expiresIn: constants.TOKEN_EXPIRATION})
     } catch (err) {
-        console.log('ERROR: Could not generate token')
+        console.log('ERROR: Could not generate token!')
     }
 }

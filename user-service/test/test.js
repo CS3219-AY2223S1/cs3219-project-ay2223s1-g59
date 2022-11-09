@@ -190,7 +190,7 @@ describe('POST /delete-account', () => {
     })
 })
 
-describe('GET /', () => {
+describe('GET /user', () => {
     describe("Checks if get username function is successful", () => {
         let token;
         before((done) => {
@@ -214,7 +214,7 @@ describe('GET /', () => {
         })
         it("should return get username success message", (done) => {
             chai.request(app)
-                .get('/')
+                .get('/user')
                 .set("Authorization", "Bearer " + token)
                 .end((err, res) => {
                     if (err) return done(err)
