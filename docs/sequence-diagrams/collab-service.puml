@@ -1,0 +1,26 @@
+@startuml
+Client1 -> Collab: Connect to socket 1, joins room1
+Client2 -> Collab: Connect to socket 2, joins room1
+opt on CHANGE
+    Client1 -> Collab: Types 'Hello World'
+    Collab -> Collab: Cache 'Hellow World'
+    Collab -> Client2: Emits 'Hello World'
+end
+
+opt on sudden LEAVE
+    Client2 -> Collab: Leaves socket
+    Collab -> Client2: Disconnects
+end
+
+opt reconnect
+    Client2 -> Collab: Connect to socket 2, joins back room1
+    alt if cache present
+        Collab -> Client2: Emits 'Hello World'
+    end
+end
+
+opt on LEAVE
+    Client1 -> Collab: Leaves socket
+    Collab -> Client1: Disconnects
+end
+@enduml

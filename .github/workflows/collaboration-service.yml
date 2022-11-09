@@ -1,0 +1,45 @@
+name: Collaboration Service CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REDIS_LOCAL_URI:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./collaboration-service/
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    # Checks-out repository under $GITHUB_WORKSPACE, so the job can access it
+    - uses: actions/checkout@v3
+
+
+    # setup node
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './collaboration-service/package-lock.json'
+
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.4.0
+      with:
+        redis-version: ${{ matrix.redis-version }}
+
+    # install dependencies
+    - run: npm ci
+
+    # build and test
+    - run: npm run build --if-present
+    - run: npm test

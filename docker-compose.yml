@@ -1,0 +1,95 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=mongo123
+    ports: # use 27018 LOCAL in case there's another local mongo running, else 27017 is fine for LOCAL PORT as well
+      - 27017:27017
+    volumes: # for data persistence
+      - mongodb_vol:/data/db
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    container_name: redis
+    ports:
+      - '6379:6379'
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+
+  user-service:
+    container_name: user-service
+    depends_on:
+      - mongodb
+    build: ./user-service
+    restart: unless-stopped
+    # note that the port specified in the conn string is the DOCKER PORT (27017), not LOCAL PORT
+    # authSource=admin is required as explained here: https://stackoverflow.com/questions/57434521/mongodb-could-not-find-user-userdatabase
+    environment: 
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+      - SECRET=SECRET
+    ports:
+      - 8000:8000
+      
+  matching-service:
+    container_name: matching-service
+    depends_on:
+      - mongodb
+    build: ./matching-service
+    restart: unless-stopped
+    environment: 
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+      - QUESTION_SERVICE_DOCKER_URL=http://question-service:8002/questions/
+    ports:
+      - 8001:8001
+  
+  question-service:
+    container_name: question-service
+    depends_on:
+      - mongodb
+    build: ./question-service
+    restart: unless-stopped
+    environment: 
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+    ports:
+      - 8002:8002
+
+  collaboration-service:
+    container_name: collaboration-service
+    build: ./collaboration-service
+    restart: unless-stopped
+    environment:
+      - REDIS_DOCKER_URI=redis://redis:6379
+    ports:
+      - 8003:8003
+
+  history-service:
+    container_name: history-service
+    depends_on:
+      - mongodb
+    build: ./history-service
+    restart: unless-stopped
+    environment:
+      - DB_DOCKER_URI=mongodb://mongo:mongo123@mongodb:27017/cs3219?authSource=admin
+    ports:
+      - 8004:8004
+
+  chat-service:
+    container_name: chat-service
+    build: ./chat-service
+    restart: unless-stopped
+    ports:
+      - 8005:8005
+
+volumes:
+  mongodb_vol:
