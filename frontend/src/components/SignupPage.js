@@ -1,7 +1,7 @@
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import userService from '../services/userService'
+import UserService from '../services/userService'
 import AlertMessage from './AlertMessage'
 
 const SignupPage = () => {
@@ -18,7 +18,7 @@ const SignupPage = () => {
             return
         }
         
-        const res = await userService.signup({ username, password })
+        const res = await UserService.signup({ username, password })
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
             })
@@ -27,7 +27,7 @@ const SignupPage = () => {
     }
 
     const handleLogin = async (user) => {
-        const res = await userService.login(user)
+        const res = await UserService.login(user)
             .catch((err) => {
                 setAlertMessage(err.response.data.message);
             })

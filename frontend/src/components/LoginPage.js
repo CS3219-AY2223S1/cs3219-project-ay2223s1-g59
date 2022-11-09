@@ -1,7 +1,7 @@
 import { Button, Form, Container, Row, Col } from 'react-bootstrap'
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import userService from '../services/userService'
+import UserService from '../services/userService'
 import AlertMessage from './AlertMessage'
 
 const LoginPage = () => {
@@ -12,7 +12,7 @@ const LoginPage = () => {
         const handleLogout = async () => {
             const token = sessionStorage.getItem("jwt")
             if (token) {
-                await userService.logout(token)
+                await UserService.logout(token)
             }
         }
         
@@ -26,7 +26,7 @@ const LoginPage = () => {
         event.preventDefault()
         const formData = new FormData(event.target)
         const formDataObj = Object.fromEntries(formData.entries())
-        const res = await userService.login(formDataObj)
+        const res = await UserService.login(formDataObj)
             .catch((err) => {
                 setAlertMessage(err.response.data.message)
             })
