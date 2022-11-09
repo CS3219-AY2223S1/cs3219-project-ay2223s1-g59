@@ -1,0 +1,6 @@
+@startuml
+Client -> Frontend: Delete account
+Frontend -> User: POST /delete-account
+User -> Frontend: Success
+Frontend -> Client: Redirect to login
+@enduml
